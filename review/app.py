@@ -79,8 +79,9 @@ async def _password_gate(request: Request, call_next):
     if pw:
         path = request.url.path
         # the phone pages authenticate by unguessable session id instead:
-        # a QR scanned across devices cannot carry a Basic-auth header
-        exempt = path.startswith("/m/") or path == "/api/upload"
+        # a QR scanned across devices cannot carry a Basic-auth header;
+        # /healthz stays open for the host's health prober
+        exempt = path.startswith("/m/") or path == "/api/upload" or path == "/healthz"
         if not exempt:
             header = request.headers.get("authorization", "")
             ok = False
@@ -99,6 +100,11 @@ async def _password_gate(request: Request, call_next):
 # ----------------------------------------------------------------------------
 # pages
 # ----------------------------------------------------------------------------
+
+
+@app.get("/healthz")
+def healthz():
+    return {"ok": True}
 
 
 @app.get("/")

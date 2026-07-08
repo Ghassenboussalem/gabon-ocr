@@ -7,7 +7,7 @@ services:
     name: gabon-ocr
     runtime: docker
     plan: free             # spins down when idle (~1 min cold start); upgrade to "starter" for always-on
-    healthCheckPath: /api/config
+    healthCheckPath: /healthz
     envVars:
       - key: GEMINI_API_KEY
         sync: false        # entered securely in the dashboard
