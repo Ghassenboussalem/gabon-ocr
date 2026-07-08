@@ -1,0 +1,4 @@
+{ "code": "za", "name": "Afrique du Sud",
+  "detect_keywords": ["SUD-AFRICAINE", "Groupe de population"],
+  "checks": { "cnin_date": false, "id_birthdate_format": "yymmdd" },
+  "prompt_hint": "Traduction française d'un acte sud-africain: rubriques NUMÉROTÉES 1-22 ('1. Numéro d'identité : ...'). Le numéro d'identité commence par AAMMJJ de la date de naissance. 'non stipulé' = null. Les dates de naissance des parents peuvent être remplacées par un âge ('32 ans'): garde l'âge en raw et null en value. Document souvent très dégradé: ne devine pas." }

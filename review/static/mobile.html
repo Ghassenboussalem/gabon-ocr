@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Envoyer un acte</title>
+<style>
+  :root{
+    --paper:#FAF7F0; --ink:#1B2A41; --ink-soft:#4A5568; --rule:#D8D1C0;
+    --green:#2E6B4F; --stamp:#8C3B2E;
+    --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+       min-height:100dvh;display:flex;flex-direction:column}
+  header{padding:16px 20px;border-bottom:2px solid var(--ink)}
+  header h1{font-family:var(--serif);font-size:19px;margin:0}
+  header .sub{color:var(--ink-soft);font-size:13px}
+  main{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:26px 20px}
+  button{font:inherit;border:1.5px solid var(--ink);border-radius:8px;background:#fff;
+         color:var(--ink);padding:22px;font-size:18px;cursor:pointer;width:100%;text-align:left;
+         display:flex;align-items:center;gap:14px}
+  button .ico{font-size:28px}
+  button.primary{background:var(--ink);color:var(--paper)}
+  button:disabled{opacity:.5}
+  #state{text-align:center;font-size:15px;color:var(--ink-soft);min-height:24px}
+  #done{display:none;text-align:center}
+  #done .stamp{display:inline-block;font-family:var(--serif);font-size:34px;font-weight:700;
+        color:var(--green);border:4px solid var(--green);padding:8px 26px;border-radius:8px;
+        transform:rotate(-7deg);letter-spacing:3px;margin-bottom:18px}
+  #done p{color:var(--ink-soft)}
+  .err{color:var(--stamp)}
+  .bar{height:6px;background:#e7e1d3;border-radius:3px;overflow:hidden;display:none}
+  .bar i{display:block;height:100%;width:35%;background:var(--green);border-radius:3px;
+         animation:load 1.1s ease-in-out infinite alternate}
+  @keyframes load{from{margin-left:0}to{margin-left:65%}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Envoyer un acte</h1>
+  <span class="sub">la photo part directement dans la file de traitement</span>
+</header>
+
+<main id="pick">
+  <button class="primary" id="btn-cam"><span class="ico">📷</span> Prendre une photo</button>
+  <button id="btn-file"><span class="ico">📁</span> Choisir une image ou un PDF</button>
+  <div class="bar" id="bar"><i></i></div>
+  <div id="state"></div>
+</main>
+
+<main id="done">
+  <div><span class="stamp">ENVOYÉ</span></div>
+  <p>Le document est en cours de traitement.<br>Continuez sur votre ordinateur.</p>
+  <button id="again"><span class="ico">↩</span> Envoyer un autre document</button>
+</main>
+
+<input type="file" id="cam" accept="image/*" capture="environment" hidden>
+<input type="file" id="file" accept=".png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp,.pdf,image/*,application/pdf" hidden>
+
+<script>
+const sid = location.pathname.split('/').pop();
+const cam = document.getElementById('cam'), file = document.getElementById('file');
+document.getElementById('btn-cam').onclick = () => cam.click();
+document.getElementById('btn-file').onclick = () => file.click();
+document.getElementById('again').onclick = () => {
+  document.getElementById('done').style.display='none';
+  document.getElementById('pick').style.display='flex';
+  document.getElementById('state').textContent='';
+};
+cam.onchange = () => { if(cam.files.length) send(cam.files[0]); cam.value=''; };
+file.onchange = () => { if(file.files.length) send(file.files[0]); file.value=''; };
+
+async function send(f){
+  const st = document.getElementById('state'), bar = document.getElementById('bar');
+  st.classList.remove('err'); st.textContent = 'Envoi en cours…'; bar.style.display='block';
+  document.querySelectorAll('#pick button').forEach(b=>b.disabled=true);
+  try{
+    const fd = new FormData(); fd.append('file', f, f.name || 'photo.jpg');
+    const res = await fetch(`/api/upload?sid=${encodeURIComponent(sid)}`, {method:'POST', body:fd});
+    const out = await res.json();
+    if(!res.ok) throw new Error(out.detail || res.status);
+    document.getElementById('pick').style.display='none';
+    document.getElementById('done').style.display='flex';
+  }catch(err){
+    st.classList.add('err'); st.textContent = 'Échec : ' + err.message + ' — réessayez.';
+  }
+  bar.style.display='none';
+  document.querySelectorAll('#pick button').forEach(b=>b.disabled=false);
+}
+</script>
+</body>
+</html>

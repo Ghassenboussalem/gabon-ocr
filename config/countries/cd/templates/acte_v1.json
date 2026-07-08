@@ -1,0 +1,28 @@
+{ "id": "cd_acte_v1", "detect_keyword": "Chefferie",
+  "match": { "min_score": 76, "min_score_short": 85, "min_anchors": 6 },
+  "anchors": [
+    { "id": "province",   "label": "Province de",                  "rel_y": 0.02 },
+    { "id": "ville",      "label": "Ville de",                     "rel_y": 0.032 },
+    { "id": "district",   "label": "District de",                  "rel_y": 0.066 },
+    { "id": "territoire", "label": "Territoire/ commune de",       "rel_y": 0.07 },
+    { "id": "chefferie",  "label": "Chefferie/ Secteur ou Cité de","rel_y": 0.094 },
+    { "id": "bureau_p",   "label": "Bureau Principal d'Etat Civil","rel_y": 0.109 },
+    { "id": "bureau_s",   "label": "Bureau Secondaire d'Etat Civil","rel_y": 0.129 },
+    { "id": "acte_n",     "label": "Acte n",                       "rel_y": 0.134 },
+    { "id": "jour1",      "label": "jour du mois", "occurrence": 1,"rel_y": 0.219 },
+    { "id": "par_devant", "label": "Par devant nous",              "rel_y": 0.252 },
+    { "id": "officier_l", "label": "Officier de l'Etat civil",     "rel_y": 0.264 },
+    { "id": "comparu",    "label": "A comparu",                    "rel_y": 0.276 },
+    { "id": "resident1",  "label": "Résident à", "occurrence": 1,  "rel_y": 0.326 },
+    { "id": "declare",    "label": "nous a déclaré",               "rel_y": 0.345 },
+    { "id": "lecture",    "label": "Lecture de l'acte",            "rel_y": 0.5 },
+    { "id": "foi",        "label": "En foi de quoi",               "rel_y": 0.545 },
+    { "id": "declarant_l","label": "Le (la) déclarant",            "rel_y": 0.58 }
+  ],
+  "fields": [
+    { "name": "meta_block",     "kind": "band", "anchor": "province",  "until": "jour1",      "include_anchor_line": true },
+    { "name": "acte_block",     "kind": "band", "anchor": "jour1",     "until": "declare",    "include_anchor_line": true },
+    { "name": "naissance_block","kind": "band", "anchor": "declare",   "until": "lecture",    "include_anchor_line": true },
+    { "name": "lecture_block",  "kind": "band", "anchor": "lecture",   "until": "declarant_l","include_anchor_line": true },
+    { "name": "signature_block","kind": "band", "anchor": "declarant_l","until": "none",      "include_anchor_line": true, "pad": 30 }
+  ]}

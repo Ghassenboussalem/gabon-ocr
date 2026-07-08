@@ -1,0 +1,151 @@
+{
+  "id": "cg_copie_v1",
+  "detect_keyword": "REPUBLIQUE DU CONGO",
+  "match": {
+    "min_score": 78,
+    "min_score_short": 85,
+    "min_anchors": 7
+  },
+  "anchors": [
+    {
+      "id": "republique",
+      "label": "REPUBLIQUE DU CONGO",
+      "rel_y": 0.0
+    },
+    {
+      "id": "header_acte",
+      "label": "ACTE DE NAISSANCE",
+      "rel_y": 0.181
+    },
+    {
+      "id": "copie",
+      "label": "Copie intégrale",
+      "rel_y": 0.21
+    },
+    {
+      "id": "annee",
+      "label": "Année",
+      "rel_y": 0.247
+    },
+    {
+      "id": "centre",
+      "label": "Centre d'état civil communal",
+      "rel_y": 0.34
+    },
+    {
+      "id": "presente",
+      "label": "S'est présenté",
+      "rel_y": 0.4
+    },
+    {
+      "id": "declare",
+      "label": "Qui a déclaré la naissance",
+      "rel_y": 0.425
+    },
+    {
+      "id": "sexe_l",
+      "label": "De sexe",
+      "rel_y": 0.45
+    },
+    {
+      "id": "ne_le",
+      "label": "Né le",
+      "rel_y": 0.479
+    },
+    {
+      "id": "nomme",
+      "label": "Nommé",
+      "rel_y": 0.529
+    },
+    {
+      "id": "situation",
+      "label": "Situation matrimoniale",
+      "rel_y": 0.556
+    },
+    {
+      "id": "fils",
+      "label": "Fils de",
+      "rel_y": 0.58
+    },
+    {
+      "id": "et_de",
+      "label": "Et de",
+      "rel_y": 0.678
+    },
+    {
+      "id": "certif",
+      "label": "Copie certifiée conforme",
+      "rel_y": 0.819
+    }
+  ],
+  "fields": [
+    {
+      "name": "meta_block",
+      "kind": "band",
+      "anchor": "copie",
+      "until": "centre",
+      "include_anchor_line": true
+    },
+    {
+      "name": "reg_block",
+      "kind": "band",
+      "anchor": "centre",
+      "until": "presente",
+      "include_anchor_line": true
+    },
+    {
+      "name": "declar_block",
+      "kind": "band",
+      "anchor": "presente",
+      "until": "sexe_l",
+      "include_anchor_line": true
+    },
+    {
+      "name": "sexe",
+      "kind": "right_of",
+      "anchor": "sexe_l",
+      "until": "ne_le"
+    },
+    {
+      "name": "birth_block",
+      "kind": "band",
+      "anchor": "ne_le",
+      "until": "nomme",
+      "include_anchor_line": true
+    },
+    {
+      "name": "enfant_nom",
+      "kind": "right_of",
+      "anchor": "nomme",
+      "until": "situation"
+    },
+    {
+      "name": "situation",
+      "kind": "right_of",
+      "anchor": "situation",
+      "until": "fils"
+    },
+    {
+      "name": "pere_block",
+      "kind": "band",
+      "anchor": "fils",
+      "until": "et_de",
+      "include_anchor_line": true
+    },
+    {
+      "name": "mere_block",
+      "kind": "band",
+      "anchor": "et_de",
+      "until": "certif",
+      "include_anchor_line": true
+    },
+    {
+      "name": "certification",
+      "kind": "band",
+      "anchor": "certif",
+      "until": "none",
+      "include_anchor_line": true,
+      "pad": 60
+    }
+  ]
+}

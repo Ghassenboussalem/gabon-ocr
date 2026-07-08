@@ -1,0 +1,22 @@
+{ "id": "za_traduction_v1", "detect_keyword": "SUD-AFRICAINE",
+  "match": { "min_score": 74, "min_score_short": 85, "min_anchors": 5 },
+  "anchors": [
+    { "id": "republique",    "label": "REPUBLIQUE SUD-AFRICAINE",   "rel_y": 0.0 },
+    { "id": "header",        "label": "ACTE DE NAISSANCE",          "rel_y": 0.033 },
+    { "id": "dn1",           "label": "Date de naissance", "occurrence": 1, "rel_y": 0.156 },
+    { "id": "lieu1",         "label": "Lieu de naissance", "occurrence": 1, "rel_y": 0.172 },
+    { "id": "pere_hdr",      "label": "PERE DE L'ENFANT",           "rel_y": 0.24 },
+    { "id": "mere_hdr",      "label": "MERE DE L'ENFANT",           "rel_y": 0.398 },
+    { "id": "renseignements","label": "RENSEIGNEMENTS GENERAUX",    "rel_y": 0.553 },
+    { "id": "declare_par",   "label": "A ETE DECLARE PAR",          "rel_y": 0.63 },
+    { "id": "tampon",        "label": "TAMPON OFFICIEL",            "rel_y": 0.72 },
+    { "id": "traduction",    "label": "Traduction certifiée conforme", "rel_y": 0.84 }
+  ],
+  "fields": [
+    { "name": "enfant_block",  "kind": "band", "anchor": "header",        "until": "pere_hdr",      "include_anchor_line": false },
+    { "name": "pere_block",    "kind": "band", "anchor": "pere_hdr",      "until": "mere_hdr",      "include_anchor_line": true },
+    { "name": "mere_block",    "kind": "band", "anchor": "mere_hdr",      "until": "renseignements","include_anchor_line": true },
+    { "name": "renseignements","kind": "band", "anchor": "renseignements","until": "declare_par",   "include_anchor_line": true },
+    { "name": "declare_block", "kind": "band", "anchor": "declare_par",   "until": "tampon",        "include_anchor_line": true },
+    { "name": "certification", "kind": "band", "anchor": "tampon",        "until": "none",          "include_anchor_line": true, "pad": 30 }
+  ]}

@@ -1,0 +1,23 @@
+{ "document": "traduction_acte_afrique_du_sud", "fields": [
+ { "name": "numero_identite",  "fr": "1. Numéro d'identité (AAMMJJ...)",   "type": "text",  "from": "enfant_block" },
+ { "name": "enfant_nom",       "fr": "2. Nom",                             "type": "name",  "from": "enfant_block" },
+ { "name": "enfant_prenoms",   "fr": "3. Prénoms",                         "type": "name",  "from": "enfant_block" },
+ { "name": "date_naissance",   "fr": "4. Date de naissance (AAAA/MM/JJ)",  "type": "date",  "from": "enfant_block" },
+ { "name": "lieu_naissance",   "fr": "5. Lieu de naissance",               "type": "place", "from": "enfant_block" },
+ { "name": "sexe",             "fr": "6. Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "enfant_block" },
+ { "name": "groupe_population","fr": "7. Groupe de population",            "type": "text",  "from": "enfant_block" },
+ { "name": "pere_numero_identite","fr": "8. Numéro d'identité du père ('non stipulé' = null)", "type": "text", "from": "pere_block" },
+ { "name": "pere_nom",         "fr": "9. Nom du père",                     "type": "name",  "from": "pere_block" },
+ { "name": "pere_prenoms",     "fr": "10. Prénoms du père",                "type": "name",  "from": "pere_block" },
+ { "name": "pere_age",         "fr": "11. Date de naissance/âge du père",  "type": "text",  "from": "pere_block" },
+ { "name": "pere_lieu_naissance","fr": "12. Lieu de naissance du père",    "type": "place", "from": "pere_block" },
+ { "name": "mere_nom_jeune_fille","fr": "15. Nom de jeune fille",          "type": "name",  "from": "mere_block" },
+ { "name": "mere_prenoms",     "fr": "16. Prénoms de la mère",             "type": "name",  "from": "mere_block" },
+ { "name": "mere_age",         "fr": "17. Date de naissance/âge de la mère","type": "text", "from": "mere_block" },
+ { "name": "mere_lieu_naissance","fr": "18. Lieu de naissance de la mère", "type": "place", "from": "mere_block" },
+ { "name": "parents_maries",   "fr": "20. Les parents sont-ils mariés",    "type": "text",  "from": "renseignements" },
+ { "name": "declarant_qualite","fr": "21. Qualité du déclarant",           "type": "text",  "from": "declare_block" },
+ { "name": "declarant_signature","fr": "22. Signature",                    "type": "text",  "from": "declare_block" },
+ { "name": "tampon",           "fr": "Tampon officiel (lieu, date)",       "type": "text",  "from": "certification" },
+ { "name": "date_traduction",  "fr": "Date de la traduction",              "type": "date",  "from": "certification" }
+]}

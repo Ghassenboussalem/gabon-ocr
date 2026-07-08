@@ -1,0 +1,6 @@
+{
+  "code": "tn",
+  "name": "Tunisie",
+  "detect_keywords": ["REPUBLIQUE TUNISIENNE", "EXTRAIT DES REGISTRES"],
+  "checks": { "cnin_date": false, "annee_matches_declaration": true }
+}

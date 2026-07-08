@@ -1,0 +1,13 @@
+{ "id": "sc_extrait_v1", "detect_keyword": "REPUBLIQUE DES SEYCHELLES",
+  "match": { "min_score": 76, "min_score_short": 85, "min_anchors": 3 },
+  "anchors": [
+    { "id": "header",   "label": "NAISSANCE DANS LA REPUBLIQUE DES SEYCHELLES", "rel_y": 0.0 },
+    { "id": "selon",    "label": "Selon la déclaration faite",     "rel_y": 0.72 },
+    { "id": "signe_dec","label": "Signé par le déclarant",         "rel_y": 0.78 },
+    { "id": "certifie", "label": "Certifié copie conforme",        "rel_y": 0.84 },
+    { "id": "ndt",      "label": "Le document porte",              "rel_y": 0.92 }
+  ],
+  "fields": [
+    { "name": "table_block",  "kind": "band", "anchor": "header", "until": "selon",  "include_anchor_line": true },
+    { "name": "certification","kind": "band", "anchor": "selon",  "until": "ndt",    "include_anchor_line": true }
+  ]}

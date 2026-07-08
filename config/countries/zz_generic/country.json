@@ -1,0 +1,4 @@
+{ "code": "zz", "name": "Générique (pays non reconnu)",
+  "detect_keywords": [],
+  "checks": { "cnin_date": false },
+  "prompt_hint": "Le pays émetteur de cet acte n'a pas été reconnu automatiquement. Extrais prudemment les champs universels d'un acte de naissance; retourne null pour tout champ non clairement visible, n'invente rien. Signale dans 'observations' toute particularité (langue, calendrier, mentions)." }

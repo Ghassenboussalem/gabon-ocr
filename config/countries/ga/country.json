@@ -1,0 +1,6 @@
+{
+  "code": "ga",
+  "name": "Gabon",
+  "detect_keywords": ["République Gabonaise", "REPUBLIQUE GABONAISE", "Gabonaise", "Libreville"],
+  "checks": { "cnin_date": true, "annee_matches_declaration": false }
+}

@@ -1,0 +1,4 @@
+{ "code": "cm", "name": "Cameroun",
+  "detect_keywords": ["CAMEROUN", "BIRTH CERTIFICATE"],
+  "checks": { "cnin_date": false, "reference_year": false },
+  "prompt_hint": "Acte camerounais bilingue: chaque étiquette est en français puis en anglais ('Nom de l'enfant / Name of the child'); les valeurs sont MANUSCRITES. La section du père peut être entièrement vide. 'vers <année>' est une date approximative: garde-la telle quelle dans raw et mets l'année seule dans value. Le nom de l'enfant apparaît deux fois (il doit être identique)." }

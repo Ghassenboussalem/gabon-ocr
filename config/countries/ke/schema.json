@@ -1,0 +1,17 @@
+{ "document": "traduction_acte_kenya", "fields": [
+ { "name": "serial",           "fr": "A N° (en-tête)",             "type": "text",  "from": "entete" },
+ { "name": "district",         "fr": "Naissance à ... District/Province", "type": "place", "from": "naissance_a" },
+ { "name": "acte_numero",      "fr": "N° (ex: 2609551/1972)",      "type": "text",  "from": "row1" },
+ { "name": "lieu_naissance",   "fr": "Lieu de Naissance",          "type": "place", "from": "row1" },
+ { "name": "enfant_nom",       "fr": "Nom (de l'enfant)",          "type": "name",  "from": "row1" },
+ { "name": "date_naissance",   "fr": "Date de Naissance",          "type": "date",  "from": "row2" },
+ { "name": "sexe",             "fr": "Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "row2" },
+ { "name": "pere_nom",         "fr": "Prénom et Nom du Père",      "type": "name",  "from": "row2" },
+ { "name": "mere_nom_jeune_fille","fr": "Prénom et Nom de Jeune Fille de la Mère", "type": "name", "from": "row3" },
+ { "name": "declarant",        "fr": "Description du Déclarant (ex: Sage-femme)", "type": "text", "from": "row4" },
+ { "name": "officier",         "fr": "Signature de l'Officier de l'Etat Civil", "type": "name", "from": "row5" },
+ { "name": "date_enregistrement","fr": "Date d'Enregistrement",    "type": "date",  "from": "row5" },
+ { "name": "nom_bapteme",      "fr": "Nom de Baptême rajouté (si présent)", "type": "text", "from": "bapteme" },
+ { "name": "date_delivrance",  "fr": "Délivré le ... (en toutes lettres possible)", "type": "date", "from": "delivrance" },
+ { "name": "dactylographie",   "fr": "Dactylographié par / référence", "type": "text", "from": "pied" }
+]}

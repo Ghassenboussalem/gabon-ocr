@@ -1,0 +1,256 @@
+{
+ "page": {
+  "ville": {
+   "raw": "VILLE DE THIES",
+   "value": "Thiès",
+   "confidence": 0.94
+  },
+  "centre_type": {
+   "raw": "PRINCIPAL",
+   "value": "PRINCIPAL",
+   "confidence": 0.9
+  },
+  "annee_lettres": {
+   "raw": "Mil neuf cent quatre vingt dix sept",
+   "value": "Mil neuf cent quatre vingt dix sept",
+   "confidence": 0.88
+  },
+  "annee_chiffres": {
+   "raw": "AN 1997",
+   "value": "1997",
+   "confidence": 0.92
+  },
+  "registre_lettres": {
+   "raw": "Sept mille deux cent trente six",
+   "value": "Sept mille deux cent trente six",
+   "confidence": 0.86
+  },
+  "registre_chiffres": {
+   "raw": "7236",
+   "value": "7236",
+   "confidence": 0.9
+  },
+  "date_naissance": {
+   "raw": "huit Août mil neuf cent quatre vingt deux (1982)",
+   "value": "1982-08-08",
+   "confidence": 0.9
+  },
+  "heure_naissance": {
+   "raw": "_ heures _ minutes",
+   "value": null,
+   "confidence": 0.3
+  },
+  "lieu_naissance": {
+   "raw": "THIÈS",
+   "value": "Thiès",
+   "confidence": 0.94
+  },
+  "sexe": {
+   "raw": "masculin",
+   "value": "Masculin",
+   "confidence": 0.92
+  },
+  "enfant_prenoms": {
+   "raw": "Mamadou Dadel",
+   "value": "Mamadou Dadel",
+   "confidence": 0.9
+  },
+  "enfant_nom": {
+   "raw": "COULIBALY",
+   "value": "COULIBALY",
+   "confidence": 0.92
+  },
+  "pere_prenoms": {
+   "raw": "Diatourou",
+   "value": "Diatourou",
+   "confidence": 0.88
+  },
+  "mere_prenoms": {
+   "raw": "Fatoumata Dadel",
+   "value": "Fatoumata Dadel",
+   "confidence": 0.88
+  },
+  "mere_nom": {
+   "raw": "BA",
+   "value": "BA",
+   "confidence": 0.9
+  },
+  "delivre_par": {
+   "raw": "tribunal départemental de Thiès",
+   "value": "tribunal départemental de Thiès",
+   "confidence": 0.88
+  },
+  "date_etablissement": {
+   "raw": "vingt cinq Septembre mil neuf cent quatre vingt dix sept",
+   "value": "1997-09-25",
+   "confidence": 0.88
+  },
+  "jugement_lettres": {
+   "raw": "neuf mille cent quatre vingt deux",
+   "value": "neuf mille cent quatre vingt deux",
+   "confidence": 0.85
+  },
+  "jugement_chiffres": {
+   "raw": "9182",
+   "value": "9182",
+   "confidence": 0.9
+  },
+  "date_inscription": {
+   "raw": "inscrit le 31-12 sur le registre de l'année AN 1997",
+   "value": "31-12-1997",
+   "confidence": 0.85
+  },
+  "mentions_marginales": {
+   "raw": "Néant",
+   "value": "Néant",
+   "confidence": 0.9
+  },
+  "extrait_delivre_par": {
+   "raw": "le Centre Principal",
+   "value": "Centre Principal",
+   "confidence": 0.85
+  },
+  "lieu_delivrance": {
+   "raw": "Thiès, le",
+   "value": "Thiès",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "10 DEC 2021",
+   "value": "2021-12-10",
+   "confidence": 0.9
+  },
+  "officier": {
+   "raw": "DEMBA NDIAYE WADE SENE",
+   "value": "DEMBA NDIAYE WADE SENE",
+   "confidence": 0.88
+  }
+ },
+ "fields": {
+  "ville": {
+   "raw": "VILLE DE THIES",
+   "value": "Thiès",
+   "confidence": 0.94
+  },
+  "centre_type": {
+   "raw": "PRINCIPAL",
+   "value": "PRINCIPAL",
+   "confidence": 0.9
+  },
+  "annee_lettres": {
+   "raw": "Mil neuf cent quatre vingt dix sept",
+   "value": "Mil neuf cent quatre vingt dix sept",
+   "confidence": 0.88
+  },
+  "annee_chiffres": {
+   "raw": "AN 1997",
+   "value": "1997",
+   "confidence": 0.92
+  },
+  "registre_lettres": {
+   "raw": "Sept mille deux cent trente six",
+   "value": "Sept mille deux cent trente six",
+   "confidence": 0.86
+  },
+  "registre_chiffres": {
+   "raw": "7236",
+   "value": "7236",
+   "confidence": 0.9
+  },
+  "date_naissance": {
+   "raw": "huit Août mil neuf cent quatre vingt deux (1982)",
+   "value": "1982-08-08",
+   "confidence": 0.9
+  },
+  "heure_naissance": {
+   "raw": "_ heures _ minutes",
+   "value": null,
+   "confidence": 0.3
+  },
+  "lieu_naissance": {
+   "raw": "THIÈS",
+   "value": "Thiès",
+   "confidence": 0.94
+  },
+  "sexe": {
+   "raw": "masculin",
+   "value": "Masculin",
+   "confidence": 0.92
+  },
+  "enfant_prenoms": {
+   "raw": "Mamadou Dadel",
+   "value": "Mamadou Dadel",
+   "confidence": 0.9
+  },
+  "enfant_nom": {
+   "raw": "COULIBALY",
+   "value": "COULIBALY",
+   "confidence": 0.92
+  },
+  "pere_prenoms": {
+   "raw": "Diatourou",
+   "value": "Diatourou",
+   "confidence": 0.88
+  },
+  "mere_prenoms": {
+   "raw": "Fatoumata Dadel",
+   "value": "Fatoumata Dadel",
+   "confidence": 0.88
+  },
+  "mere_nom": {
+   "raw": "BA",
+   "value": "BA",
+   "confidence": 0.9
+  },
+  "delivre_par": {
+   "raw": "tribunal départemental de Thiès",
+   "value": "tribunal départemental de Thiès",
+   "confidence": 0.88
+  },
+  "date_etablissement": {
+   "raw": "vingt cinq Septembre mil neuf cent quatre vingt dix sept",
+   "value": "1997-09-25",
+   "confidence": 0.88
+  },
+  "jugement_lettres": {
+   "raw": "neuf mille cent quatre vingt deux",
+   "value": "neuf mille cent quatre vingt deux",
+   "confidence": 0.85
+  },
+  "jugement_chiffres": {
+   "raw": "9182",
+   "value": "9182",
+   "confidence": 0.9
+  },
+  "date_inscription": {
+   "raw": "inscrit le 31-12 sur le registre de l'année AN 1997",
+   "value": "31-12-1997",
+   "confidence": 0.85
+  },
+  "mentions_marginales": {
+   "raw": "Néant",
+   "value": "Néant",
+   "confidence": 0.9
+  },
+  "extrait_delivre_par": {
+   "raw": "le Centre Principal",
+   "value": "Centre Principal",
+   "confidence": 0.85
+  },
+  "lieu_delivrance": {
+   "raw": "Thiès, le",
+   "value": "Thiès",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "10 DEC 2021",
+   "value": "2021-12-10",
+   "confidence": 0.9
+  },
+  "officier": {
+   "raw": "DEMBA NDIAYE WADE SENE",
+   "value": "DEMBA NDIAYE WADE SENE",
+   "confidence": 0.88
+  }
+ }
+}

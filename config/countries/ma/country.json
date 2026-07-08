@@ -1,0 +1,4 @@
+{ "code": "ma", "name": "Maroc",
+  "detect_keywords": ["Royaume du Maroc", "COPIE INTEGRALE DE L'ACTE DE NAISSANCE", "Dahir"],
+  "checks": { "cnin_date": false, "reference_year": true, "margin_date_matches_birth": true },
+  "prompt_hint": "Copie intégrale marocaine: chaque date existe en calendrier HÉGIRIEN ('Le (En): Quatre Chaabane Mille Quatre Cent Trois') puis GRÉGORIEN ('Correspondant au: Dix-Sept Mai Mille Neuf Cent Quatre-Vingt-Trois'). Mets la date GRÉGORIENNE en value (AAAA-MM-JJ) et garde l'hégirienne dans raw; ne convertis jamais toi-même l'hégirien. La marge gauche donne Prénom/Nom/Né(e) Le (date en chiffres) puis les MENTIONS MARGINALES (mariages, divorces, jugements) — transcris-les intégralement. 'Néant' = aucune profession." }

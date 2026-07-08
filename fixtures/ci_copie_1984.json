@@ -1,0 +1,236 @@
+{
+ "page": {
+  "annee": {
+   "raw": "POUR L'ANNEE 1984",
+   "value": "1984",
+   "confidence": 0.96
+  },
+  "reference": {
+   "raw": "778 DU 12/09/1984",
+   "value": "778 DU 12/09/1984",
+   "confidence": 0.9
+  },
+  "centre": {
+   "raw": "CENTRE PRINCIPAL ODIENNE",
+   "value": "Centre principal Odienné",
+   "confidence": 0.9
+  },
+  "enfant_nom": {
+   "raw": "NAISSANCE DE KONE Naminata",
+   "value": "KONE Naminata",
+   "confidence": 0.95
+  },
+  "date_naissance": {
+   "raw": "Le six septembre mil neuf cent quatre-vingt-quatre",
+   "value": "1984-09-06",
+   "confidence": 0.94
+  },
+  "heure_naissance": {
+   "raw": "à vingt et une heures quarante-quatre minutes",
+   "value": "21:44",
+   "confidence": 0.9
+  },
+  "lieu_naissance": {
+   "raw": "Maternité d'Odienné : Commune d'Odienné",
+   "value": "Odienné",
+   "confidence": 0.92
+  },
+  "sexe": {
+   "raw": "du sexe féminin",
+   "value": "Féminin",
+   "confidence": 0.95
+  },
+  "pere_nom": {
+   "raw": "Ayant pour père : KONE Sékou",
+   "value": "KONE Sékou",
+   "confidence": 0.94
+  },
+  "pere_date_naissance": {
+   "raw": "né le vingt décembre mil neuf cent cinquante-quatre",
+   "value": "1954-12-20",
+   "confidence": 0.92
+  },
+  "pere_lieu_naissance": {
+   "raw": "à Sinématiali",
+   "value": "Sinématiali",
+   "confidence": 0.92
+  },
+  "pere_profession": {
+   "raw": "Cultivateur",
+   "value": "Cultivateur",
+   "confidence": 0.93
+  },
+  "pere_domicile": {
+   "raw": "Odienné-Commune dudit",
+   "value": "Odienné",
+   "confidence": 0.9
+  },
+  "mere_nom": {
+   "raw": "Et pour mère : KONE Karidja",
+   "value": "KONE Karidja",
+   "confidence": 0.94
+  },
+  "mere_date_naissance": {
+   "raw": "née le vingt-six juillet mil neuf cent cinquante-sept",
+   "value": "1957-07-26",
+   "confidence": 0.92
+  },
+  "mere_lieu_naissance": {
+   "raw": "à Odienné",
+   "value": "Odienné",
+   "confidence": 0.92
+  },
+  "mere_profession": {
+   "raw": "sans",
+   "value": "sans",
+   "confidence": 0.9
+  },
+  "mere_domicile": {
+   "raw": "Odienné-Commune dudit",
+   "value": "Odienné",
+   "confidence": 0.9
+  },
+  "date_etablissement": {
+   "raw": "Dressé le douze septembre mil neuf cent quatre-vingt-quatre",
+   "value": "1984-09-12",
+   "confidence": 0.93
+  },
+  "declarant_qualite": {
+   "raw": "sur la déclaration du père",
+   "value": "le père",
+   "confidence": 0.9
+  },
+  "officier": {
+   "raw": "Par nous HENRY BOURGOIN, Maire",
+   "value": "HENRY BOURGOIN, Maire",
+   "confidence": 0.9
+  },
+  "lieu_delivrance": {
+   "raw": "Odienné",
+   "value": "Odienné",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "le 20 octobre 2021",
+   "value": "2021-10-20",
+   "confidence": 0.92
+  }
+ },
+ "fields": {
+  "annee": {
+   "raw": "POUR L'ANNEE 1984",
+   "value": "1984",
+   "confidence": 0.96
+  },
+  "reference": {
+   "raw": "778 DU 12/09/1984",
+   "value": "778 DU 12/09/1984",
+   "confidence": 0.9
+  },
+  "centre": {
+   "raw": "CENTRE PRINCIPAL ODIENNE",
+   "value": "Centre principal Odienné",
+   "confidence": 0.9
+  },
+  "enfant_nom": {
+   "raw": "NAISSANCE DE KONE Naminata",
+   "value": "KONE Naminata",
+   "confidence": 0.95
+  },
+  "date_naissance": {
+   "raw": "Le six septembre mil neuf cent quatre-vingt-quatre",
+   "value": "1984-09-06",
+   "confidence": 0.94
+  },
+  "heure_naissance": {
+   "raw": "à vingt et une heures quarante-quatre minutes",
+   "value": "21:44",
+   "confidence": 0.9
+  },
+  "lieu_naissance": {
+   "raw": "Maternité d'Odienné : Commune d'Odienné",
+   "value": "Odienné",
+   "confidence": 0.92
+  },
+  "sexe": {
+   "raw": "du sexe féminin",
+   "value": "Féminin",
+   "confidence": 0.95
+  },
+  "pere_nom": {
+   "raw": "Ayant pour père : KONE Sékou",
+   "value": "KONE Sékou",
+   "confidence": 0.94
+  },
+  "pere_date_naissance": {
+   "raw": "né le vingt décembre mil neuf cent cinquante-quatre",
+   "value": "1954-12-20",
+   "confidence": 0.92
+  },
+  "pere_lieu_naissance": {
+   "raw": "à Sinématiali",
+   "value": "Sinématiali",
+   "confidence": 0.92
+  },
+  "pere_profession": {
+   "raw": "Cultivateur",
+   "value": "Cultivateur",
+   "confidence": 0.93
+  },
+  "pere_domicile": {
+   "raw": "Odienné-Commune dudit",
+   "value": "Odienné",
+   "confidence": 0.9
+  },
+  "mere_nom": {
+   "raw": "Et pour mère : KONE Karidja",
+   "value": "KONE Karidja",
+   "confidence": 0.94
+  },
+  "mere_date_naissance": {
+   "raw": "née le vingt-six juillet mil neuf cent cinquante-sept",
+   "value": "1957-07-26",
+   "confidence": 0.92
+  },
+  "mere_lieu_naissance": {
+   "raw": "à Odienné",
+   "value": "Odienné",
+   "confidence": 0.92
+  },
+  "mere_profession": {
+   "raw": "sans",
+   "value": "sans",
+   "confidence": 0.9
+  },
+  "mere_domicile": {
+   "raw": "Odienné-Commune dudit",
+   "value": "Odienné",
+   "confidence": 0.9
+  },
+  "date_etablissement": {
+   "raw": "Dressé le douze septembre mil neuf cent quatre-vingt-quatre",
+   "value": "1984-09-12",
+   "confidence": 0.93
+  },
+  "declarant_qualite": {
+   "raw": "sur la déclaration du père",
+   "value": "le père",
+   "confidence": 0.9
+  },
+  "officier": {
+   "raw": "Par nous HENRY BOURGOIN, Maire",
+   "value": "HENRY BOURGOIN, Maire",
+   "confidence": 0.9
+  },
+  "lieu_delivrance": {
+   "raw": "Odienné",
+   "value": "Odienné",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "le 20 octobre 2021",
+   "value": "2021-10-20",
+   "confidence": 0.92
+  }
+ }
+}

@@ -1,0 +1,4 @@
+{ "code": "ng", "name": "Nigéria",
+  "detect_keywords": ["REPUBLIQUE FEDERALE DU NIGERIA", "COMMISSION NATIONALE DE LA POPULATION"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Traduction française d'un certificat nigérian (Commission Nationale de la Population, forme B.2). 'Numéro de l'acte: NPC/... <année> ...' — l'année doit égaler celle de l'enregistrement. Les renseignements 1-6 sont numérotés. Enregistrements tardifs fréquents." }

@@ -1,0 +1,4 @@
+{ "code": "tg", "name": "Togo",
+  "detect_keywords": ["REPUBLIQUE TOGOLAISE"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Déclaration de naissance togolaise (volet souche), valeurs dactylographiées après chaque étiquette. '/' seul signifie non renseigné (null). La marge gauche (Ville de Lomé, timbres) ne contient pas de valeurs. Un en-tête donne Rect. n°, feuillet, registre, Année / N° de l'acte." }

@@ -1,0 +1,19 @@
+{ "document": "traduction_certificat_nigeria", "fields": [
+ { "name": "forme",           "fr": "Forme (ex: B.2) et BD N°",        "type": "text",  "from": "entete" },
+ { "name": "acte_numero",     "fr": "Numéro de l'acte (NPC/... année n°)", "type": "text", "from": "numero_block" },
+ { "name": "annee",           "fr": "Année (colonne du numéro d'acte)", "type": "text",  "from": "numero_block" },
+ { "name": "bureau",          "fr": "Bureau de l'Etat civil",           "type": "place", "from": "numero_block" },
+ { "name": "ville",           "fr": "Ville/Village",                    "type": "place", "from": "numero_block" },
+ { "name": "zone",            "fr": "Zone d'administration régionale",  "type": "text",  "from": "numero_block" },
+ { "name": "etat",            "fr": "Etat",                             "type": "text",  "from": "numero_block" },
+ { "name": "date_enregistrement","fr": "enregistrés le ... à ce Bureau","type": "date",  "from": "enregistrement" },
+ { "name": "enfant_nom",      "fr": "1. Nom et prénom",                 "type": "name",  "from": "rubriques" },
+ { "name": "sexe",            "fr": "2. Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "rubriques" },
+ { "name": "date_naissance",  "fr": "3. Date de naissance",             "type": "date",  "from": "rubriques" },
+ { "name": "lieu_naissance",  "fr": "4. Lieu de naissance",             "type": "place", "from": "rubriques" },
+ { "name": "pere_nom",        "fr": "5. Nom et prénom du père",         "type": "name",  "from": "rubriques" },
+ { "name": "mere_nom",        "fr": "6. Nom et prénom de la mère",      "type": "name",  "from": "rubriques" },
+ { "name": "lieu_delivrance", "fr": "Délivré à",                        "type": "place", "from": "delivrance" },
+ { "name": "date_delivrance", "fr": "Le : (date de délivrance)",        "type": "date",  "from": "delivrance" },
+ { "name": "greffier",        "fr": "Nom du greffier",                  "type": "name",  "from": "delivrance" }
+]}

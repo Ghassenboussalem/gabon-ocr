@@ -1,0 +1,4 @@
+{ "code": "ml", "name": "Mali",
+  "detect_keywords": ["REPUBLIQUE DU MALI", "COPIE LITTERALE"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Copie littérale malienne: rubriques numérotées 1-26 en trois sections (enfant, Père, Mère, Déclarant), valeurs dactylographiées. La date de naissance est en toutes lettres suivie des chiffres entre parenthèses. 'VERS <année>' = date approximative (garde-la en raw, année seule en value). La rubrique déclarant peut contenir la référence d'un jugement supplétif ('SUIV. JUG. SUPPL N°... DU ... PAR LE TRIBUNAL...'). NINA = cases du numéro national (souvent vides)." }

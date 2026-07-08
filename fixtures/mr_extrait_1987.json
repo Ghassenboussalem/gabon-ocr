@@ -1,0 +1,276 @@
+{
+ "page": {
+  "centre": {
+   "raw": "Centre d'Accueil des Citoyens : Etranger",
+   "value": "Etranger",
+   "confidence": 0.9
+  },
+  "numero_national": {
+   "raw": "6114788142",
+   "value": "6114788142",
+   "confidence": 0.94
+  },
+  "wilaya": {
+   "raw": "Dakhlet",
+   "value": "Dakhlet Nouadhibou",
+   "confidence": 0.9
+  },
+  "moughataa": {
+   "raw": "Nouadhibou",
+   "value": "Nouadhibou",
+   "confidence": 0.93
+  },
+  "commune": {
+   "raw": "Nouadhibou",
+   "value": "Nouadhibou",
+   "confidence": 0.93
+  },
+  "date_naissance": {
+   "raw": "Le douze octobre de l'an mille neuf cent quatre-vingt sept (12/10/1987)",
+   "value": "1987-10-12",
+   "confidence": 0.94
+  },
+  "lieu_naissance": {
+   "raw": "est né à Nouadhibou",
+   "value": "Nouadhibou",
+   "confidence": 0.93
+  },
+  "enfant_prenom": {
+   "raw": "Mamadou",
+   "value": "Mamadou",
+   "confidence": 0.94
+  },
+  "sexe": {
+   "raw": "Masculin",
+   "value": "Masculin",
+   "confidence": 0.95
+  },
+  "enfant_prenom_pere": {
+   "raw": "Abou",
+   "value": "Abou",
+   "confidence": 0.93
+  },
+  "enfant_nationalite": {
+   "raw": "Mauritanienne",
+   "value": "Mauritanienne",
+   "confidence": 0.94
+  },
+  "enfant_nom_famille": {
+   "raw": "Sy",
+   "value": "Sy",
+   "confidence": 0.93
+  },
+  "pere_prenom": {
+   "raw": "Abou",
+   "value": "Abou",
+   "confidence": 0.93
+  },
+  "pere_date_naissance": {
+   "raw": "31/12/1953",
+   "value": "1953-12-31",
+   "confidence": 0.93
+  },
+  "pere_prenom_pere": {
+   "raw": "Djiby Samba",
+   "value": "Djiby Samba",
+   "confidence": 0.9
+  },
+  "pere_lieu_naissance": {
+   "raw": "M'Bagne",
+   "value": "M'Bagne",
+   "confidence": 0.9
+  },
+  "pere_nom_famille": {
+   "raw": "Sy",
+   "value": "Sy",
+   "confidence": 0.93
+  },
+  "pere_nationalite": {
+   "raw": "Mauritanienne",
+   "value": "Mauritanienne",
+   "confidence": 0.94
+  },
+  "mere_prenom": {
+   "raw": "Khardyata",
+   "value": "Khardyata",
+   "confidence": 0.92
+  },
+  "mere_date_naissance": {
+   "raw": "30/12/1968",
+   "value": "1968-12-30",
+   "confidence": 0.93
+  },
+  "mere_prenom_pere": {
+   "raw": "Abderrahmane",
+   "value": "Abderrahmane",
+   "confidence": 0.9
+  },
+  "mere_lieu_naissance": {
+   "raw": "Kaedi",
+   "value": "Kaédi",
+   "confidence": 0.9
+  },
+  "mere_nom_famille": {
+   "raw": "Sy",
+   "value": "Sy",
+   "confidence": 0.93
+  },
+  "mere_nationalite": {
+   "raw": "Mauritanienne",
+   "value": "Mauritanienne",
+   "confidence": 0.94
+  },
+  "date_delivrance": {
+   "raw": "Le 23/04/2015",
+   "value": "2015-04-23",
+   "confidence": 0.92
+  },
+  "chef_centre": {
+   "raw": "Chef de Centre de : Etranger — El Hacen Dah Said",
+   "value": "El Hacen Dah Said",
+   "confidence": 0.88
+  },
+  "administrateur": {
+   "raw": "Mohamed Vadel El Hadramy El Wely",
+   "value": "Mohamed Vadel El Hadramy El Wely",
+   "confidence": 0.88
+  }
+ },
+ "fields": {
+  "centre": {
+   "raw": "Centre d'Accueil des Citoyens : Etranger",
+   "value": "Etranger",
+   "confidence": 0.9
+  },
+  "numero_national": {
+   "raw": "6114788142",
+   "value": "6114788142",
+   "confidence": 0.94
+  },
+  "wilaya": {
+   "raw": "Dakhlet",
+   "value": "Dakhlet Nouadhibou",
+   "confidence": 0.9
+  },
+  "moughataa": {
+   "raw": "Nouadhibou",
+   "value": "Nouadhibou",
+   "confidence": 0.93
+  },
+  "commune": {
+   "raw": "Nouadhibou",
+   "value": "Nouadhibou",
+   "confidence": 0.93
+  },
+  "date_naissance": {
+   "raw": "Le douze octobre de l'an mille neuf cent quatre-vingt sept (12/10/1987)",
+   "value": "1987-10-12",
+   "confidence": 0.94
+  },
+  "lieu_naissance": {
+   "raw": "est né à Nouadhibou",
+   "value": "Nouadhibou",
+   "confidence": 0.93
+  },
+  "enfant_prenom": {
+   "raw": "Mamadou",
+   "value": "Mamadou",
+   "confidence": 0.94
+  },
+  "sexe": {
+   "raw": "Masculin",
+   "value": "Masculin",
+   "confidence": 0.95
+  },
+  "enfant_prenom_pere": {
+   "raw": "Abou",
+   "value": "Abou",
+   "confidence": 0.93
+  },
+  "enfant_nationalite": {
+   "raw": "Mauritanienne",
+   "value": "Mauritanienne",
+   "confidence": 0.94
+  },
+  "enfant_nom_famille": {
+   "raw": "Sy",
+   "value": "Sy",
+   "confidence": 0.93
+  },
+  "pere_prenom": {
+   "raw": "Abou",
+   "value": "Abou",
+   "confidence": 0.93
+  },
+  "pere_date_naissance": {
+   "raw": "31/12/1953",
+   "value": "1953-12-31",
+   "confidence": 0.93
+  },
+  "pere_prenom_pere": {
+   "raw": "Djiby Samba",
+   "value": "Djiby Samba",
+   "confidence": 0.9
+  },
+  "pere_lieu_naissance": {
+   "raw": "M'Bagne",
+   "value": "M'Bagne",
+   "confidence": 0.9
+  },
+  "pere_nom_famille": {
+   "raw": "Sy",
+   "value": "Sy",
+   "confidence": 0.93
+  },
+  "pere_nationalite": {
+   "raw": "Mauritanienne",
+   "value": "Mauritanienne",
+   "confidence": 0.94
+  },
+  "mere_prenom": {
+   "raw": "Khardyata",
+   "value": "Khardyata",
+   "confidence": 0.92
+  },
+  "mere_date_naissance": {
+   "raw": "30/12/1968",
+   "value": "1968-12-30",
+   "confidence": 0.93
+  },
+  "mere_prenom_pere": {
+   "raw": "Abderrahmane",
+   "value": "Abderrahmane",
+   "confidence": 0.9
+  },
+  "mere_lieu_naissance": {
+   "raw": "Kaedi",
+   "value": "Kaédi",
+   "confidence": 0.9
+  },
+  "mere_nom_famille": {
+   "raw": "Sy",
+   "value": "Sy",
+   "confidence": 0.93
+  },
+  "mere_nationalite": {
+   "raw": "Mauritanienne",
+   "value": "Mauritanienne",
+   "confidence": 0.94
+  },
+  "date_delivrance": {
+   "raw": "Le 23/04/2015",
+   "value": "2015-04-23",
+   "confidence": 0.92
+  },
+  "chef_centre": {
+   "raw": "Chef de Centre de : Etranger — El Hacen Dah Said",
+   "value": "El Hacen Dah Said",
+   "confidence": 0.88
+  },
+  "administrateur": {
+   "raw": "Mohamed Vadel El Hadramy El Wely",
+   "value": "Mohamed Vadel El Hadramy El Wely",
+   "confidence": 0.88
+  }
+ }
+}

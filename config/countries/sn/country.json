@@ -1,0 +1,7 @@
+{ "code": "sn", "name": "Sénégal",
+  "detect_keywords": ["REPUBLIQUE DU SENEGAL", "UN PEUPLE - UN BUT"],
+  "checks": { "cnin_date": false, "reference_year": true, "acte_number_words": true,
+    "number_word_pairs": [["annee_lettres","annee_chiffres"],
+                          ["registre_lettres","registre_chiffres"],
+                          ["jugement_lettres","jugement_chiffres"]] },
+  "prompt_hint": "Extrait sénégalais en cases, valeurs MANUSCRITES. Année, n° dans le registre et n° du jugement sont écrits EN LETTRES avec leur équivalent EN CHIFFRES dans les cases AN à droite. Sur les lignes de noms, la valeur manuscrite est AU-DESSUS de la légende imprimée ('Prénoms', 'Nom de Famille', 'Prénoms du père', ...). L'acte est souvent établi par jugement du tribunal (inscription tardive). 'Néant' dans mentions marginales = aucune." }

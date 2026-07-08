@@ -1,0 +1,4 @@
+{ "code": "bj", "name": "Bénin",
+  "detect_keywords": ["REPUBLIQUE DU BENIN"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Document béninois (volet d'acte de naissance, valeurs dactylographiées). Le bloc central NOMS ET PRENOMS / AGE / PROFESSION / DOMICILE / DECLARANT contient une ligne Père: et une ligne Mère: pour chaque rubrique; des rubriques peuvent être vides." }

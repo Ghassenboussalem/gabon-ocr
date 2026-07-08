@@ -1,0 +1,195 @@
+{
+  "document": "copie_integrale_maroc",
+  "fields": [
+    {
+      "name": "province",
+      "fr": "Province de (en-tête gauche)",
+      "type": "place",
+      "from": "page"
+    },
+    {
+      "name": "commune",
+      "fr": "Commune de (en-tête gauche)",
+      "type": "place",
+      "from": "page"
+    },
+    {
+      "name": "enfant_prenom",
+      "fr": "Prénom (marge)",
+      "type": "name",
+      "from": "page"
+    },
+    {
+      "name": "enfant_nom",
+      "fr": "Nom (marge)",
+      "type": "name",
+      "from": "page"
+    },
+    {
+      "name": "date_marge",
+      "fr": "Né(e), Le (En) — date en chiffres (marge)",
+      "type": "date",
+      "from": "page"
+    },
+    {
+      "name": "date_hegirienne",
+      "fr": "Le (En): date HÉGIRIENNE de naissance (en lettres)",
+      "type": "text",
+      "from": "naissance_block"
+    },
+    {
+      "name": "date_naissance",
+      "fr": "Correspondant au: date GRÉGORIENNE de naissance",
+      "type": "date",
+      "from": "naissance_block"
+    },
+    {
+      "name": "heure_naissance",
+      "fr": "A: ... Heure(s) ... Minute(s) (xxxxxxxx = inconnu)",
+      "type": "time",
+      "from": "naissance_block"
+    },
+    {
+      "name": "sexe",
+      "fr": "Sexe",
+      "type": "enum",
+      "values": [
+        "Masculin",
+        "Féminin"
+      ],
+      "from": "naissance_block"
+    },
+    {
+      "name": "lieu_naissance",
+      "fr": "est né(e) à (au)",
+      "type": "place",
+      "from": "naissance_block"
+    },
+    {
+      "name": "nom_famille",
+      "fr": "Qui a pris pour nom de famille",
+      "type": "name",
+      "from": "naissance_block"
+    },
+    {
+      "name": "pere_nom",
+      "fr": "Fils (Fille) de",
+      "type": "name",
+      "from": "pere_block"
+    },
+    {
+      "name": "pere_nationalite",
+      "fr": "de nationalité (père)",
+      "type": "text",
+      "from": "pere_block"
+    },
+    {
+      "name": "pere_lieu_naissance",
+      "fr": "est né à (père)",
+      "type": "place",
+      "from": "pere_block"
+    },
+    {
+      "name": "pere_date_naissance",
+      "fr": "Correspondant au (père, grégorien)",
+      "type": "date",
+      "from": "pere_block"
+    },
+    {
+      "name": "pere_profession",
+      "fr": "Profession (père)",
+      "type": "text",
+      "from": "pere_block"
+    },
+    {
+      "name": "mere_nom",
+      "fr": "Et de (mère)",
+      "type": "name",
+      "from": "mere_block"
+    },
+    {
+      "name": "mere_nationalite",
+      "fr": "de nationalité (mère)",
+      "type": "text",
+      "from": "mere_block"
+    },
+    {
+      "name": "mere_lieu_naissance",
+      "fr": "est née à (mère)",
+      "type": "place",
+      "from": "mere_block"
+    },
+    {
+      "name": "mere_date_naissance",
+      "fr": "Correspondant au (mère, grégorien)",
+      "type": "date",
+      "from": "mere_block"
+    },
+    {
+      "name": "mere_profession",
+      "fr": "Profession (mère, Néant = null)",
+      "type": "text",
+      "from": "mere_block"
+    },
+    {
+      "name": "domicile",
+      "fr": "Tous deux domiciliés à",
+      "type": "place",
+      "from": "etabli_block"
+    },
+    {
+      "name": "date_etablissement",
+      "fr": "Etabli le / Correspondant au (grégorien)",
+      "type": "date",
+      "from": "etabli_block"
+    },
+    {
+      "name": "declarant_qualite",
+      "fr": "Suivant la déclaration de Mr",
+      "type": "text",
+      "from": "etabli_block"
+    },
+    {
+      "name": "declarant_age",
+      "fr": "Agé de ... Ans",
+      "type": "text",
+      "from": "etabli_block"
+    },
+    {
+      "name": "officier",
+      "fr": "Président et officier de l'état civil de ...",
+      "type": "name",
+      "from": "officier_line"
+    },
+    {
+      "name": "mentions_marginales",
+      "fr": "Mentions en marge gauche (mariages, divorces, jugements)",
+      "type": "text",
+      "from": "page"
+    },
+    {
+      "name": "acte_numero",
+      "fr": "Copie conforme à l'original de l'acte n°",
+      "type": "text",
+      "from": "certification"
+    },
+    {
+      "name": "annee",
+      "fr": "Année",
+      "type": "text",
+      "from": "certification"
+    },
+    {
+      "name": "lieu_delivrance",
+      "fr": "<lieu> Le : (délivrance)",
+      "type": "place",
+      "from": "certification"
+    },
+    {
+      "name": "date_delivrance",
+      "fr": "Date de délivrance de la copie",
+      "type": "date",
+      "from": "certification"
+    }
+  ]
+}

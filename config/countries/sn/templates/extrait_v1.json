@@ -1,0 +1,29 @@
+{ "id": "sn_extrait_v1", "detect_keyword": "UN PEUPLE - UN BUT",
+  "match": { "min_score": 76, "min_score_short": 85, "min_anchors": 6 },
+  "anchors": [
+    { "id": "republique",  "label": "REPUBLIQUE DU SENEGAL",       "rel_y": 0.0 },
+    { "id": "etat_civil",  "label": "ETAT-CIVIL",                  "rel_y": 0.067 },
+    { "id": "extrait",     "label": "EXTRAIT DU REGISTRE DES ACTES DE NAISSANCE", "rel_y": 0.111 },
+    { "id": "pour_annee",  "label": "Pour l'année",                "rel_y": 0.146 },
+    { "id": "registre_l",  "label": "N° dans le Registre",         "rel_y": 0.188 },
+    { "id": "minutes",     "label": "minutes est né",              "rel_y": 0.295 },
+    { "id": "lieu_l",      "label": "Lieu de naissance",           "rel_y": 0.321 },
+    { "id": "sexe_l",      "label": "un enfant de sexe",           "rel_y": 0.354 },
+    { "id": "prenoms1",    "label": "Prénoms", "occurrence": 1,    "rel_y": 0.431 },
+    { "id": "pere_cap",    "label": "Prénoms du père",             "rel_y": 0.491 },
+    { "id": "mere_cap",    "label": "Prénoms de la mère",          "rel_y": 0.547 },
+    { "id": "delivre",     "label": "Délivré par le",              "rel_y": 0.578 },
+    { "id": "jugement_l",  "label": "N° du Jugement",              "rel_y": 0.65 },
+    { "id": "inscrit",     "label": "inscrit le",                  "rel_y": 0.69 },
+    { "id": "mentions",    "label": "MENTIONS MARGINALES",         "rel_y": 0.73 },
+    { "id": "extrait_del", "label": "Extrait délivré par",         "rel_y": 0.8 },
+    { "id": "certifie",    "label": "Pour extrait certifié conforme", "rel_y": 0.8 }
+  ],
+  "fields": [
+    { "name": "entete",        "kind": "band", "anchor": "republique", "until": "pour_annee", "include_anchor_line": true },
+    { "name": "haut_block",    "kind": "band", "anchor": "pour_annee", "until": "sexe_l",     "include_anchor_line": true },
+    { "name": "identite_block","kind": "band", "anchor": "sexe_l",     "until": "delivre",    "include_anchor_line": true },
+    { "name": "jugement_block","kind": "band", "anchor": "delivre",    "until": "mentions",   "include_anchor_line": true },
+    { "name": "mentions_block","kind": "band", "anchor": "mentions",   "until": "extrait_del","include_anchor_line": true },
+    { "name": "certification", "kind": "band", "anchor": "extrait_del","until": "none",       "include_anchor_line": true, "pad": 30 }
+  ]}

@@ -1,0 +1,4 @@
+{ "code": "sl", "name": "Sierra Leone",
+  "detect_keywords": ["Sierra Léone", "SERVICE DU DIRECTEUR DE L'ETAT CIVIL"],
+  "checks": { "cnin_date": false, "reference_year": false },
+  "prompt_hint": "Traduction française d'un acte sierra-léonais: 'Étiquette : valeur'. '---' = non renseigné. Le paragraphe 'Cette naissance a été enregistrée...' donne numéro, page et volume du registre. La date de naissance inclut l'heure ('05 octobre 1974 à 15 heures 00')." }

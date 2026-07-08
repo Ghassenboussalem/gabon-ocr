@@ -1,0 +1,4 @@
+{ "code": "lb", "name": "Liban",
+  "detect_keywords": ["REPUBLIQUE LIBANAISE", "LIBANAISE"],
+  "checks": { "cnin_date": false, "reference_year": false },
+  "prompt_hint": "Traduction française d'un acte libanais: TABLEAU à rubriques numérotées 1-16. Rubrique 6 = requérant (avec adresse et date), 7/8 = parents avec Religion/Rite et année de naissance, 10 = numéro du registre, 11/12 = témoins, 15/16 = émission/exécution avec numéros et dates. La date de naissance (rubrique 4) est au format JJ.MM.AAAA." }

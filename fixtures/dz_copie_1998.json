@@ -1,0 +1,296 @@
+{
+ "page": {
+  "wilaya": {
+   "raw": "TLEMCEN",
+   "value": "Tlemcen",
+   "confidence": 0.95
+  },
+  "daira": {
+   "raw": "GHAZAOUET",
+   "value": "Ghazaouet",
+   "confidence": 0.95
+  },
+  "commune": {
+   "raw": "GHAZAOUET",
+   "value": "Ghazaouet",
+   "confidence": 0.95
+  },
+  "numero_acte": {
+   "raw": "00468",
+   "value": "00468",
+   "confidence": 0.94
+  },
+  "date_marge": {
+   "raw": "15/06/1998",
+   "value": "1998-06-15",
+   "confidence": 0.94
+  },
+  "date_naissance": {
+   "raw": "Quinze juin mille neuf cent quatre-vingt-dix-huit",
+   "value": "1998-06-15",
+   "confidence": 0.94
+  },
+  "heure_naissance": {
+   "raw": "Dix-sept heures dix",
+   "value": "17:10",
+   "confidence": 0.9
+  },
+  "lieu_naissance": {
+   "raw": "Ghazaouet",
+   "value": "Ghazaouet",
+   "confidence": 0.95
+  },
+  "commune_naissance": {
+   "raw": "ghazaouet",
+   "value": "Ghazaouet",
+   "confidence": 0.93
+  },
+  "wilaya_naissance": {
+   "raw": "Tlemcen",
+   "value": "Tlemcen",
+   "confidence": 0.94
+  },
+  "enfant_nom": {
+   "raw": "SEBIANE Nasrellah",
+   "value": "SEBIANE Nasrellah",
+   "confidence": 0.95
+  },
+  "sexe": {
+   "raw": "MASCULIN",
+   "value": "Masculin",
+   "confidence": 0.96
+  },
+  "pere_nom": {
+   "raw": "Noureddine",
+   "value": "Noureddine",
+   "confidence": 0.93
+  },
+  "pere_age": {
+   "raw": "37 ans",
+   "value": "37 ans",
+   "confidence": 0.92
+  },
+  "pere_profession": {
+   "raw": "FELLAH",
+   "value": "FELLAH",
+   "confidence": 0.92
+  },
+  "mere_nom": {
+   "raw": "MEFTAH Fatma",
+   "value": "MEFTAH Fatma",
+   "confidence": 0.93
+  },
+  "mere_age": {
+   "raw": "24 ans",
+   "value": "24 ans",
+   "confidence": 0.92
+  },
+  "mere_profession": {
+   "raw": "Sans",
+   "value": "Sans",
+   "confidence": 0.9
+  },
+  "domicile": {
+   "raw": "Nedroma",
+   "value": "Nedroma",
+   "confidence": 0.93
+  },
+  "commune_domicile": {
+   "raw": "Nedroma",
+   "value": "Nedroma",
+   "confidence": 0.92
+  },
+  "wilaya_domicile": {
+   "raw": "Tlemcen",
+   "value": "Tlemcen",
+   "confidence": 0.93
+  },
+  "date_etablissement": {
+   "raw": "seize juin 1998",
+   "value": "1998-06-16",
+   "confidence": 0.93
+  },
+  "heure_etablissement": {
+   "raw": "onze heures Zéro",
+   "value": "11:00",
+   "confidence": 0.88
+  },
+  "declarant": {
+   "raw": "CHIKH omar",
+   "value": "CHIKH Omar",
+   "confidence": 0.92
+  },
+  "declarant_details": {
+   "raw": "Agé de 40 ans - profession: Employé à l'hôpital",
+   "value": "40 ans, Employé à l'hôpital",
+   "confidence": 0.88
+  },
+  "officier": {
+   "raw": "BOUTCHICHE mohammed",
+   "value": "BOUTCHICHE Mohammed",
+   "confidence": 0.9
+  },
+  "mentions_marginales": {
+   "raw": "NEANT",
+   "value": "NÉANT",
+   "confidence": 0.9
+  },
+  "lieu_delivrance": {
+   "raw": "GHAZAOUET",
+   "value": "Ghazaouet",
+   "confidence": 0.92
+  },
+  "date_delivrance": {
+   "raw": "04/02/2021",
+   "value": "2021-02-04",
+   "confidence": 0.92
+  }
+ },
+ "fields": {
+  "wilaya": {
+   "raw": "TLEMCEN",
+   "value": "Tlemcen",
+   "confidence": 0.95
+  },
+  "daira": {
+   "raw": "GHAZAOUET",
+   "value": "Ghazaouet",
+   "confidence": 0.95
+  },
+  "commune": {
+   "raw": "GHAZAOUET",
+   "value": "Ghazaouet",
+   "confidence": 0.95
+  },
+  "numero_acte": {
+   "raw": "00468",
+   "value": "00468",
+   "confidence": 0.94
+  },
+  "date_marge": {
+   "raw": "15/06/1998",
+   "value": "1998-06-15",
+   "confidence": 0.94
+  },
+  "date_naissance": {
+   "raw": "Quinze juin mille neuf cent quatre-vingt-dix-huit",
+   "value": "1998-06-15",
+   "confidence": 0.94
+  },
+  "heure_naissance": {
+   "raw": "Dix-sept heures dix",
+   "value": "17:10",
+   "confidence": 0.9
+  },
+  "lieu_naissance": {
+   "raw": "Ghazaouet",
+   "value": "Ghazaouet",
+   "confidence": 0.95
+  },
+  "commune_naissance": {
+   "raw": "ghazaouet",
+   "value": "Ghazaouet",
+   "confidence": 0.93
+  },
+  "wilaya_naissance": {
+   "raw": "Tlemcen",
+   "value": "Tlemcen",
+   "confidence": 0.94
+  },
+  "enfant_nom": {
+   "raw": "SEBIANE Nasrellah",
+   "value": "SEBIANE Nasrellah",
+   "confidence": 0.95
+  },
+  "sexe": {
+   "raw": "MASCULIN",
+   "value": "Masculin",
+   "confidence": 0.96
+  },
+  "pere_nom": {
+   "raw": "Noureddine",
+   "value": "Noureddine",
+   "confidence": 0.93
+  },
+  "pere_age": {
+   "raw": "37 ans",
+   "value": "37 ans",
+   "confidence": 0.92
+  },
+  "pere_profession": {
+   "raw": "FELLAH",
+   "value": "FELLAH",
+   "confidence": 0.92
+  },
+  "mere_nom": {
+   "raw": "MEFTAH Fatma",
+   "value": "MEFTAH Fatma",
+   "confidence": 0.93
+  },
+  "mere_age": {
+   "raw": "24 ans",
+   "value": "24 ans",
+   "confidence": 0.92
+  },
+  "mere_profession": {
+   "raw": "Sans",
+   "value": "Sans",
+   "confidence": 0.9
+  },
+  "domicile": {
+   "raw": "Nedroma",
+   "value": "Nedroma",
+   "confidence": 0.93
+  },
+  "commune_domicile": {
+   "raw": "Nedroma",
+   "value": "Nedroma",
+   "confidence": 0.92
+  },
+  "wilaya_domicile": {
+   "raw": "Tlemcen",
+   "value": "Tlemcen",
+   "confidence": 0.93
+  },
+  "date_etablissement": {
+   "raw": "seize juin 1998",
+   "value": "1998-06-16",
+   "confidence": 0.93
+  },
+  "heure_etablissement": {
+   "raw": "onze heures Zéro",
+   "value": "11:00",
+   "confidence": 0.88
+  },
+  "declarant": {
+   "raw": "CHIKH omar",
+   "value": "CHIKH Omar",
+   "confidence": 0.92
+  },
+  "declarant_details": {
+   "raw": "Agé de 40 ans - profession: Employé à l'hôpital",
+   "value": "40 ans, Employé à l'hôpital",
+   "confidence": 0.88
+  },
+  "officier": {
+   "raw": "BOUTCHICHE mohammed",
+   "value": "BOUTCHICHE Mohammed",
+   "confidence": 0.9
+  },
+  "mentions_marginales": {
+   "raw": "NEANT",
+   "value": "NÉANT",
+   "confidence": 0.9
+  },
+  "lieu_delivrance": {
+   "raw": "GHAZAOUET",
+   "value": "Ghazaouet",
+   "confidence": 0.92
+  },
+  "date_delivrance": {
+   "raw": "04/02/2021",
+   "value": "2021-02-04",
+   "confidence": 0.92
+  }
+ }
+}

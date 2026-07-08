@@ -1,0 +1,20 @@
+{ "id": "rw_acte_v1", "detect_keyword": "INYANDIKO",
+  "match": { "min_score": 80, "min_score_short": 88, "min_anchors": 5 },
+  "anchors": [
+    { "id": "header_acte", "label": "ACTE DE NAISSANCE",          "rel_y": 0.093 },
+    { "id": "inyandiko",   "label": "INYANDIKO Y'IVUKA",          "rel_y": 0.132 },
+    { "id": "jour1",       "label": "jour du mois de", "occurrence": 1, "rel_y": 0.209 },
+    { "id": "devant",      "label": "devant Nous",                "rel_y": 0.262 },
+    { "id": "comparu",     "label": "a comparu",                  "rel_y": 0.287 },
+    { "id": "age1",        "label": "âgé de", "occurrence": 1,    "rel_y": 0.375 },
+    { "id": "prof1",       "label": "faisant la profession de", "occurrence": 1, "rel_y": 0.537 },
+    { "id": "resident",    "label": "résidant",                   "rel_y": 0.62 },
+    { "id": "jour2",       "label": "jour du mois de", "occurrence": 2, "rel_y": 0.751 },
+    { "id": "prof2",       "label": "faisant la profession de", "occurrence": 2, "rel_y": 1.0 }
+  ],
+  "fields": [
+    { "name": "acte_block",      "kind": "band", "anchor": "inyandiko", "until": "comparu",  "include_anchor_line": false },
+    { "name": "comparant_block", "kind": "band", "anchor": "comparu",   "until": "age1",     "include_anchor_line": true },
+    { "name": "milieu_block",    "kind": "band", "anchor": "age1",      "until": "jour2",    "include_anchor_line": true },
+    { "name": "naissance_block", "kind": "band", "anchor": "jour2",     "until": "prof2",    "include_anchor_line": true }
+  ]}

@@ -1,0 +1,17 @@
+{ "document": "extrait_naissance_seychelles", "fields": [
+ { "name": "annee_registre",  "fr": "Année (au-dessus du tableau)",        "type": "text",  "from": "table_block" },
+ { "name": "acte_numero",     "fr": "N° (première colonne)",               "type": "text",  "from": "table_block" },
+ { "name": "date_naissance",  "fr": "Date de naissance (colonne Date et lieu)", "type": "date", "from": "table_block" },
+ { "name": "heure_naissance", "fr": "Heure (ex: 07h15)",                   "type": "time",  "from": "table_block" },
+ { "name": "lieu_naissance",  "fr": "Lieu (hôpital, île)",                 "type": "place", "from": "table_block" },
+ { "name": "enfant_nom",      "fr": "Nom et prénom(s)",                    "type": "name",  "from": "table_block" },
+ { "name": "sexe",            "fr": "Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "table_block" },
+ { "name": "filiation",       "fr": "Naturel ou légitime",                 "type": "text",  "from": "table_block" },
+ { "name": "parents",         "fr": "Nom, prénom(s), profession et adresse du père et de la mère", "type": "text", "from": "table_block" },
+ { "name": "declarant",       "fr": "Déclarant (colonne)",                 "type": "text",  "from": "table_block" },
+ { "name": "temoins",         "fr": "Témoins (noms, professions, adresses)","type": "text",  "from": "table_block" },
+ { "name": "entree_marginale","fr": "Entrée marginale",                    "type": "text",  "from": "table_block" },
+ { "name": "date_declaration","fr": "Date de la déclaration (en toutes lettres sous le tableau)", "type": "date", "from": "certification" },
+ { "name": "officier",        "fr": "Signature de l'Officier d'Etat Civil","type": "name",  "from": "certification" },
+ { "name": "date_delivrance", "fr": "En date du ... (copie conforme)",     "type": "date",  "from": "certification" }
+]}

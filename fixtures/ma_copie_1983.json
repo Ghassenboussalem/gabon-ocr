@@ -1,0 +1,316 @@
+{
+ "page": {
+  "province": {
+   "raw": "Province de Berkane",
+   "value": "Berkane",
+   "confidence": 0.93
+  },
+  "commune": {
+   "raw": "Commune de Taforalt",
+   "value": "Taforalt",
+   "confidence": 0.93
+  },
+  "enfant_prenom": {
+   "raw": "Hanae",
+   "value": "Hanae",
+   "confidence": 0.94
+  },
+  "enfant_nom": {
+   "raw": "MAAMRI",
+   "value": "MAAMRI",
+   "confidence": 0.94
+  },
+  "date_marge": {
+   "raw": "17/ 05/ 1983",
+   "value": "1983-05-17",
+   "confidence": 0.93
+  },
+  "date_hegirienne": {
+   "raw": "Quatre Chaabane Mille Quatre Cent Trois",
+   "value": "Quatre Chaabane Mille Quatre Cent Trois",
+   "confidence": 0.9
+  },
+  "date_naissance": {
+   "raw": "Correspondant au : Dix-Sept Mai Mille Neuf Cent Quatre-Vingt-Trois",
+   "value": "1983-05-17",
+   "confidence": 0.93
+  },
+  "heure_naissance": {
+   "raw": "Douze Heure(s) xxxxxxxx Minute(s)",
+   "value": "12:00",
+   "confidence": 0.8
+  },
+  "sexe": {
+   "raw": "Féminin",
+   "value": "Féminin",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "Douar ouled Maamar Bni Amyer Tafoughalt",
+   "value": "Douar Ouled Maamar Bni Amyer Tafoughalt",
+   "confidence": 0.9
+  },
+  "nom_famille": {
+   "raw": "MAAMRI",
+   "value": "MAAMRI",
+   "confidence": 0.94
+  },
+  "pere_nom": {
+   "raw": "Salah fils de Mustapha",
+   "value": "Salah fils de Mustapha",
+   "confidence": 0.92
+  },
+  "pere_nationalite": {
+   "raw": "Marocaine",
+   "value": "Marocaine",
+   "confidence": 0.94
+  },
+  "pere_lieu_naissance": {
+   "raw": "Douar ouled Maamar",
+   "value": "Douar Ouled Maamar",
+   "confidence": 0.9
+  },
+  "pere_date_naissance": {
+   "raw": "Mille Trois Cent Soixante-Sept / Correspondant au : Mille Neuf Cent Cinquante",
+   "value": "1950-01-01",
+   "confidence": 0.7
+  },
+  "pere_profession": {
+   "raw": "Comerçant",
+   "value": "Commerçant",
+   "confidence": 0.88
+  },
+  "mere_nom": {
+   "raw": "Belaini Fatima fille de Ramdane",
+   "value": "Belaini Fatima fille de Ramdane",
+   "confidence": 0.92
+  },
+  "mere_nationalite": {
+   "raw": "Marocaine",
+   "value": "Marocaine",
+   "confidence": 0.94
+  },
+  "mere_lieu_naissance": {
+   "raw": "Douar ouled Maamar",
+   "value": "Douar Ouled Maamar",
+   "confidence": 0.9
+  },
+  "mere_date_naissance": {
+   "raw": "Vingt-Trois Choual Mille Trois Cent Quatre-Vingt-Cinq / Correspondant au : Quatorze Fevrier Mille Neuf Cent Soixante-Six",
+   "value": "1966-02-14",
+   "confidence": 0.9
+  },
+  "mere_profession": {
+   "raw": "Néant",
+   "value": null,
+   "confidence": 0.85
+  },
+  "domicile": {
+   "raw": "Douar ouled Maamar",
+   "value": "Douar Ouled Maamar",
+   "confidence": 0.9
+  },
+  "date_etablissement": {
+   "raw": "Douze Chaabane Mille Quatre Cent Trois / Correspondant au : Vingt-Sept Mai Mille Neuf Cent Quatre-Vingt-Trois",
+   "value": "1983-05-27",
+   "confidence": 0.92
+  },
+  "declarant_qualite": {
+   "raw": "Père",
+   "value": "Père",
+   "confidence": 0.92
+  },
+  "declarant_age": {
+   "raw": "Trente-Trois Ans",
+   "value": "33 ans",
+   "confidence": 0.88
+  },
+  "officier": {
+   "raw": "Amri Ramdane Président et officier de l'état civil de Taforalt",
+   "value": "Amri Ramdane",
+   "confidence": 0.9
+  },
+  "mentions_marginales": {
+   "raw": "Mariage acte 422 (23.09.2004); divorce N°399 (18.04.2005); mariage acte 193 (04/02/2014); jugement n°1818 divorce (27.10.2016)",
+   "value": "4 mentions: 2 mariages, 2 divorces",
+   "confidence": 0.8
+  },
+  "acte_numero": {
+   "raw": "195",
+   "value": "195",
+   "confidence": 0.93
+  },
+  "annee": {
+   "raw": "1983",
+   "value": "1983",
+   "confidence": 0.93
+  },
+  "lieu_delivrance": {
+   "raw": "Taforalt Le",
+   "value": "Taforalt",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "20 Février 2023",
+   "value": "2023-02-20",
+   "confidence": 0.92
+  }
+ },
+ "fields": {
+  "province": {
+   "raw": "Province de Berkane",
+   "value": "Berkane",
+   "confidence": 0.93
+  },
+  "commune": {
+   "raw": "Commune de Taforalt",
+   "value": "Taforalt",
+   "confidence": 0.93
+  },
+  "enfant_prenom": {
+   "raw": "Hanae",
+   "value": "Hanae",
+   "confidence": 0.94
+  },
+  "enfant_nom": {
+   "raw": "MAAMRI",
+   "value": "MAAMRI",
+   "confidence": 0.94
+  },
+  "date_marge": {
+   "raw": "17/ 05/ 1983",
+   "value": "1983-05-17",
+   "confidence": 0.93
+  },
+  "date_hegirienne": {
+   "raw": "Quatre Chaabane Mille Quatre Cent Trois",
+   "value": "Quatre Chaabane Mille Quatre Cent Trois",
+   "confidence": 0.9
+  },
+  "date_naissance": {
+   "raw": "Correspondant au : Dix-Sept Mai Mille Neuf Cent Quatre-Vingt-Trois",
+   "value": "1983-05-17",
+   "confidence": 0.93
+  },
+  "heure_naissance": {
+   "raw": "Douze Heure(s) xxxxxxxx Minute(s)",
+   "value": "12:00",
+   "confidence": 0.8
+  },
+  "sexe": {
+   "raw": "Féminin",
+   "value": "Féminin",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "Douar ouled Maamar Bni Amyer Tafoughalt",
+   "value": "Douar Ouled Maamar Bni Amyer Tafoughalt",
+   "confidence": 0.9
+  },
+  "nom_famille": {
+   "raw": "MAAMRI",
+   "value": "MAAMRI",
+   "confidence": 0.94
+  },
+  "pere_nom": {
+   "raw": "Salah fils de Mustapha",
+   "value": "Salah fils de Mustapha",
+   "confidence": 0.92
+  },
+  "pere_nationalite": {
+   "raw": "Marocaine",
+   "value": "Marocaine",
+   "confidence": 0.94
+  },
+  "pere_lieu_naissance": {
+   "raw": "Douar ouled Maamar",
+   "value": "Douar Ouled Maamar",
+   "confidence": 0.9
+  },
+  "pere_date_naissance": {
+   "raw": "Mille Trois Cent Soixante-Sept / Correspondant au : Mille Neuf Cent Cinquante",
+   "value": "1950-01-01",
+   "confidence": 0.7
+  },
+  "pere_profession": {
+   "raw": "Comerçant",
+   "value": "Commerçant",
+   "confidence": 0.88
+  },
+  "mere_nom": {
+   "raw": "Belaini Fatima fille de Ramdane",
+   "value": "Belaini Fatima fille de Ramdane",
+   "confidence": 0.92
+  },
+  "mere_nationalite": {
+   "raw": "Marocaine",
+   "value": "Marocaine",
+   "confidence": 0.94
+  },
+  "mere_lieu_naissance": {
+   "raw": "Douar ouled Maamar",
+   "value": "Douar Ouled Maamar",
+   "confidence": 0.9
+  },
+  "mere_date_naissance": {
+   "raw": "Vingt-Trois Choual Mille Trois Cent Quatre-Vingt-Cinq / Correspondant au : Quatorze Fevrier Mille Neuf Cent Soixante-Six",
+   "value": "1966-02-14",
+   "confidence": 0.9
+  },
+  "mere_profession": {
+   "raw": "Néant",
+   "value": null,
+   "confidence": 0.85
+  },
+  "domicile": {
+   "raw": "Douar ouled Maamar",
+   "value": "Douar Ouled Maamar",
+   "confidence": 0.9
+  },
+  "date_etablissement": {
+   "raw": "Douze Chaabane Mille Quatre Cent Trois / Correspondant au : Vingt-Sept Mai Mille Neuf Cent Quatre-Vingt-Trois",
+   "value": "1983-05-27",
+   "confidence": 0.92
+  },
+  "declarant_qualite": {
+   "raw": "Père",
+   "value": "Père",
+   "confidence": 0.92
+  },
+  "declarant_age": {
+   "raw": "Trente-Trois Ans",
+   "value": "33 ans",
+   "confidence": 0.88
+  },
+  "officier": {
+   "raw": "Amri Ramdane Président et officier de l'état civil de Taforalt",
+   "value": "Amri Ramdane",
+   "confidence": 0.9
+  },
+  "mentions_marginales": {
+   "raw": "Mariage acte 422 (23.09.2004); divorce N°399 (18.04.2005); mariage acte 193 (04/02/2014); jugement n°1818 divorce (27.10.2016)",
+   "value": "4 mentions: 2 mariages, 2 divorces",
+   "confidence": 0.8
+  },
+  "acte_numero": {
+   "raw": "195",
+   "value": "195",
+   "confidence": 0.93
+  },
+  "annee": {
+   "raw": "1983",
+   "value": "1983",
+   "confidence": 0.93
+  },
+  "lieu_delivrance": {
+   "raw": "Taforalt Le",
+   "value": "Taforalt",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "20 Février 2023",
+   "value": "2023-02-20",
+   "confidence": 0.92
+  }
+ }
+}

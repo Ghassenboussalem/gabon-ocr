@@ -1,0 +1,17 @@
+{ "document": "traduction_acte_liberia", "fields": [
+ { "name": "date_naissance",    "fr": "Date de naissance",           "type": "date", "from": "date_naissance" },
+ { "name": "numero_enregistrement","fr": "Numéro d'enregistrement (embarque l'année)", "type": "text", "from": "num_enr" },
+ { "name": "numero_controle",   "fr": "Numéro de contrôle",          "type": "text", "from": "num_ctrl" },
+ { "name": "tome",              "fr": "Numéro de tome",              "type": "text", "from": "tome" },
+ { "name": "page",              "fr": "Numéro de page",              "type": "text", "from": "page_n" },
+ { "name": "enfant_nom",        "fr": "Nom et prénoms de l'enfant",  "type": "name", "from": "enfant" },
+ { "name": "lieu_naissance",    "fr": "Lieu de naissance",           "type": "place","from": "lieu" },
+ { "name": "sexe",              "fr": "Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "sexe" },
+ { "name": "pere_nom",          "fr": "Nom et prénoms du père",      "type": "name", "from": "pere" },
+ { "name": "pere_nationalite",  "fr": "Nationalité (père)",          "type": "text", "from": "nat1" },
+ { "name": "mere_nom_jeune_fille","fr": "Nom de jeune fille de la mère", "type": "name", "from": "mere" },
+ { "name": "mere_nationalite",  "fr": "Nationalité (mère)",          "type": "text", "from": "nat2" },
+ { "name": "date_enregistrement","fr": "Date d'enregistrement",      "type": "date", "from": "date_enr" },
+ { "name": "date_delivrance",   "fr": "Date de délivrance",          "type": "date", "from": "date_del" },
+ { "name": "certification",     "fr": "Mention de certification (Article 33...)", "type": "text", "from": "certif" }
+]}

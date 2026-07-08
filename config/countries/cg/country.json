@@ -1,0 +1,4 @@
+{ "code": "cg", "name": "Congo-Brazzaville",
+  "detect_keywords": ["REPUBLIQUE DU CONGO"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Copie intégrale congolaise: chaque donnée est sur sa propre ligne dactylographiée terminée par *; les dates sont en toutes lettres ('mil neuf cent quatre-vingt-huit'); '**' signifie non renseigné (retourne null)." }

@@ -1,0 +1,30 @@
+{
+  "document": "acte_de_naissance_gabon",
+  "fields": [
+    { "name": "volet_numero",        "fr": "Numéro du volet et destinataire, ex: 3 (MERE)",                        "type": "text",  "from": "volet_numero" },
+    { "name": "acte_numero",         "fr": "Numéro de l'acte (après N°)",                                          "type": "text",  "from": "registration_block" },
+    { "name": "date_enregistrement", "fr": "Date d'enregistrement de l'acte (chiffres après Du, et en toutes lettres après Le (1))", "type": "date", "from": "registration_block" },
+    { "name": "bulletin_naissance",  "fr": "Référence du bulletin de naissance (n° et établissement)",             "type": "text",  "from": "bulletin_naissance" },
+    { "name": "lieu_naissance",      "fr": "Lieu où la naissance est survenue",                                    "type": "place", "from": "birth_block" },
+    { "name": "date_naissance",      "fr": "Date de naissance de l'enfant, écrite en toutes lettres",              "type": "date",  "from": "birth_block" },
+    { "name": "heure_naissance",     "fr": "Heure de naissance (à ... heures ...)",                                "type": "time",  "from": "birth_block" },
+    { "name": "sexe",                "fr": "Sexe de l'enfant",                                                     "type": "enum",  "values": ["Masculin", "Féminin"], "from": "sexe" },
+    { "name": "enfant_nom",          "fr": "Nom et prénoms de l'enfant (après Nommé (3))",                         "type": "name",  "from": "enfant_nom" },
+    { "name": "pere_nom",            "fr": "Nom et prénoms du père (après Né de (4))",                             "type": "name",  "from": "pere_nom" },
+    { "name": "pere_date_naissance", "fr": "Date de naissance du père",                                            "type": "date",  "from": "pere_date_naissance" },
+    { "name": "pere_lieu_naissance", "fr": "Lieu de naissance du père",                                            "type": "place", "from": "pere_lieu_naissance" },
+    { "name": "pere_domicile",       "fr": "Domicile du père",                                                     "type": "place", "from": "pere_domicile" },
+    { "name": "pere_profession",     "fr": "Profession du père",                                                   "type": "text",  "from": "pere_profession" },
+    { "name": "pere_nationalite",    "fr": "Nationalité du père",                                                  "type": "text",  "from": "pere_nationalite" },
+    { "name": "pere_coutume",        "fr": "Coutume du père",                                                      "type": "text",  "from": "pere_coutume" },
+    { "name": "pere_cnin",           "fr": "C.N.I. n° du père (numéro et éventuellement date)",                    "type": "text",  "from": "pere_cnin" },
+    { "name": "mere_nom",            "fr": "Nom et prénoms de la mère (après Et de)",                              "type": "name",  "from": "mere_nom" },
+    { "name": "mere_date_naissance", "fr": "Date de naissance de la mère",                                         "type": "date",  "from": "mere_date_naissance" },
+    { "name": "mere_lieu_naissance", "fr": "Lieu de naissance de la mère",                                         "type": "place", "from": "mere_lieu_naissance" },
+    { "name": "mere_domicile",       "fr": "Domicile de la mère",                                                  "type": "place", "from": "mere_domicile" },
+    { "name": "mere_profession",     "fr": "Profession de la mère",                                                "type": "text",  "from": "mere_profession" },
+    { "name": "mere_nationalite",    "fr": "Nationalité de la mère",                                               "type": "text",  "from": "mere_nationalite" },
+    { "name": "mere_coutume",        "fr": "Coutume de la mère",                                                   "type": "text",  "from": "mere_coutume" },
+    { "name": "mere_cnin",           "fr": "C.N.I. n° de la mère (numéro et éventuellement date)",                 "type": "text",  "from": "mere_cnin" }
+  ]
+}

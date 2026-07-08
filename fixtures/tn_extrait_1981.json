@@ -1,0 +1,256 @@
+{
+ "page": {
+  "gouvernorat": {
+   "raw": "MEDENINE",
+   "value": "Médenine",
+   "confidence": 0.96
+  },
+  "delegation": {
+   "raw": "BEN GUERDANE",
+   "value": "Ben Guerdane",
+   "confidence": 0.96
+  },
+  "commune": {
+   "raw": "BEN GUERDANE",
+   "value": "Ben Guerdane",
+   "confidence": 0.95
+  },
+  "arrondissement": {
+   "raw": "",
+   "value": "",
+   "confidence": 0.3
+  },
+  "secteur": {
+   "raw": "Jmila",
+   "value": "Jmila",
+   "confidence": 0.9
+  },
+  "annee": {
+   "raw": "1981",
+   "value": "1981",
+   "confidence": 0.97
+  },
+  "acte_numero": {
+   "raw": "24",
+   "value": "24",
+   "confidence": 0.95
+  },
+  "declaration_ou_jugement": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "nom": {
+   "raw": "YAHIA*",
+   "value": "YAHIA",
+   "confidence": 0.97
+  },
+  "prenoms": {
+   "raw": "ALI*",
+   "value": "ALI",
+   "confidence": 0.97
+  },
+  "date_naissance": {
+   "raw": "LE DIX MARS MILLE NEUF CENT QUATRE-VINGT ET UN *",
+   "value": "1981-03-10",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "BEN GUERDANE*",
+   "value": "Ben Guerdane",
+   "confidence": 0.96
+  },
+  "sexe": {
+   "raw": "MASCULIN*",
+   "value": "Masculin",
+   "confidence": 0.97
+  },
+  "pere_nom_complet": {
+   "raw": "HEDI BEN AMMAR BEN DHAOU*",
+   "value": "HEDI BEN AMMAR BEN DHAOU",
+   "confidence": 0.95
+  },
+  "pere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_nationalite": {
+   "raw": "TUNISIENNE* (barré)",
+   "value": "Tunisienne",
+   "confidence": 0.8
+  },
+  "mere_nom_complet": {
+   "raw": "MABROUKA BENT MOHAMED BEN ONE YAHIA*",
+   "value": "MABROUKA BENT MOHAMED BEN ONE YAHIA",
+   "confidence": 0.93
+  },
+  "mere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "mere_nationalite": {
+   "raw": "TUNISIENNE*",
+   "value": "Tunisienne",
+   "confidence": 0.85
+  },
+  "date_declaration": {
+   "raw": "LE ONZE MARS MILLE NEUF CENT QUATRE-VINGT ET UN *",
+   "value": "1981-03-11",
+   "confidence": 0.95
+  },
+  "declarant": {
+   "raw": "MONTASSAR AZREG *",
+   "value": "MONTASSAR AZREG",
+   "confidence": 0.93
+  },
+  "officier_etat_civil": {
+   "raw": "LAJIL BELGACEM*",
+   "value": "LAJIL BELGACEM",
+   "confidence": 0.92
+  },
+  "observations": {
+   "raw": "NEANT — tampon: Délivré en vue de mariage",
+   "value": "NÉANT; Délivré en vue de mariage",
+   "confidence": 0.85
+  },
+  "lieu_delivrance": {
+   "raw": "BEN GUERDANE",
+   "value": "Ben Guerdane",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "20 AVRIL 2017",
+   "value": "2017-04-20",
+   "confidence": 0.9
+  }
+ },
+ "fields": {
+  "gouvernorat": {
+   "raw": "MEDENINE",
+   "value": "Médenine",
+   "confidence": 0.96
+  },
+  "delegation": {
+   "raw": "BEN GUERDANE",
+   "value": "Ben Guerdane",
+   "confidence": 0.96
+  },
+  "commune": {
+   "raw": "BEN GUERDANE",
+   "value": "Ben Guerdane",
+   "confidence": 0.95
+  },
+  "arrondissement": {
+   "raw": "",
+   "value": "",
+   "confidence": 0.3
+  },
+  "secteur": {
+   "raw": "Jmila",
+   "value": "Jmila",
+   "confidence": 0.9
+  },
+  "annee": {
+   "raw": "1981",
+   "value": "1981",
+   "confidence": 0.97
+  },
+  "acte_numero": {
+   "raw": "24",
+   "value": "24",
+   "confidence": 0.95
+  },
+  "declaration_ou_jugement": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "nom": {
+   "raw": "YAHIA*",
+   "value": "YAHIA",
+   "confidence": 0.97
+  },
+  "prenoms": {
+   "raw": "ALI*",
+   "value": "ALI",
+   "confidence": 0.97
+  },
+  "date_naissance": {
+   "raw": "LE DIX MARS MILLE NEUF CENT QUATRE-VINGT ET UN *",
+   "value": "1981-03-10",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "BEN GUERDANE*",
+   "value": "Ben Guerdane",
+   "confidence": 0.96
+  },
+  "sexe": {
+   "raw": "MASCULIN*",
+   "value": "Masculin",
+   "confidence": 0.97
+  },
+  "pere_nom_complet": {
+   "raw": "HEDI BEN AMMAR BEN DHAOU*",
+   "value": "HEDI BEN AMMAR BEN DHAOU",
+   "confidence": 0.95
+  },
+  "pere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_nationalite": {
+   "raw": "TUNISIENNE* (barré)",
+   "value": "Tunisienne",
+   "confidence": 0.8
+  },
+  "mere_nom_complet": {
+   "raw": "MABROUKA BENT MOHAMED BEN ONE YAHIA*",
+   "value": "MABROUKA BENT MOHAMED BEN ONE YAHIA",
+   "confidence": 0.93
+  },
+  "mere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "mere_nationalite": {
+   "raw": "TUNISIENNE*",
+   "value": "Tunisienne",
+   "confidence": 0.85
+  },
+  "date_declaration": {
+   "raw": "LE ONZE MARS MILLE NEUF CENT QUATRE-VINGT ET UN *",
+   "value": "1981-03-11",
+   "confidence": 0.95
+  },
+  "declarant": {
+   "raw": "MONTASSAR AZREG *",
+   "value": "MONTASSAR AZREG",
+   "confidence": 0.93
+  },
+  "officier_etat_civil": {
+   "raw": "LAJIL BELGACEM*",
+   "value": "LAJIL BELGACEM",
+   "confidence": 0.92
+  },
+  "observations": {
+   "raw": "NEANT — tampon: Délivré en vue de mariage",
+   "value": "NÉANT; Délivré en vue de mariage",
+   "confidence": 0.85
+  },
+  "lieu_delivrance": {
+   "raw": "BEN GUERDANE",
+   "value": "Ben Guerdane",
+   "confidence": 0.9
+  },
+  "date_delivrance": {
+   "raw": "20 AVRIL 2017",
+   "value": "2017-04-20",
+   "confidence": 0.9
+  }
+ }
+}

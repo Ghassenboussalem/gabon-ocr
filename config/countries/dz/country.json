@@ -1,0 +1,4 @@
+{ "code": "dz", "name": "Algérie",
+  "detect_keywords": ["REPUBLIQUE ALGERIENNE"],
+  "checks": { "cnin_date": false, "reference_year": false, "margin_date_matches_birth": true },
+  "prompt_hint": "Acte algérien (copie intégrale) sur formulaire à pointillés, valeurs dactylographiées. La marge gauche donne le numéro de l'acte et une date (qui doit égaler la date de naissance). Dates et heures en toutes lettres ('Quinze juin mille neuf cent quatre-vingt-dix-huit', 'Dix-sept heures dix'). 'Sans' = sans profession; NEANT dans mentions marginales = aucune mention." }

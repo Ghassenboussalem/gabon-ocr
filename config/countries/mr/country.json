@@ -1,0 +1,5 @@
+{ "code": "mr", "name": "Mauritanie",
+  "detect_keywords": ["Mauritanie", "EXTRAIT D'ACTE DE NAISSANCE", "Moughataa"],
+  "checks": { "cnin_date": false, "reference_year": false,
+    "equal_pairs": [["enfant_prenom_pere", "pere_prenom"], ["enfant_nom_famille", "pere_nom_famille"]] },
+  "prompt_hint": "Extrait mauritanien du RNP (formulaire sécurisé bilingue arabe/français): Numéro National d'Identification en tête, ligne Wilaya/Moughataa/Commune, phrase de naissance en toutes lettres + chiffres entre parenthèses, puis TROIS cadres Enfant / Père / Mère avec Prénom, Prénom du père, Nom de famille (+ Sexe/Nationalité pour l'enfant, Date/Lieu de naissance pour les parents). Le 'Prénom du père' du cadre Enfant doit égaler le 'Prénom' du cadre Père." }

@@ -1,0 +1,126 @@
+{
+  "id": "ma_copie_v1",
+  "detect_keyword": "COPIE INTEGRALE DE L'ACTE DE NAISSANCE",
+  "match": {
+    "min_score": 78,
+    "min_score_short": 85,
+    "min_anchors": 8
+  },
+  "anchors": [
+    {
+      "id": "header",
+      "label": "COPIE INTEGRALE DE L'ACTE DE NAISSANCE",
+      "rel_y": 0.049
+    },
+    {
+      "id": "dahir",
+      "label": "Dahir du",
+      "rel_y": 0.081
+    },
+    {
+      "id": "corr1",
+      "label": "Correspondant au",
+      "occurrence": 1,
+      "rel_y": 0.143
+    },
+    {
+      "id": "nom_famille",
+      "label": "Qui a pris pour nom de famille",
+      "rel_y": 0.22
+    },
+    {
+      "id": "fils_de",
+      "label": "Fils (Fille) de",
+      "rel_y": 0.241
+    },
+    {
+      "id": "et_de",
+      "label": "Et de",
+      "rel_y": 0.385
+    },
+    {
+      "id": "domicilies",
+      "label": "Tous deux domiciliés à",
+      "rel_y": 0.482
+    },
+    {
+      "id": "etabli",
+      "label": "Etabli le",
+      "rel_y": 0.501
+    },
+    {
+      "id": "declaration",
+      "label": "Suivant la déclaration de",
+      "rel_y": 0.541
+    },
+    {
+      "id": "enquete",
+      "label": "après enquête",
+      "rel_y": 0.619
+    },
+    {
+      "id": "officier_a",
+      "label": "officier de l'état civil de",
+      "rel_y": 0.639
+    },
+    {
+      "id": "copie_conf",
+      "label": "Copie conforme à l'original",
+      "rel_y": 0.806
+    },
+    {
+      "id": "annee_l",
+      "label": "Année",
+      "rel_y": 0.828
+    },
+    {
+      "id": "sceau",
+      "label": "Sceau du Bureau",
+      "rel_y": 0.876
+    }
+  ],
+  "fields": [
+    {
+      "name": "naissance_block",
+      "kind": "band",
+      "anchor": "header",
+      "until": "fils_de",
+      "include_anchor_line": false
+    },
+    {
+      "name": "pere_block",
+      "kind": "band",
+      "anchor": "fils_de",
+      "until": "et_de",
+      "include_anchor_line": true
+    },
+    {
+      "name": "mere_block",
+      "kind": "band",
+      "anchor": "et_de",
+      "until": "domicilies",
+      "include_anchor_line": true
+    },
+    {
+      "name": "etabli_block",
+      "kind": "band",
+      "anchor": "domicilies",
+      "until": "enquete",
+      "include_anchor_line": true
+    },
+    {
+      "name": "officier_line",
+      "kind": "band",
+      "anchor": "enquete",
+      "until": "copie_conf",
+      "include_anchor_line": true
+    },
+    {
+      "name": "certification",
+      "kind": "band",
+      "anchor": "copie_conf",
+      "until": "sceau",
+      "include_anchor_line": true
+    }
+  ]
+}

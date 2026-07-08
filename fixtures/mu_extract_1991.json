@@ -1,0 +1,266 @@
+{
+ "page": {
+  "serial": {
+   "raw": "PL 647048",
+   "value": "PL 647048",
+   "confidence": 0.95
+  },
+  "registration_district": {
+   "raw": "Port Louis",
+   "value": "Port Louis",
+   "confidence": 0.95
+  },
+  "registration_office": {
+   "raw": "Dr Jeetoo Hospital",
+   "value": "Dr Jeetoo Hospital",
+   "confidence": 0.94
+  },
+  "registered_by": {
+   "raw": "Khoodoo Joseph Georges",
+   "value": "Khoodoo Joseph Georges",
+   "confidence": 0.93
+  },
+  "certificate_number": {
+   "raw": "125",
+   "value": "125",
+   "confidence": 0.94
+  },
+  "date_enregistrement": {
+   "raw": "14/08/1991",
+   "value": "1991-08-14",
+   "confidence": 0.94
+  },
+  "enfant_nom": {
+   "raw": "Surroup",
+   "value": "Surroup",
+   "confidence": 0.95
+  },
+  "enfant_prenoms": {
+   "raw": "Shazia Bibi",
+   "value": "Shazia Bibi",
+   "confidence": 0.95
+  },
+  "nid_numero": {
+   "raw": "S230591380125F",
+   "value": "S230591380125F",
+   "confidence": 0.93
+  },
+  "date_naissance": {
+   "raw": "23/05/1991",
+   "value": "1991-05-23",
+   "confidence": 0.95
+  },
+  "heure_naissance": {
+   "raw": "07:45",
+   "value": "07:45",
+   "confidence": 0.93
+  },
+  "sexe": {
+   "raw": "F-Female/Féminin",
+   "value": "Féminin",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "Dr Jeetoo Hospital",
+   "value": "Dr Jeetoo Hospital",
+   "confidence": 0.94
+  },
+  "pere_nom": {
+   "raw": "Surroup",
+   "value": "Surroup",
+   "confidence": 0.94
+  },
+  "pere_prenoms": {
+   "raw": "Abdool Raheman",
+   "value": "Abdool Raheman",
+   "confidence": 0.93
+  },
+  "pere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_nid": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "mere_nom_jeune_fille": {
+   "raw": "Seerattun",
+   "value": "Seerattun",
+   "confidence": 0.93
+  },
+  "mere_prenoms": {
+   "raw": "Santa",
+   "value": "Santa",
+   "confidence": 0.93
+  },
+  "mere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "declarant": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "annotations": {
+   "raw": "Acknowledged by Mother on / Reconnu(e) par la Mère le - 05/02/2003",
+   "value": "Reconnu(e) par la Mère le 05/02/2003",
+   "confidence": 0.9
+  },
+  "date_reconnaissance": {
+   "raw": "05/02/2003",
+   "value": "2003-02-05",
+   "confidence": 0.9
+  },
+  "officier": {
+   "raw": "Lalloo Abdool Wahid",
+   "value": "Lalloo Abdool Wahid",
+   "confidence": 0.92
+  },
+  "bureau": {
+   "raw": "Central Civil Status Office",
+   "value": "Central Civil Status Office",
+   "confidence": 0.92
+  },
+  "date_delivrance": {
+   "raw": "14/12/2015",
+   "value": "2015-12-14",
+   "confidence": 0.93
+  }
+ },
+ "fields": {
+  "serial": {
+   "raw": "PL 647048",
+   "value": "PL 647048",
+   "confidence": 0.95
+  },
+  "registration_district": {
+   "raw": "Port Louis",
+   "value": "Port Louis",
+   "confidence": 0.95
+  },
+  "registration_office": {
+   "raw": "Dr Jeetoo Hospital",
+   "value": "Dr Jeetoo Hospital",
+   "confidence": 0.94
+  },
+  "registered_by": {
+   "raw": "Khoodoo Joseph Georges",
+   "value": "Khoodoo Joseph Georges",
+   "confidence": 0.93
+  },
+  "certificate_number": {
+   "raw": "125",
+   "value": "125",
+   "confidence": 0.94
+  },
+  "date_enregistrement": {
+   "raw": "14/08/1991",
+   "value": "1991-08-14",
+   "confidence": 0.94
+  },
+  "enfant_nom": {
+   "raw": "Surroup",
+   "value": "Surroup",
+   "confidence": 0.95
+  },
+  "enfant_prenoms": {
+   "raw": "Shazia Bibi",
+   "value": "Shazia Bibi",
+   "confidence": 0.95
+  },
+  "nid_numero": {
+   "raw": "S230591380125F",
+   "value": "S230591380125F",
+   "confidence": 0.93
+  },
+  "date_naissance": {
+   "raw": "23/05/1991",
+   "value": "1991-05-23",
+   "confidence": 0.95
+  },
+  "heure_naissance": {
+   "raw": "07:45",
+   "value": "07:45",
+   "confidence": 0.93
+  },
+  "sexe": {
+   "raw": "F-Female/Féminin",
+   "value": "Féminin",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "Dr Jeetoo Hospital",
+   "value": "Dr Jeetoo Hospital",
+   "confidence": 0.94
+  },
+  "pere_nom": {
+   "raw": "Surroup",
+   "value": "Surroup",
+   "confidence": 0.94
+  },
+  "pere_prenoms": {
+   "raw": "Abdool Raheman",
+   "value": "Abdool Raheman",
+   "confidence": 0.93
+  },
+  "pere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_nid": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "mere_nom_jeune_fille": {
+   "raw": "Seerattun",
+   "value": "Seerattun",
+   "confidence": 0.93
+  },
+  "mere_prenoms": {
+   "raw": "Santa",
+   "value": "Santa",
+   "confidence": 0.93
+  },
+  "mere_profession": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "declarant": {
+   "raw": "",
+   "value": null,
+   "confidence": 0.3
+  },
+  "annotations": {
+   "raw": "Acknowledged by Mother on / Reconnu(e) par la Mère le - 05/02/2003",
+   "value": "Reconnu(e) par la Mère le 05/02/2003",
+   "confidence": 0.9
+  },
+  "date_reconnaissance": {
+   "raw": "05/02/2003",
+   "value": "2003-02-05",
+   "confidence": 0.9
+  },
+  "officier": {
+   "raw": "Lalloo Abdool Wahid",
+   "value": "Lalloo Abdool Wahid",
+   "confidence": 0.92
+  },
+  "bureau": {
+   "raw": "Central Civil Status Office",
+   "value": "Central Civil Status Office",
+   "confidence": 0.92
+  },
+  "date_delivrance": {
+   "raw": "14/12/2015",
+   "value": "2015-12-14",
+   "confidence": 0.93
+  }
+ }
+}

@@ -1,0 +1,4 @@
+{ "code": "cd", "name": "RD Congo",
+  "detect_keywords": ["Chefferie", "Bureau Principal d'Etat Civil", "KINSHASA"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Acte RDC (volet), valeurs MANUSCRITES sur pointillés, souvent sous un grand filigrane diagonal et des tampons; une colonne de légalisation notariale peut occuper la droite (ignore-la pour les champs de l'acte). Structure: en-tête administratif (Province...Acte n°/Volume/Folio), puis date de l'acte en toutes lettres, officier, comparant (né à, profession, résident), puis la déclaration: date de naissance en toutes lettres, lieu, sexe, nommé, fils/fille de <père> né à..., nationalité, profession, résident, et de <mère>..., conjoints." }

@@ -1,0 +1,20 @@
+{ "document": "traduction_acte_egypte", "fields": [
+ { "name": "numero_identite",  "fr": "N° NATIONAL (chiffre de siècle + AAMMJJ + ...)", "type": "text", "from": "entete" },
+ { "name": "enfant_nom",       "fr": "Nom",                        "type": "name",  "from": "nom" },
+ { "name": "enfant_prenom",    "fr": "Prénom",                     "type": "name",  "from": "prenom" },
+ { "name": "date_naissance",   "fr": "Date de naissance (lettres + chiffres)", "type": "date", "from": "date_naissance" },
+ { "name": "lieu_naissance",   "fr": "Lieu de naissance",          "type": "place", "from": "lieu_naissance" },
+ { "name": "sexe",             "fr": "Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "sexe" },
+ { "name": "pere_nom",         "fr": "Fils de",                    "type": "name",  "from": "fils_de" },
+ { "name": "pere_nationalite", "fr": "Nationalité (père)",         "type": "text",  "from": "nat1" },
+ { "name": "pere_confession",  "fr": "Confession (père)",          "type": "text",  "from": "conf1" },
+ { "name": "mere_nom",         "fr": "Et fils de (mère)",          "type": "name",  "from": "et_fils_de" },
+ { "name": "mere_nationalite", "fr": "Nationalité (mère)",         "type": "text",  "from": "nat2" },
+ { "name": "mere_confession",  "fr": "Confession (mère)",          "type": "text",  "from": "conf2" },
+ { "name": "bureau_sante",     "fr": "Bureau de santé",            "type": "place", "from": "registre_block" },
+ { "name": "registre_numero",  "fr": "Registre N°",                "type": "text",  "from": "registre_block" },
+ { "name": "date_enregistrement","fr": "Enregistré le",            "type": "date",  "from": "registre_block" },
+ { "name": "origine",          "fr": "Origine (registre)",         "type": "text",  "from": "registre_block" },
+ { "name": "date_delivrance",  "fr": "Délivré le",                 "type": "date",  "from": "registre_block" },
+ { "name": "officier",         "fr": "SIGNÉ (officier)",           "type": "name",  "from": "signe" }
+]}

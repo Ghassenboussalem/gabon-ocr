@@ -1,0 +1,11 @@
+opencv-python-headless>=4.9
+numpy>=1.26
+pillow>=10
+pytesseract>=0.3.10
+rapidfuzz>=3.6
+fastapi>=0.110
+uvicorn>=0.29
+pydantic>=2.6
+python-multipart>=0.0.9
+qrcode>=7.4
+pypdfium2>=4.30

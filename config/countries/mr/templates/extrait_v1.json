@@ -1,0 +1,21 @@
+{ "id": "mr_extrait_v1", "detect_keyword": "EXTRAIT D'ACTE DE NAISSANCE",
+  "match": { "min_score": 78, "min_score_short": 85, "min_anchors": 6 },
+  "anchors": [
+    { "id": "agence",     "label": "Agence Nationale du Registre", "rel_y": 0.0 },
+    { "id": "centre",     "label": "Centre d'Accueil des Citoyens","rel_y": 0.06 },
+    { "id": "extrait",    "label": "EXTRAIT D'ACTE DE NAISSANCE",  "rel_y": 0.085 },
+    { "id": "numero_nat", "label": "Numéro National d'Identification", "rel_y": 0.11 },
+    { "id": "wilaya",     "label": "Wilaya",                       "rel_y": 0.135 },
+    { "id": "enfant_hdr", "label": "Enfant",                       "rel_y": 0.20 },
+    { "id": "pere_hdr",   "label": "Père",                         "rel_y": 0.38 },
+    { "id": "mere_hdr",   "label": "Mère",                         "rel_y": 0.56 },
+    { "id": "chef",       "label": "Chef de Centre de",            "rel_y": 0.78 },
+    { "id": "nb",         "label": "NB : Ceci est un extrait",     "rel_y": 0.93 }
+  ],
+  "fields": [
+    { "name": "entete",      "kind": "band", "anchor": "centre",    "until": "enfant_hdr", "include_anchor_line": true },
+    { "name": "enfant_block","kind": "band", "anchor": "enfant_hdr","until": "pere_hdr",   "include_anchor_line": true },
+    { "name": "pere_block",  "kind": "band", "anchor": "pere_hdr",  "until": "mere_hdr",   "include_anchor_line": true },
+    { "name": "mere_block",  "kind": "band", "anchor": "mere_hdr",  "until": "chef",       "include_anchor_line": true },
+    { "name": "pied",        "kind": "band", "anchor": "chef",      "until": "nb",         "include_anchor_line": true }
+  ]}

@@ -1,0 +1,4 @@
+{ "code": "mg", "name": "Madagascar",
+  "detect_keywords": ["MADAGASCAR"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Copie d'acte malgache: texte narratif. Le premier paragraphe donne l'année du registre et la commune. Le deuxième donne date/heure/lieu de naissance, nom de l'enfant, sexe, puis 'fille/fils de <père>, <profession>, né à <lieu>, le <date>, domicilié à <lieu> et de <mère>...'. 'Dressé le' donne la date d'établissement, la déclarante et l'officier. La marge donne le n° d'acte et sa date. La certification donne la date de délivrance en toutes lettres et la date de traduction." }

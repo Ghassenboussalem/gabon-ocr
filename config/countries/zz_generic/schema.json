@@ -1,0 +1,19 @@
+{ "document": "acte_naissance_generique", "fields": [
+ { "name": "pays_emetteur",   "fr": "Pays ou autorité émettrice (d'après l'en-tête)", "type": "text", "from": "page" },
+ { "name": "acte_numero",     "fr": "Numéro de l'acte / du registre",  "type": "text",  "from": "entete" },
+ { "name": "enfant_nom",      "fr": "Nom complet de l'enfant",         "type": "name",  "from": "corps" },
+ { "name": "date_naissance",  "fr": "Date de naissance",               "type": "date",  "from": "corps" },
+ { "name": "heure_naissance", "fr": "Heure de naissance (si présente)","type": "time",  "from": "corps" },
+ { "name": "lieu_naissance",  "fr": "Lieu de naissance",               "type": "place", "from": "corps" },
+ { "name": "sexe",            "fr": "Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "corps" },
+ { "name": "pere_nom",        "fr": "Nom complet du père",             "type": "name",  "from": "corps" },
+ { "name": "mere_nom",        "fr": "Nom complet de la mère",          "type": "name",  "from": "corps" },
+ { "name": "pere_details",    "fr": "Père: profession, nationalité, domicile, date/lieu de naissance", "type": "text", "from": "corps" },
+ { "name": "mere_details",    "fr": "Mère: profession, nationalité, domicile, date/lieu de naissance", "type": "text", "from": "corps" },
+ { "name": "date_enregistrement","fr": "Date d'enregistrement/déclaration/établissement", "type": "date", "from": "corps" },
+ { "name": "declarant",       "fr": "Déclarant (nom ou qualité)",      "type": "text",  "from": "corps" },
+ { "name": "officier",        "fr": "Officier de l'état civil",        "type": "name",  "from": "page" },
+ { "name": "mentions",        "fr": "Mentions marginales / annotations","type": "text",  "from": "page" },
+ { "name": "date_delivrance", "fr": "Date de délivrance de la copie",  "type": "date",  "from": "page" },
+ { "name": "observations",    "fr": "Particularités du document",      "type": "text",  "from": "page" }
+]}

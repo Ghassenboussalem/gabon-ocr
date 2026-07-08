@@ -1,0 +1,22 @@
+{ "document": "acte_naissance_cameroun", "fields": [
+ { "name": "centre_etat_civil","fr": "Centre d'état civil (De - of ...)",  "type": "text",  "from": "centre_block" },
+ { "name": "numero_acte",      "fr": "ACTE DE NAISSANCE N°",               "type": "text",  "from": "numero" },
+ { "name": "enfant_nom",       "fr": "Nom de l'enfant",                    "type": "name",  "from": "enfant_block" },
+ { "name": "date_naissance",   "fr": "Le - on the ... (en toutes lettres, manuscrit)", "type": "date", "from": "enfant_block" },
+ { "name": "lieu_naissance",   "fr": "Est né à ...",                       "type": "place", "from": "lieu_naissance" },
+ { "name": "enfant_nom_2",     "fr": "Nom de l'enfant (répété — doit être identique)", "type": "name", "from": "enfant_nom_2" },
+ { "name": "sexe",             "fr": "De sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "sexe" },
+ { "name": "pere_nom",         "fr": "De - of ... (père, souvent vide)",   "type": "name",  "from": "pere_block" },
+ { "name": "pere_lieu_naissance","fr": "Né à (père)",                      "type": "place", "from": "pere_block" },
+ { "name": "pere_domicile",    "fr": "Domicilié à (père)",                 "type": "place", "from": "pere_block" },
+ { "name": "pere_profession",  "fr": "Profession (père)",                  "type": "text",  "from": "pere_block" },
+ { "name": "mere_nom",         "fr": "Et de - and of ... (mère)",          "type": "name",  "from": "mere_block" },
+ { "name": "mere_lieu_naissance","fr": "Née à (mère; 'vers <année>' possible)", "type": "place", "from": "mere_block" },
+ { "name": "mere_date_naissance","fr": "Année/date de naissance de la mère (souvent 'vers ...')", "type": "text", "from": "mere_block" },
+ { "name": "mere_domicile",    "fr": "Domiciliée à (mère)",                "type": "place", "from": "mere_block" },
+ { "name": "mere_profession",  "fr": "Profession (mère)",                  "type": "text",  "from": "mere_block" },
+ { "name": "date_etablissement","fr": "Dressé le ...",                     "type": "date",  "from": "dresse" },
+ { "name": "declarant",        "fr": "Sur la déclaration de ...",          "type": "text",  "from": "declaration_block" },
+ { "name": "officier",         "fr": "Par nous ... officier",              "type": "name",  "from": "officier_block" },
+ { "name": "signataire",       "fr": "Signataire final (ex: adjoint au maire)", "type": "name", "from": "signature_block" }
+]}

@@ -1,0 +1,24 @@
+{ "id": "ng_traduction_v1", "detect_keyword": "COMMISSION NATIONALE DE LA POPULATION",
+  "match": { "min_score": 78, "min_score_short": 85, "min_anchors": 6 },
+  "anchors": [
+    { "id": "republique", "label": "REPUBLIQUE FEDERALE DU NIGERIA",   "rel_y": 0.0 },
+    { "id": "commission", "label": "COMMISSION NATIONALE DE LA POPULATION", "rel_y": 0.02 },
+    { "id": "certificat", "label": "CERTIFICAT DE NAISSANCE",          "rel_y": 0.06 },
+    { "id": "delivre_app","label": "Délivré en application du Décret", "rel_y": 0.10 },
+    { "id": "numero_l",   "label": "Numéro de l'acte",                 "rel_y": 0.15 },
+    { "id": "tampon",     "label": "Tampon",                           "rel_y": 0.26 },
+    { "id": "certifier",  "label": "Ceci est pour certifier",          "rel_y": 0.30 },
+    { "id": "bureau_ec",  "label": "à ce Bureau de l'Etat Civil",      "rel_y": 0.36 },
+    { "id": "nom1",       "label": "1. Nom et prénom",                 "rel_y": 0.41 },
+    { "id": "delivre_a",  "label": "Délivré à",                        "rel_y": 0.55 },
+    { "id": "greffier",   "label": "Nom du greffier",                  "rel_y": 0.585 },
+    { "id": "sceau",      "label": "Sceau",                            "rel_y": 0.63 },
+    { "id": "traduction", "label": "Traduction certifiée",             "rel_y": 0.68 }
+  ],
+  "fields": [
+    { "name": "entete",        "kind": "band", "anchor": "certificat","until": "delivre_app", "include_anchor_line": true },
+    { "name": "numero_block",  "kind": "band", "anchor": "numero_l",  "until": "tampon",      "include_anchor_line": true },
+    { "name": "enregistrement","kind": "band", "anchor": "certifier", "until": "nom1",        "include_anchor_line": true },
+    { "name": "rubriques",     "kind": "band", "anchor": "nom1",      "until": "delivre_a",   "include_anchor_line": true },
+    { "name": "delivrance",    "kind": "band", "anchor": "delivre_a", "until": "sceau",       "include_anchor_line": true }
+  ]}

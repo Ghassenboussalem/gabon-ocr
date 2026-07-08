@@ -1,0 +1,30 @@
+{
+  "document": "extrait_naissance_tunisie_fr",
+  "fields": [
+    { "name": "gouvernorat",     "fr": "Gouvernorat",                                   "type": "place", "from": "meta_block" },
+    { "name": "delegation",      "fr": "Délégation",                                    "type": "place", "from": "meta_block" },
+    { "name": "commune",         "fr": "Commune",                                       "type": "place", "from": "meta_block" },
+    { "name": "arrondissement",  "fr": "Arrondissement communal",                       "type": "text",  "from": "meta_block" },
+    { "name": "secteur",         "fr": "Secteur",                                       "type": "text",  "from": "meta_block" },
+    { "name": "annee",           "fr": "Année du registre",                             "type": "text",  "from": "meta_block" },
+    { "name": "acte_numero",     "fr": "Acte N°",                                       "type": "text",  "from": "meta_block" },
+    { "name": "declaration_ou_jugement", "fr": "Déclaration ou jugement (si indiqué)",  "type": "text",  "from": "meta_block" },
+    { "name": "nom",             "fr": "NOM de l'enfant",                               "type": "name",  "from": "enfant_nom_block" },
+    { "name": "prenoms",         "fr": "PRÉNOMS de l'enfant",                           "type": "name",  "from": "enfant_nom_block" },
+    { "name": "date_naissance",  "fr": "Date de naissance (en toutes lettres)",         "type": "date",  "from": "date_naissance" },
+    { "name": "lieu_naissance",  "fr": "Lieu de naissance",                             "type": "place", "from": "lieu_naissance" },
+    { "name": "sexe",            "fr": "Sexe",                                          "type": "enum",  "values": ["Masculin", "Féminin"], "from": "sexe" },
+    { "name": "pere_nom_complet","fr": "Nom et prénoms du père",                        "type": "name",  "from": "pere_block" },
+    { "name": "pere_profession", "fr": "Profession du père (si indiquée)",              "type": "text",  "from": "pere_block" },
+    { "name": "pere_nationalite","fr": "Nationalité du père",                           "type": "text",  "from": "pere_block" },
+    { "name": "mere_nom_complet","fr": "Nom et prénoms de la mère",                     "type": "name",  "from": "mere_block" },
+    { "name": "mere_profession", "fr": "Profession de la mère (si indiquée)",           "type": "text",  "from": "mere_block" },
+    { "name": "mere_nationalite","fr": "Nationalité de la mère",                        "type": "text",  "from": "mere_block" },
+    { "name": "date_declaration","fr": "Date de la déclaration (en toutes lettres)",    "type": "date",  "from": "date_declaration" },
+    { "name": "declarant",       "fr": "Nom, prénoms du déclarant ou tribunal",         "type": "name",  "from": "declarant_block" },
+    { "name": "officier_etat_civil", "fr": "Nom, prénoms de l'officier de l'état civil","type": "name",  "from": "officier_block" },
+    { "name": "observations",    "fr": "Observations (y compris mentions tamponnées)",  "type": "text",  "from": "observations_block" },
+    { "name": "lieu_delivrance", "fr": "Lieu de délivrance de la copie",                "type": "place", "from": "certification_block" },
+    { "name": "date_delivrance", "fr": "Date de délivrance de la copie",                "type": "date",  "from": "certification_block" }
+  ]
+}

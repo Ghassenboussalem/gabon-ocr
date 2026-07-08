@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+.env
+runs/
+uploads/
+data/
+demo/
+gabon-ocr/
+samples/
+tests/
+.git/
+*.zip

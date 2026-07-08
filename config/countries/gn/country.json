@@ -1,0 +1,4 @@
+{ "code": "gn", "name": "Guinée",
+  "detect_keywords": ["REGION ADMINISTRATIVE DE", "GUINEENNE", "EXTRAIT D'ACTE DE NAISSANCE"],
+  "checks": { "cnin_date": false, "reference_year": false },
+  "prompt_hint": "Extrait guinéen dactylographié à la machine à écrire: 'ETIQUETTE :VALEUR' ligne par ligne. '(PERE:' et '(MERE:' donnent les parents. 'SIGNE.ILLISIBLE/' est une valeur littérale. Deux certifications 'POUR COPIE CERTIFIEE CONFORME' peuvent suivre (dates différentes)." }

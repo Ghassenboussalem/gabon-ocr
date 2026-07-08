@@ -1,0 +1,4 @@
+{ "code": "rw", "name": "Rwanda",
+  "detect_keywords": ["INYANDIKO Y'IVUKA", "RWANDA"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Acte de naissance rwandais bilingue: chaque étiquette imprimée est en français puis en kinyarwanda (ex: 'âgé de / ufite imyaka'); les valeurs sont MANUSCRITES sur pointillés. La personne qui comparaît peut être un représentant ('représentant de son frère X'): dans ce cas l'enfant est X. La seconde section (que le ... jour du mois de ...) donne la date et le lieu de naissance de l'enfant et le nom du père." }

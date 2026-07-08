@@ -1,0 +1,4 @@
+{ "code": "ao", "name": "Angola",
+  "detect_keywords": ["Luanda", "Relevé Quotidien"],
+  "checks": { "cnin_date": false, "reference_year": false, "acte_number_words": true },
+  "prompt_hint": "Traduction française d'un acte angolais: texte narratif. Le N° de l'acte est en toutes lettres en tête ET en chiffres dans '(En Marge) Acte n°'. Le premier paragraphe donne heure, date, lieu (bairro/commune/municipalité/province), sexe et nom. 'fils de ... et de ...' donne les parents avec état civil, profession et origine; 'Petit-fils paternel/maternel' donne les grands-parents. La fin donne l'officier, l'heure et la date d'enregistrement en toutes lettres, le n° du Relevé Quotidien, puis des ANNOTATIONS (rectifications)." }

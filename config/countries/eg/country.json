@@ -1,0 +1,14 @@
+{
+  "code": "eg",
+  "name": "Égypte",
+  "detect_keywords": [
+    "REPUBLIQUE ARABE D'EGYPTE",
+    "EGYPTE",
+    "N° NATIONAL"
+  ],
+  "checks": {
+    "cnin_date": false,
+    "id_birthdate_format": "cyymmdd"
+  },
+  "prompt_hint": "Traduction française d'un acte égyptien; la moitié droite est l'original ARABE (ignore-la). Le N° NATIONAL commence par un chiffre de siècle puis AAMMJJ de la date de naissance (2 761010... ↔ 10/10/1976). La date de naissance est en toutes lettres suivie des chiffres entre parenthèses. Confession = mention religieuse (chrétienne/musulmane)."
+}

@@ -1,0 +1,16 @@
+{ "id": "zz_generique_v1",
+  "match": { "min_score": 80, "min_score_short": 88, "min_anchors": 5 },
+  "anchors": [
+    { "id": "header",   "label": "ACTE DE NAISSANCE",   "rel_y": 0.08 },
+    { "id": "date_nais","label": "Date de naissance",   "rel_y": 0.35 },
+    { "id": "lieu_nais","label": "Lieu de naissance",   "rel_y": 0.40 },
+    { "id": "sexe",     "label": "Sexe",                "rel_y": 0.45 },
+    { "id": "pere",     "label": "père",                "rel_y": 0.52 },
+    { "id": "mere",     "label": "mère",                "rel_y": 0.58 },
+    { "id": "declarant","label": "déclarant",           "rel_y": 0.68 },
+    { "id": "officier", "label": "officier de l'état civil", "rel_y": 0.80 }
+  ],
+  "fields": [
+    { "name": "entete", "kind": "band", "anchor": "header",   "until": "date_nais", "include_anchor_line": true },
+    { "name": "corps",  "kind": "band", "anchor": "date_nais","until": "officier",  "include_anchor_line": true }
+  ]}

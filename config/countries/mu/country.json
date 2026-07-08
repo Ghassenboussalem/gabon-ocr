@@ -1,0 +1,4 @@
+{ "code": "mu", "name": "Maurice",
+  "detect_keywords": ["Birth Entry", "MAURITIUS", "MAURICE", "Civil Status Act"],
+  "checks": { "cnin_date": false, "id_birthdate_format": "ddmmyy" },
+  "prompt_hint": "Extrait mauricien bilingue anglais/français, valeurs dactylographiées. Le NID commence par l'initiale du nom puis JJMMAA de la date de naissance. Le bloc DECLARANT(S) coche 'Father/Mother/Both as above' — si coché, les champs déclarant restent vides. Les ANNOTATIONS peuvent contenir une reconnaissance datée." }

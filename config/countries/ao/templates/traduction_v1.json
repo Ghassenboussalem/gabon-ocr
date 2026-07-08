@@ -1,0 +1,21 @@
+{ "id": "ao_traduction_v1", "detect_keyword": "Relevé Quotidien",
+  "match": { "min_score": 78, "min_score_short": 85, "min_anchors": 5 },
+  "anchors": [
+    { "id": "header",       "label": "Acte de Naissance",     "rel_y": 0.048 },
+    { "id": "fils",         "label": "fils d",                "rel_y": 0.183 },
+    { "id": "petit_fils",   "label": "Petit-fils paternel",   "rel_y": 0.237 },
+    { "id": "enregistrement","label": "Cet enregistrement",   "rel_y": 0.275 },
+    { "id": "et_par_moi",   "label": "et par moi",            "rel_y": 0.387 },
+    { "id": "releve",       "label": "Enregistré au Relevé Quotidien", "rel_y": 0.445 },
+    { "id": "en_marge",     "label": "En Marge",              "rel_y": 0.479 },
+    { "id": "annotations",  "label": "ANNOTATIONS",           "rel_y": 0.542 }
+  ],
+  "fields": [
+    { "name": "naissance_narrative",  "kind": "band", "anchor": "header",        "until": "fils",         "include_anchor_line": true },
+    { "name": "parents_narrative",    "kind": "band", "anchor": "fils",          "until": "petit_fils",   "include_anchor_line": true },
+    { "name": "gp_narrative",         "kind": "band", "anchor": "petit_fils",    "until": "enregistrement","include_anchor_line": true },
+    { "name": "declaration_narrative","kind": "band", "anchor": "enregistrement","until": "et_par_moi",   "include_anchor_line": true },
+    { "name": "officier_block",       "kind": "band", "anchor": "et_par_moi",    "until": "en_marge",     "include_anchor_line": true },
+    { "name": "marge_block",          "kind": "band", "anchor": "en_marge",      "until": "annotations",  "include_anchor_line": true },
+    { "name": "annotations_block",    "kind": "band", "anchor": "annotations",   "until": "none",         "include_anchor_line": true }
+  ]}

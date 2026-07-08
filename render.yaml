@@ -1,0 +1,17 @@
+# One-click Render deployment (https://render.com):
+#   1. push this repo to GitHub
+#   2. Render dashboard -> New -> Blueprint -> pick the repo
+#   3. set GEMINI_API_KEY (and APP_PASSWORD) when prompted
+services:
+  - type: web
+    name: gabon-ocr
+    runtime: docker
+    plan: free             # spins down when idle (~1 min cold start); upgrade to "starter" for always-on
+    healthCheckPath: /api/config
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false        # entered securely in the dashboard
+      - key: APP_PASSWORD
+        sync: false        # optional; leave empty to keep the app open
+      - key: PIPELINE_BACKEND
+        value: gemini

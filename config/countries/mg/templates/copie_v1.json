@@ -1,0 +1,18 @@
+{ "id": "mg_copie_v1", "detect_keyword": "MADAGASCAR",
+  "match": { "min_score": 78, "min_score_short": 85, "min_anchors": 4 },
+  "anchors": [
+    { "id": "republique", "label": "REPUBLIQUE DE MADAGASCAR",      "rel_y": 0.014 },
+    { "id": "copie_hdr",  "label": "COPIE D'ACTE DE L'ETAT CIVIL",  "rel_y": 0.074 },
+    { "id": "registres",  "label": "Des registres de l'Etat",       "rel_y": 0.118 },
+    { "id": "dresse",     "label": "Dressé le",                     "rel_y": 0.414 },
+    { "id": "suivent",    "label": "SUIVENT LES SIGNATURES",        "rel_y": 0.591 },
+    { "id": "mention",    "label": "MENTION EN MARGE",              "rel_y": 0.63 },
+    { "id": "certif",     "label": "Pour copie certifiée conforme", "rel_y": 0.655 },
+    { "id": "traduction", "label": "Pour traduction sincère",       "rel_y": 0.72 }
+  ],
+  "fields": [
+    { "name": "corps_narrative",  "kind": "band", "anchor": "registres", "until": "dresse",     "include_anchor_line": true },
+    { "name": "dresse_narrative", "kind": "band", "anchor": "dresse",    "until": "suivent",    "include_anchor_line": true },
+    { "name": "mention_block",    "kind": "band", "anchor": "mention",   "until": "certif",     "include_anchor_line": true },
+    { "name": "certification",    "kind": "band", "anchor": "certif",    "until": "none",       "include_anchor_line": true, "pad": 30 }
+  ]}

@@ -1,0 +1,4 @@
+{ "code": "cv", "name": "Cap-Vert",
+  "detect_keywords": ["CABO VERDE", "TRADUIT DU PORTUGAIS"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Traduction consulaire française d'un acte cap-verdien: lignes 'Étiquette : valeur'. '***' ou '**' signifie non renseigné/occulté (retourne null) — le champ Père est souvent '***'. La ligne Mère contient nom, âge, état civil, profession, lieu de naissance et domicile. 'En marge' donne la référence du registre; une mention de reconnaissance paternelle peut suivre." }

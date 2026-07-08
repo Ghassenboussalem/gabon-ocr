@@ -1,0 +1,246 @@
+{
+ "page": {
+  "reference": {
+   "raw": "RED N° 580 /TPI-KDI /PR/KDI/ 2018",
+   "value": "RED N° 580 /TPI-KDI /PR/KDI/ 2018",
+   "confidence": 0.95
+  },
+  "acte_reference": {
+   "raw": "451/GOG",
+   "value": "451/GOG",
+   "confidence": 0.93
+  },
+  "volet_numero": {
+   "raw": "VOLET N° 1",
+   "value": "1",
+   "confidence": 0.95
+  },
+  "commune": {
+   "raw": "COMMUNE DE GOGOUNOU",
+   "value": "Gogounou",
+   "confidence": 0.95
+  },
+  "officier_nom": {
+   "raw": "GOUNIGNAN MOUTAWAKIROU",
+   "value": "GOUNIGNAN MOUTAWAKIROU",
+   "confidence": 0.95
+  },
+  "officier_fonction": {
+   "raw": "Maire de la commune de GOGOUNOU",
+   "value": "Maire de la commune de Gogounou",
+   "confidence": 0.93
+  },
+  "enfant_nom": {
+   "raw": "SANNI",
+   "value": "SANNI",
+   "confidence": 0.96
+  },
+  "enfant_prenoms": {
+   "raw": "CABIROU",
+   "value": "CABIROU",
+   "confidence": 0.96
+  },
+  "sexe": {
+   "raw": "MASCULIN",
+   "value": "Masculin",
+   "confidence": 0.97
+  },
+  "pere_nom": {
+   "raw": "Père : SANNI GOUDA",
+   "value": "SANNI GOUDA",
+   "confidence": 0.94
+  },
+  "mere_nom": {
+   "raw": "Mère : SABI MARIA",
+   "value": "SABI MARIA",
+   "confidence": 0.94
+  },
+  "pere_age": {
+   "raw": "Père :",
+   "value": null,
+   "confidence": 0.3
+  },
+  "mere_age": {
+   "raw": "Mère :",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_profession": {
+   "raw": "Père : CHAUFFEUR",
+   "value": "CHAUFFEUR",
+   "confidence": 0.94
+  },
+  "mere_profession": {
+   "raw": "Mère :",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_domicile": {
+   "raw": "Père : PARAKOU",
+   "value": "Parakou",
+   "confidence": 0.94
+  },
+  "mere_domicile": {
+   "raw": "Mère : PARAKOU",
+   "value": "Parakou",
+   "confidence": 0.94
+  },
+  "declarant": {
+   "raw": "MINISTERE PUBLIC",
+   "value": "MINISTERE PUBLIC",
+   "confidence": 0.93
+  },
+  "date_naissance": {
+   "raw": "11 août 1993",
+   "value": "1993-08-11",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "Com. : GOGOUNOU",
+   "value": "Gogounou",
+   "confidence": 0.94
+  },
+  "date_declaration": {
+   "raw": "30 avril 2018",
+   "value": "2018-04-30",
+   "confidence": 0.95
+  },
+  "lieu_etablissement": {
+   "raw": "FAIT à GOGOUNOU",
+   "value": "Gogounou",
+   "confidence": 0.92
+  },
+  "date_delivrance": {
+   "raw": "le 05/07/2025",
+   "value": "2025-07-05",
+   "confidence": 0.92
+  },
+  "signature_note": {
+   "raw": "ILLISIBLE",
+   "value": "ILLISIBLE",
+   "confidence": 0.85
+  }
+ },
+ "fields": {
+  "reference": {
+   "raw": "RED N° 580 /TPI-KDI /PR/KDI/ 2018",
+   "value": "RED N° 580 /TPI-KDI /PR/KDI/ 2018",
+   "confidence": 0.95
+  },
+  "acte_reference": {
+   "raw": "451/GOG",
+   "value": "451/GOG",
+   "confidence": 0.93
+  },
+  "volet_numero": {
+   "raw": "VOLET N° 1",
+   "value": "1",
+   "confidence": 0.95
+  },
+  "commune": {
+   "raw": "COMMUNE DE GOGOUNOU",
+   "value": "Gogounou",
+   "confidence": 0.95
+  },
+  "officier_nom": {
+   "raw": "GOUNIGNAN MOUTAWAKIROU",
+   "value": "GOUNIGNAN MOUTAWAKIROU",
+   "confidence": 0.95
+  },
+  "officier_fonction": {
+   "raw": "Maire de la commune de GOGOUNOU",
+   "value": "Maire de la commune de Gogounou",
+   "confidence": 0.93
+  },
+  "enfant_nom": {
+   "raw": "SANNI",
+   "value": "SANNI",
+   "confidence": 0.96
+  },
+  "enfant_prenoms": {
+   "raw": "CABIROU",
+   "value": "CABIROU",
+   "confidence": 0.96
+  },
+  "sexe": {
+   "raw": "MASCULIN",
+   "value": "Masculin",
+   "confidence": 0.97
+  },
+  "pere_nom": {
+   "raw": "Père : SANNI GOUDA",
+   "value": "SANNI GOUDA",
+   "confidence": 0.94
+  },
+  "mere_nom": {
+   "raw": "Mère : SABI MARIA",
+   "value": "SABI MARIA",
+   "confidence": 0.94
+  },
+  "pere_age": {
+   "raw": "Père :",
+   "value": null,
+   "confidence": 0.3
+  },
+  "mere_age": {
+   "raw": "Mère :",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_profession": {
+   "raw": "Père : CHAUFFEUR",
+   "value": "CHAUFFEUR",
+   "confidence": 0.94
+  },
+  "mere_profession": {
+   "raw": "Mère :",
+   "value": null,
+   "confidence": 0.3
+  },
+  "pere_domicile": {
+   "raw": "Père : PARAKOU",
+   "value": "Parakou",
+   "confidence": 0.94
+  },
+  "mere_domicile": {
+   "raw": "Mère : PARAKOU",
+   "value": "Parakou",
+   "confidence": 0.94
+  },
+  "declarant": {
+   "raw": "MINISTERE PUBLIC",
+   "value": "MINISTERE PUBLIC",
+   "confidence": 0.93
+  },
+  "date_naissance": {
+   "raw": "11 août 1993",
+   "value": "1993-08-11",
+   "confidence": 0.95
+  },
+  "lieu_naissance": {
+   "raw": "Com. : GOGOUNOU",
+   "value": "Gogounou",
+   "confidence": 0.94
+  },
+  "date_declaration": {
+   "raw": "30 avril 2018",
+   "value": "2018-04-30",
+   "confidence": 0.95
+  },
+  "lieu_etablissement": {
+   "raw": "FAIT à GOGOUNOU",
+   "value": "Gogounou",
+   "confidence": 0.92
+  },
+  "date_delivrance": {
+   "raw": "le 05/07/2025",
+   "value": "2025-07-05",
+   "confidence": 0.92
+  },
+  "signature_note": {
+   "raw": "ILLISIBLE",
+   "value": "ILLISIBLE",
+   "confidence": 0.85
+  }
+ }
+}

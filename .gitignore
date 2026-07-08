@@ -1,0 +1,17 @@
+# Local secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Pipeline output & local data
+runs/
+uploads/
+data/
+demo/
+gabon-ocr/
+samples/
+*.zip
+.claude/

@@ -1,0 +1,21 @@
+{ "id": "ci_copie_v1", "detect_keyword": "COPIE INTEGRALE",
+  "match": { "min_score": 78, "min_score_short": 85, "min_anchors": 5 },
+  "anchors": [
+    { "id": "republique", "label": "REPUBLIQUE DE COTE D'IVOIRE",     "rel_y": 0.0 },
+    { "id": "copie",      "label": "COPIE INTEGRALE",                 "rel_y": 0.088 },
+    { "id": "registre",   "label": "DU REGISTRE DES ACTES",           "rel_y": 0.127 },
+    { "id": "annee",      "label": "POUR L'ANNEE",                    "rel_y": 0.148 },
+    { "id": "pere_sec",   "label": "Ayant pour père",                 "rel_y": 0.296 },
+    { "id": "mere_sec",   "label": "Et pour mère",                    "rel_y": 0.381 },
+    { "id": "dresse",     "label": "Dressé le",                       "rel_y": 0.446 },
+    { "id": "averti",     "label": "Après que le déclarant",          "rel_y": 0.532 },
+    { "id": "certif",     "label": "Pour copie certifiée conforme",   "rel_y": 0.841 }
+  ],
+  "fields": [
+    { "name": "entete",              "kind": "right_of", "anchor": "annee",    "until": "annee" },
+    { "name": "naissance_narrative", "kind": "band",     "anchor": "annee",    "until": "pere_sec", "include_anchor_line": false },
+    { "name": "pere_narrative",      "kind": "band",     "anchor": "pere_sec", "until": "mere_sec", "include_anchor_line": true },
+    { "name": "mere_narrative",      "kind": "band",     "anchor": "mere_sec", "until": "dresse",   "include_anchor_line": true },
+    { "name": "dresse_narrative",    "kind": "band",     "anchor": "dresse",   "until": "averti",   "include_anchor_line": true },
+    { "name": "certification",       "kind": "band",     "anchor": "certif",   "until": "none",     "include_anchor_line": true, "pad": 30 }
+  ]}

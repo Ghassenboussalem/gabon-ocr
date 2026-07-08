@@ -1,0 +1,4 @@
+{ "code": "ci", "name": "Côte d'Ivoire",
+  "detect_keywords": ["COTE D'IVOIRE"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Copie intégrale ivoirienne: les données sont dans un TEXTE NARRATIF en paragraphes délimités par ====. Paragraphe 1: date, heure, lieu de naissance, prénom de l'enfant, sexe. 'Ayant pour père:' puis 'Et pour mère:' donnent nom, date et lieu de naissance, profession, domicile de chaque parent ('sans' = sans profession). 'Dressé le' donne la date d'établissement, le déclarant et l'officier. La marge gauche donne le centre, la référence (n° DU date) et NAISSANCE DE <nom de l'enfant>." }

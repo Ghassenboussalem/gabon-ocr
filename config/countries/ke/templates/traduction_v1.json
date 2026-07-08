@@ -1,0 +1,30 @@
+{ "id": "ke_traduction_v1", "detect_keyword": "REPUBLIQUE DU KENYA",
+  "match": { "min_score": 78, "min_score_short": 85, "min_anchors": 6 },
+  "anchors": [
+    { "id": "republique", "label": "REPUBLIQUE DU KENYA",         "rel_y": 0.0 },
+    { "id": "header",     "label": "ACTE DE NAISSANCE",           "rel_y": 0.04 },
+    { "id": "naissance_a","label": "Naissance à",                 "rel_y": 0.11 },
+    { "id": "lieu_l",     "label": "Lieu de Naissance",           "rel_y": 0.16 },
+    { "id": "date_l",     "label": "Date de Naissance",           "rel_y": 0.21 },
+    { "id": "jeune_fille","label": "Prénom et Nom de Jeune Fille de la Mère", "rel_y": 0.26 },
+    { "id": "residence",  "label": "Lieu de Résidence du Déclarant", "rel_y": 0.30 },
+    { "id": "officier_l", "label": "Signature de l'Officier",     "rel_y": 0.335 },
+    { "id": "bapteme",    "label": "Nom de Baptême",              "rel_y": 0.375 },
+    { "id": "copie",      "label": "Copie certifiée conforme",    "rel_y": 0.42 },
+    { "id": "cachet",     "label": "Document portant le cachet",  "rel_y": 0.465 },
+    { "id": "certificat", "label": "Le présent certificat",       "rel_y": 0.53 },
+    { "id": "dactylo",    "label": "Dactylographié par",          "rel_y": 0.66 },
+    { "id": "droits",     "label": "Droits Perçus",               "rel_y": 0.72 }
+  ],
+  "fields": [
+    { "name": "entete",     "kind": "band",     "anchor": "republique", "until": "naissance_a", "include_anchor_line": true },
+    { "name": "naissance_a","kind": "right_of", "anchor": "naissance_a","until": "lieu_l" },
+    { "name": "row1",       "kind": "band",     "anchor": "lieu_l",     "until": "date_l",      "include_anchor_line": true },
+    { "name": "row2",       "kind": "band",     "anchor": "date_l",     "until": "jeune_fille", "include_anchor_line": true },
+    { "name": "row3",       "kind": "band",     "anchor": "jeune_fille","until": "residence",   "include_anchor_line": true },
+    { "name": "row4",       "kind": "band",     "anchor": "residence",  "until": "officier_l",  "include_anchor_line": true },
+    { "name": "row5",       "kind": "band",     "anchor": "officier_l", "until": "bapteme",     "include_anchor_line": true },
+    { "name": "bapteme",    "kind": "band",     "anchor": "bapteme",    "until": "copie",       "include_anchor_line": true },
+    { "name": "delivrance", "kind": "band",     "anchor": "cachet",     "until": "certificat",  "include_anchor_line": true },
+    { "name": "pied",       "kind": "band",     "anchor": "dactylo",    "until": "droits",      "include_anchor_line": true }
+  ]}

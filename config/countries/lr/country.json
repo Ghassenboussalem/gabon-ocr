@@ -1,0 +1,4 @@
+{ "code": "lr", "name": "Libéria",
+  "detect_keywords": ["REPUBLIQUE DU LIBERIA", "LIBERIA"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Traduction française d'un acte libérien: lignes 'Étiquette : valeur soulignée'. Le numéro d'enregistrement embarque l'année (30-LM2010...). Enregistrements très tardifs fréquents (reconstruction post-guerre)." }

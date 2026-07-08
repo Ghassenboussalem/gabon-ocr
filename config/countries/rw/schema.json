@@ -1,0 +1,15 @@
+{ "document": "acte_naissance_rwanda", "fields": [
+ { "name": "date_acte",          "fr": "Date de l'acte (L'an ... le ... jour du mois de ...)", "type": "date", "from": "acte_block" },
+ { "name": "officier",           "fr": "Officier de l'état civil (devant Nous ...)",  "type": "name",  "from": "acte_block" },
+ { "name": "lieu_etat_civil",    "fr": "Lieu du bureau de l'état civil (à ...)",      "type": "place", "from": "acte_block" },
+ { "name": "comparant",          "fr": "Personne qui a comparu (le nommé/la nommée)", "type": "name",  "from": "comparant_block" },
+ { "name": "comparant_qualite",  "fr": "Qualité du comparant (ex: représentant de son frère X)", "type": "text", "from": "comparant_block" },
+ { "name": "enfant_nom",         "fr": "Nom de la personne dont la naissance est déclarée",      "type": "name", "from": "comparant_block" },
+ { "name": "comparant_profession","fr": "Profession du comparant",                    "type": "text",  "from": "milieu_block" },
+ { "name": "comparant_domicile", "fr": "Domicile/résidence du comparant",             "type": "place", "from": "milieu_block" },
+ { "name": "date_naissance",     "fr": "Date de naissance (que le ... jour du mois de ... de l'an ...)", "type": "date", "from": "naissance_block" },
+ { "name": "lieu_naissance",     "fr": "Lieu de naissance (est né à ...)",            "type": "place", "from": "naissance_block" },
+ { "name": "pere_nom",           "fr": "Père (havuse i / de ... Monsieur ...)",       "type": "name",  "from": "naissance_block" },
+ { "name": "numero_acte",        "fr": "N° de l'acte en marge (ex: 170/2013)",        "type": "text",  "from": "marge" },
+ { "name": "volume",             "fr": "Volume en marge (ex: I/2013)",                "type": "text",  "from": "marge" }
+]}

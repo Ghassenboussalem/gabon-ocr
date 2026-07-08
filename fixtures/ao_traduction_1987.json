@@ -1,0 +1,236 @@
+{
+ "page": {
+  "numero_acte_lettres": {
+   "raw": "N° Deux mille quatre cents vingt-sept",
+   "value": "Deux mille quatre cents vingt-sept",
+   "confidence": 0.93
+  },
+  "numero_acte_marge": {
+   "raw": "Acte n° 2427",
+   "value": "2427",
+   "confidence": 0.93
+  },
+  "enfant_nom": {
+   "raw": "Josué Manuel Nsundu",
+   "value": "Josué Manuel Nsundu",
+   "confidence": 0.95
+  },
+  "date_naissance": {
+   "raw": "le sept juin mille neuf cent quatre-vingt-sept",
+   "value": "1987-06-07",
+   "confidence": 0.94
+  },
+  "heure_naissance": {
+   "raw": "À cinq heures et vingt minutes",
+   "value": "05:20",
+   "confidence": 0.9
+  },
+  "lieu_naissance": {
+   "raw": "Bairro Cazenga, commune de Cazenga, Province de Luanda",
+   "value": "Bairro Cazenga, Luanda",
+   "confidence": 0.92
+  },
+  "sexe": {
+   "raw": "sexe masculin",
+   "value": "Masculin",
+   "confidence": 0.95
+  },
+  "pere_nom": {
+   "raw": "fils d'António Nsundu",
+   "value": "António Nsundu",
+   "confidence": 0.93
+  },
+  "pere_profession": {
+   "raw": "paysan",
+   "value": "paysan",
+   "confidence": 0.9
+  },
+  "pere_origine": {
+   "raw": "originaire de Damba",
+   "value": "Damba",
+   "confidence": 0.9
+  },
+  "mere_nom": {
+   "raw": "et d'Emília Maluta",
+   "value": "Emília Maluta",
+   "confidence": 0.93
+  },
+  "mere_profession": {
+   "raw": "femme au foyer",
+   "value": "femme au foyer",
+   "confidence": 0.9
+  },
+  "mere_origine": {
+   "raw": "originaire de Damba",
+   "value": "Damba",
+   "confidence": 0.9
+  },
+  "parents_domicile": {
+   "raw": "domiciliés à Luanda – Bairro Cazenga",
+   "value": "Luanda – Bairro Cazenga",
+   "confidence": 0.9
+  },
+  "gp_paternels": {
+   "raw": "Afonso Ntalu et Landu Muanza",
+   "value": "Afonso Ntalu et Landu Muanza",
+   "confidence": 0.88
+  },
+  "gp_maternels": {
+   "raw": "Kiame Mazekilu et Mungua Nguidi",
+   "value": "Kiame Mazekilu et Mungua Nguidi",
+   "confidence": 0.88
+  },
+  "declarant": {
+   "raw": "déclaration faite par la propre personne enregistrée",
+   "value": "la propre personne enregistrée",
+   "confidence": 0.9
+  },
+  "temoins": {
+   "raw": "Francisco Adão et Mateus André",
+   "value": "Francisco Adão et Mateus André",
+   "confidence": 0.88
+  },
+  "officier": {
+   "raw": "et par moi Alexandre Miguel, Officier de l'État Civil",
+   "value": "Alexandre Miguel",
+   "confidence": 0.92
+  },
+  "date_enregistrement": {
+   "raw": "le vingt-quatre juillet deux mille six",
+   "value": "2006-07-24",
+   "confidence": 0.93
+  },
+  "heure_enregistrement": {
+   "raw": "à onze heures et vingt-cinq minutes",
+   "value": "11:25",
+   "confidence": 0.88
+  },
+  "releve_numero": {
+   "raw": "sous le n° 10.025",
+   "value": "10.025",
+   "confidence": 0.9
+  },
+  "annotations": {
+   "raw": "Rectifications art.117 n°3: père = Nsundu Antonio (15/05/2017); mère = Maluta Emilia + grands-parents (07/12/2018)",
+   "value": "Rectifications 2017 et 2018 (noms du père et de la mère)",
+   "confidence": 0.85
+  }
+ },
+ "fields": {
+  "numero_acte_lettres": {
+   "raw": "N° Deux mille quatre cents vingt-sept",
+   "value": "Deux mille quatre cents vingt-sept",
+   "confidence": 0.93
+  },
+  "numero_acte_marge": {
+   "raw": "Acte n° 2427",
+   "value": "2427",
+   "confidence": 0.93
+  },
+  "enfant_nom": {
+   "raw": "Josué Manuel Nsundu",
+   "value": "Josué Manuel Nsundu",
+   "confidence": 0.95
+  },
+  "date_naissance": {
+   "raw": "le sept juin mille neuf cent quatre-vingt-sept",
+   "value": "1987-06-07",
+   "confidence": 0.94
+  },
+  "heure_naissance": {
+   "raw": "À cinq heures et vingt minutes",
+   "value": "05:20",
+   "confidence": 0.9
+  },
+  "lieu_naissance": {
+   "raw": "Bairro Cazenga, commune de Cazenga, Province de Luanda",
+   "value": "Bairro Cazenga, Luanda",
+   "confidence": 0.92
+  },
+  "sexe": {
+   "raw": "sexe masculin",
+   "value": "Masculin",
+   "confidence": 0.95
+  },
+  "pere_nom": {
+   "raw": "fils d'António Nsundu",
+   "value": "António Nsundu",
+   "confidence": 0.93
+  },
+  "pere_profession": {
+   "raw": "paysan",
+   "value": "paysan",
+   "confidence": 0.9
+  },
+  "pere_origine": {
+   "raw": "originaire de Damba",
+   "value": "Damba",
+   "confidence": 0.9
+  },
+  "mere_nom": {
+   "raw": "et d'Emília Maluta",
+   "value": "Emília Maluta",
+   "confidence": 0.93
+  },
+  "mere_profession": {
+   "raw": "femme au foyer",
+   "value": "femme au foyer",
+   "confidence": 0.9
+  },
+  "mere_origine": {
+   "raw": "originaire de Damba",
+   "value": "Damba",
+   "confidence": 0.9
+  },
+  "parents_domicile": {
+   "raw": "domiciliés à Luanda – Bairro Cazenga",
+   "value": "Luanda – Bairro Cazenga",
+   "confidence": 0.9
+  },
+  "gp_paternels": {
+   "raw": "Afonso Ntalu et Landu Muanza",
+   "value": "Afonso Ntalu et Landu Muanza",
+   "confidence": 0.88
+  },
+  "gp_maternels": {
+   "raw": "Kiame Mazekilu et Mungua Nguidi",
+   "value": "Kiame Mazekilu et Mungua Nguidi",
+   "confidence": 0.88
+  },
+  "declarant": {
+   "raw": "déclaration faite par la propre personne enregistrée",
+   "value": "la propre personne enregistrée",
+   "confidence": 0.9
+  },
+  "temoins": {
+   "raw": "Francisco Adão et Mateus André",
+   "value": "Francisco Adão et Mateus André",
+   "confidence": 0.88
+  },
+  "officier": {
+   "raw": "et par moi Alexandre Miguel, Officier de l'État Civil",
+   "value": "Alexandre Miguel",
+   "confidence": 0.92
+  },
+  "date_enregistrement": {
+   "raw": "le vingt-quatre juillet deux mille six",
+   "value": "2006-07-24",
+   "confidence": 0.93
+  },
+  "heure_enregistrement": {
+   "raw": "à onze heures et vingt-cinq minutes",
+   "value": "11:25",
+   "confidence": 0.88
+  },
+  "releve_numero": {
+   "raw": "sous le n° 10.025",
+   "value": "10.025",
+   "confidence": 0.9
+  },
+  "annotations": {
+   "raw": "Rectifications art.117 n°3: père = Nsundu Antonio (15/05/2017); mère = Maluta Emilia + grands-parents (07/12/2018)",
+   "value": "Rectifications 2017 et 2018 (noms du père et de la mère)",
+   "confidence": 0.85
+  }
+ }
+}

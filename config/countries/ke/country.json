@@ -1,0 +1,4 @@
+{ "code": "ke", "name": "Kenya",
+  "detect_keywords": ["REPUBLIQUE DU KENYA"],
+  "checks": { "cnin_date": false, "reference_year": true },
+  "prompt_hint": "Traduction française d'un acte kényan, mise en page en cases. Le n° d'acte est de la forme NNNNNNN/AAAA (l'année doit égaler celle de l'enregistrement). 'Nom' = nom de l'enfant; le déclarant est décrit par sa qualité (ex: Sage-femme). Une date de délivrance en toutes lettres peut suivre ('le seizième jour de septembre 1987')." }

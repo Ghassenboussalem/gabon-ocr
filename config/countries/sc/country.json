@@ -1,0 +1,4 @@
+{ "code": "sc", "name": "Seychelles",
+  "detect_keywords": ["REPUBLIQUE DES SEYCHELLES"],
+  "checks": { "cnin_date": false, "reference_year": false },
+  "prompt_hint": "Extrait des Seychelles: TABLEAU à colonnes (souvent scanné en paysage, l'orientation est corrigée en amont). Colonnes: N°, Date et lieu de naissance (heure + jour en toutes lettres), Nom et prénom(s), Sexe, Naturel ou légitime, parents (nom/profession/adresse), déclarant, témoins, Entrée marginale. La certification et l'apostille sont sous le tableau. La date de la déclaration peut être en toutes lettres à la fin ('quatorze juillet mille neuf cent quatre-vingt-sept')." }

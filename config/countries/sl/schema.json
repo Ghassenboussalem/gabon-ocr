@@ -1,0 +1,18 @@
+{ "document": "traduction_acte_sierra_leone", "fields": [
+ { "name": "certificat_numero","fr": "Certificat numéro ('---' = null)", "type": "text",  "from": "cert_num" },
+ { "name": "enfant_nom",       "fr": "Nom complet de l'enfant",          "type": "name",  "from": "nom_enfant" },
+ { "name": "sexe",             "fr": "Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "sexe" },
+ { "name": "mere_nom",         "fr": "Nom complet de la mère",           "type": "name",  "from": "nom_mere" },
+ { "name": "mere_nationalite", "fr": "Nationalité de la mère",           "type": "text",  "from": "nat_mere" },
+ { "name": "pere_nom",         "fr": "Nom complet du père",              "type": "name",  "from": "nom_pere" },
+ { "name": "pere_nationalite", "fr": "Nationalité du père",              "type": "text",  "from": "nat_pere" },
+ { "name": "date_naissance",   "fr": "Date de naissance (avec heure)",   "type": "date",  "from": "date_naissance" },
+ { "name": "heure_naissance",  "fr": "Heure (à ... heures ...)",         "type": "time",  "from": "date_naissance" },
+ { "name": "lieu_naissance",   "fr": "Lieu de naissance (adresse, ville)","type": "place", "from": "lieu_naissance" },
+ { "name": "registre_numero",  "fr": "enregistrée ... sous le numéro ...","type": "text",  "from": "enregistrement" },
+ { "name": "registre_page",    "fr": "de la page ...",                   "type": "text",  "from": "enregistrement" },
+ { "name": "registre_volume",  "fr": "du volume ...",                    "type": "text",  "from": "enregistrement" },
+ { "name": "lieu_enregistrement","fr": "enregistrée à ...",              "type": "place", "from": "enregistrement" },
+ { "name": "date_delivrance",  "fr": "Délivré le",                       "type": "date",  "from": "delivrance" },
+ { "name": "officier",         "fr": "Directeur de l'état civil de ...", "type": "text",  "from": "timbre" }
+]}
