@@ -43,6 +43,12 @@ from pipeline.vlm_locate import vlm_locate
 
 
 def main() -> None:
+    # Windows consoles default to cp1252; validation messages may contain
+    # characters it can't encode (e.g. '≠') — degrade to '?' instead of crashing
+    import sys
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
+
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("input")
     ap.add_argument("--out", default=None, help="output dir (default runs/<stem>)")

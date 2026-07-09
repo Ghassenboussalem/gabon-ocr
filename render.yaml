@@ -11,6 +11,10 @@ services:
     envVars:
       - key: GEMINI_API_KEY
         sync: false        # entered securely in the dashboard
+      - key: GEMINI_API_KEY_2
+        sync: false        # optional fallback key (leave empty if none)
+      - key: GEMINI_API_KEY_3
+        sync: false        # optional fallback key (leave empty if none)
       - key: APP_PASSWORD
         sync: false        # optional; leave empty to keep the app open
       - key: PIPELINE_BACKEND

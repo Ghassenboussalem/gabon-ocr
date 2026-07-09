@@ -20,12 +20,28 @@ from __future__ import annotations
 
 import json
 import unicodedata
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from rapidfuzz import fuzz
 
 from .locate import LocateResult
 from .vlm_client import MockClient, extract_json
+
+# Extraction is perception, not reasoning: unbounded "thinking" on 2.5-class
+# models burns thousands of reasoning tokens per call (~23s/crop measured) for
+# no accuracy gain on a read-this-strip task. Crops get a hard cap; the page
+# pass keeps a modest budget (it benefits from light cross-field reasoning,
+# e.g. converting dates written out in words).
+PAGE_MAX_TOKENS = 8192
+PAGE_THINKING_BUDGET = 1024
+CROP_MAX_TOKENS = 2048
+CROP_THINKING_BUDGET = 0    # crops are pure transcription; 0 also suits flash-lite
+# several crops ride in ONE call (multi-image): a 22-region document costs
+# ~5 crop calls instead of ~20 — the difference between blowing a free-tier
+# RPM/RPD quota and fitting inside it. Batches still run concurrently.
+CROP_BATCH_SIZE = 5
+CROP_WORKERS = 4
 
 SYSTEM = (
     "Tu es un agent d'état civil expert en lecture d'actes de naissance gabonais "
@@ -44,9 +60,11 @@ Champs à extraire (nom -> description):
 
 Réponds avec un unique objet JSON dont les clés sont exactement les noms de champs ci-dessus."""
 
-CROP_PROMPT = """Cette image est découpée d'un acte de naissance gabonais. Elle contient la ou les valeurs manuscrites suivantes (l'étiquette imprimée peut être visible, ne la transcris pas):
-{fields}
-Retourne un objet JSON {{nom_du_champ: {{"raw": "...", "value": ..., "confidence": 0.0-1.0}}}} pour chaque champ listé. "value" null si illisible ou absent. Dates normalisées en AAAA-MM-JJ, heures en HH:MM. N'invente rien."""
+CROP_PROMPT = """Voici {n} image(s) découpée(s) du même acte de naissance. Chaque image contient les valeurs manuscrites ou dactylographiées des champs listés ci-dessous (l'étiquette imprimée peut être visible, ne la transcris pas). Les images sont fournies dans l'ordre de la liste.
+
+{listing}
+
+Retourne UN SEUL objet JSON couvrant tous les champs listés: {{nom_du_champ: {{"raw": "...", "value": ..., "confidence": 0.0-1.0}}}}. "value" null si illisible ou absent. Dates normalisées en AAAA-MM-JJ, heures en HH:MM. N'invente rien."""
 
 
 def _norm_val(v) -> str:
@@ -100,35 +118,52 @@ def run_extraction(
         if prompt_hint:
             prompt = prompt_hint + "\n\n" + prompt
         raw = client.chat(prompt, images=[page_image], system=SYSTEM,
-                          max_tokens=8192, thinking_budget=2048)
+                          max_tokens=PAGE_MAX_TOKENS, thinking_budget=PAGE_THINKING_BUDGET)
         page = {k: _coerce(v) for k, v in extract_json(raw).items()}
 
     # ---------------- PASS 2: located crops ----------------
     crops: dict[str, dict] = {}
-    regions_iter = by_region.items() if use_crops else []
-    for region, fields in regions_iter:
-        fb = crop_by_region.get(region)
-        if fb is None or not fb.crop_path:
-            continue
-        if isinstance(client, MockClient):
+    regions_iter = [(r, fs) for r, fs in by_region.items()
+                    if use_crops and (fb := crop_by_region.get(r)) is not None and fb.crop_path]
+    if isinstance(client, MockClient):
+        for region, fields in regions_iter:
             for f in fields:
                 fx = client.fixture.get("fields", {}).get(f["name"])
                 if fx is not None:
                     crops[f["name"]] = _coerce(fx)
-            continue
-        listing = "\n".join(f'- {f["name"]}: {f["fr"]}' for f in fields)
-        try:
-            prompt = CROP_PROMPT.format(fields=listing)
+    elif regions_iter:
+        batches = [regions_iter[i:i + CROP_BATCH_SIZE]
+                   for i in range(0, len(regions_iter), CROP_BATCH_SIZE)]
+
+        def _read_batch(batch) -> tuple[dict, dict]:
+            """A batch of region crops -> ({field: coerced}, {field: error_stub})."""
+            images = [crop_by_region[region].crop_path for region, _ in batch]
+            listing = "\n\n".join(
+                f"Image {i + 1}:\n" + "\n".join(f'- {f["name"]}: {f["fr"]}' for f in fields)
+                for i, (_, fields) in enumerate(batch)
+            )
+            prompt = CROP_PROMPT.format(n=len(batch), listing=listing)
             if prompt_hint:
                 prompt = prompt_hint + "\n\n" + prompt
-            raw = client.chat(prompt, images=[fb.crop_path], system=SYSTEM,
-                              max_tokens=4096, thinking_budget=1024)
-            for k, v in extract_json(raw).items():
-                crops[k] = _coerce(v)
-        except Exception as e:  # a failed crop pass degrades gracefully to page-only
-            for f in fields:
-                crops.setdefault(f["name"], {"raw": "", "value": None, "confidence": 0.0,
-                                             "error": str(e)})
+            try:
+                raw = client.chat(prompt, images=images, system=SYSTEM,
+                                  max_tokens=CROP_MAX_TOKENS,
+                                  thinking_budget=CROP_THINKING_BUDGET)
+                return {k: _coerce(v) for k, v in extract_json(raw).items()}, {}
+            except Exception as e:  # a failed batch degrades gracefully to page-only
+                return {}, {f["name"]: {"raw": "", "value": None, "confidence": 0.0,
+                                        "error": str(e)}
+                            for _, fields in batch for f in fields}
+
+        with ThreadPoolExecutor(max_workers=CROP_WORKERS) as pool:
+            results = list(pool.map(_read_batch, batches))
+        # merge in stable batch order so behavior matches the old sequential loop:
+        # successful reads overwrite, error stubs only fill gaps
+        for values, errors in results:
+            for k, v in values.items():
+                crops[k] = v
+            for k, v in errors.items():
+                crops.setdefault(k, v)
 
     # ---------------- CONSENSUS ----------------
     merged: dict[str, dict] = {}

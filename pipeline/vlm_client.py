@@ -137,6 +137,23 @@ def _post(url: str, payload: dict, headers: dict | None = None, timeout: int = 3
         except urllib.error.HTTPError as e:
             if e.code in (429, 503) and attempt < max_retries:
                 wait = 2 ** (attempt + 1)   # 2, 4, 8, 16 seconds
+                # Google's 429 body carries a retryDelay hint (e.g. "36s") —
+                # honoring it beats blind exponential backoff under RPM limits.
+                # A DAILY quota violation cannot be waited out: fail fast so
+                # the caller can rotate to a fallback API key instead.
+                try:
+                    body = json.loads(e.read().decode())
+                    for d in body.get("error", {}).get("details", []):
+                        for v in d.get("violations", []):
+                            if "PerDay" in str(v.get("quotaId", "")):
+                                raise e
+                        delay = str(d.get("retryDelay", ""))
+                        if delay.endswith("s") and delay[:-1].replace(".", "").isdigit():
+                            wait = max(wait, min(70, int(float(delay[:-1])) + 1))
+                except urllib.error.HTTPError:
+                    raise
+                except Exception:
+                    pass
                 time.sleep(wait)
                 continue
             raise
@@ -214,13 +231,27 @@ class GeminiClient:
 
     def __init__(self, model: str = "gemini-2.5-flash", api_key: str | None = None):
         import os
+        import threading
 
         self.model = model
-        self.api_key = api_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-        if not self.api_key:
+        # key fallback chain: explicit --api-key first, then GEMINI_API_KEY,
+        # GEMINI_API_KEY_2..5, GOOGLE_API_KEY. When a key's quota is exhausted
+        # (persistent 429), chat() rotates to the next one.
+        keys = [api_key] if api_key else []
+        keys.append(os.environ.get("GEMINI_API_KEY"))
+        keys += [os.environ.get(f"GEMINI_API_KEY_{i}") for i in range(2, 6)]
+        keys.append(os.environ.get("GOOGLE_API_KEY"))
+        self.keys = list(dict.fromkeys(k for k in keys if k))
+        if not self.keys:
             raise ValueError(
                 "Gemini backend needs an API key: pass --api-key or set GEMINI_API_KEY"
             )
+        self._key_i = 0
+        self._key_lock = threading.Lock()
+
+    @property
+    def api_key(self) -> str:  # kept for backward compatibility
+        return self.keys[self._key_i]
 
     def chat(self, prompt: str, images: list = (), system: str | None = None,
              max_tokens: int | None = None, thinking_budget: int | None = None) -> str:
@@ -243,11 +274,35 @@ class GeminiClient:
         }
         if system:
             payload["system_instruction"] = {"parts": [{"text": system}]}
-        out = _post(
-            f"{self.API}/{self.model}:generateContent",
-            payload,
-            headers={"x-goog-api-key": self.api_key},
-        )
+
+        import urllib.error
+
+        out = None
+        last_err: Exception | None = None
+        for _ in range(len(self.keys)):
+            with self._key_lock:
+                i = self._key_i
+            try:
+                out = _post(
+                    f"{self.API}/{self.model}:generateContent",
+                    payload,
+                    headers={"x-goog-api-key": self.keys[i]},
+                )
+                break
+            except urllib.error.HTTPError as e:
+                if e.code == 429 and len(self.keys) > 1:
+                    # quota exhausted on this key -> rotate to the next one
+                    # (concurrent threads race here; only the first advances)
+                    with self._key_lock:
+                        if self._key_i == i:
+                            self._key_i = (i + 1) % len(self.keys)
+                            print(f"      gemini: cle {i + 1} epuisee (429) -> "
+                                  f"bascule vers cle {self._key_i + 1}")
+                    last_err = e
+                    continue
+                raise
+        if out is None:
+            raise last_err if last_err else RuntimeError("no Gemini key available")
         cands = out.get("candidates") or []
         if not cands:
             raise RuntimeError(f"Gemini returned no candidates: {json.dumps(out)[:300]}")
