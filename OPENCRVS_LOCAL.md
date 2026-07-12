@@ -77,6 +77,13 @@ La déclaration pré-remplie apparaît dans la file **Notifications**
 - **countryconfig crash TypeScript** (`replaceAll ... type error`) : bug du code
   EY-DPI ; le script `/root/run_countryconfig.sh` contient déjà
   `TS_NODE_TRANSPILE_ONLY=true` qui le contourne.
+- **Un seul service en panne** (ex. gateway à 000, le reste à 200) : nodemon
+  affiche « app crashed - waiting for file changes ». Le relancer seul en
+  touchant un fichier source (pas besoin de tout redémarrer) :
+  ```powershell
+  wsl -d ubuntu-opencrvs -u root -- touch /opt/opencrvs/opencrvs-core/packages/gateway/src/index.ts
+  ```
+  (remplacer `gateway` par le nom du service en panne)
 - **JAMAIS `pkill -f node` dans la distro** pendant que le stack tourne :
   ça tue aussi les services core (leçon apprise…). Pour tout redémarrer
   proprement :
