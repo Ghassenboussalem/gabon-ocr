@@ -26,6 +26,7 @@ wsl -d ubuntu-opencrvs -u root -- bash -c "cd /opt/opencrvs/opencrvs-core && doc
 ```powershell
 Start-ScheduledTask opencrvs-services        # ~3-4 min de démarrage
 Start-ScheduledTask opencrvs-countryconfig   # lancer ~1 min après
+Start-ScheduledTask opencrvs-login           # page de connexion :3020
 ```
 
 **4. Attendre le vert** — tout doit répondre 200 :
@@ -35,6 +36,7 @@ curl.exe -s -o NUL -w "auth: %{http_code}`n"          http://localhost:4040/ping
 curl.exe -s -o NUL -w "gateway: %{http_code}`n"       http://localhost:7070/ping
 curl.exe -s -o NUL -w "client: %{http_code}`n"        http://localhost:3000
 curl.exe -s -o NUL -w "countryconfig: %{http_code}`n" http://localhost:3040/ping
+curl.exe -s -o NUL -w "login: %{http_code}`n"         http://localhost:3020
 ```
 
 **5. Se connecter** : http://localhost:3020 (Chrome)
