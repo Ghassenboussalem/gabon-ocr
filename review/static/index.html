@@ -59,6 +59,9 @@
         vertical-align:-1px;margin-right:6px}
   @keyframes sp{to{transform:rotate(360deg)}}
   a.open{color:var(--ink);font-weight:600;font-size:13px}
+  button.mini{font:inherit;font-size:12px;padding:4px 10px;border:1.5px solid var(--green);
+              color:var(--green);background:#fff;border-radius:3px;cursor:pointer;margin-right:8px}
+  button.mini:disabled{opacity:.5;cursor:wait}
   .empty{color:var(--ink-soft);padding:22px;text-align:center;font-size:14px}
   @media (prefers-reduced-motion: reduce){.spin{animation:none}}
 </style>
@@ -113,12 +116,14 @@ function toast(msg){
 
 async function loadConfig(){
   const c = await (await fetch('/api/config')).json();
+  S.opencrvs = !!c.opencrvs_configured;
   document.getElementById('maxmb').textContent = c.max_upload_mb;
   if(c.backend === 'gemini' && !c.gemini_key_present){
     const b = document.getElementById('banner');
     b.textContent = "⚠ GEMINI_API_KEY manquante — les documents seront localisés mais pas extraits. Configurez la clé puis redémarrez.";
     b.style.display = 'block';
   }
+  refresh();
 }
 
 /* ---------- upload ---------- */
@@ -190,9 +195,16 @@ async function refresh(){
     const st = r.corrected ? chip('ok','TRAITÉ')
              : r.status === 'auto_accepted' ? chip('ok','AUTO-ACCEPTÉ')
              : chip('rev', r.review_count + ' À VÉRIFIER');
+    let crvs = '';
+    if(r.opencrvs){
+      crvs = `<span class="chip ok" title="event ${r.opencrvs.event_id} — ${r.opencrvs.prefilled} champs préremplis">CRVS ✓</span>`;
+    } else if(S.opencrvs){
+      crvs = `<button class="mini" onclick="sendToOpencrvs('${r.doc_id.replace(/'/g,'')}', this)">→ OpenCRVS</button>`;
+    }
     rows.push(`<tr><td class="doc">${r.doc_id}</td><td>${st}</td>
       <td class="stage">${r.total} champs</td>
-      <td><a class="open" href="/review?doc=${encodeURIComponent(r.doc_id)}">Ouvrir →</a></td></tr>`);
+      <td style="white-space:nowrap">${crvs}
+        <a class="open" href="/review?doc=${encodeURIComponent(r.doc_id)}">Ouvrir →</a></td></tr>`);
   }
   document.getElementById('rows').innerHTML =
     rows.join('') || '<tr><td colspan="4" class="empty">Aucun document — déposez-en un ci-dessus.</td></tr>';
@@ -202,7 +214,21 @@ async function refresh(){
   S._t = setTimeout(refresh, hasRunning ? 2000 : 8000);
 }
 
-loadConfig(); initPhone(); refresh();
+async function sendToOpencrvs(docId, btn){
+  btn.disabled = true; btn.textContent = 'Envoi…';
+  try{
+    const res = await fetch(`/api/run/${encodeURIComponent(docId)}/opencrvs`, {method:'POST'});
+    const out = await res.json();
+    if(!res.ok) throw new Error(out.detail || res.status);
+    toast(`Envoyé à OpenCRVS ✓ — ${out.prefilled} champs préremplis`);
+    refresh();
+  }catch(err){
+    toast('Échec OpenCRVS : ' + err.message);
+    btn.disabled = false; btn.textContent = '→ OpenCRVS';
+  }
+}
+
+loadConfig(); initPhone();
 </script>
 </body>
 </html>

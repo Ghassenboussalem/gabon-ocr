@@ -11,10 +11,11 @@ collection shipped in the countryconfig repo (Event Notification - v1.9.0):
     POST {gateway}/events/events/notifications   {eventId, declaration, ...}
 
 Declaration keys are the V2 form field ids (countryconfig
-src/form/v2/birth/forms/pages/*.ts). Only fields scored at/above the
-confidence threshold are sent; everything else (plus unmappable values like
-free-text birthplaces) lands in the annotation review comment so the
-registrar still sees what the OCR read.
+src/form/v2/birth/forms/pages/*.ts). Every format-valid value is prefilled;
+values under the confidence threshold are additionally flagged "à vérifier"
+in the annotation review comment, and unmappable values (free-text
+birthplaces etc.) are comment-only — the registrar always sees what the
+OCR read and how sure it was.
 
 Config via environment / .env:
     OPENCRVS_AUTH_URL      e.g. https://auth.<domain>       (token endpoint)
@@ -34,8 +35,8 @@ from pathlib import Path
 
 from .vlm_client import _post
 
-# send a field only when the pipeline scored it at least this high
-# (matches confidence.LOW: below it the value is a guess, not a prefill)
+# below this score a value is still prefilled but flagged "à vérifier" in the
+# review comment (matches confidence.LOW)
 DEFAULT_THRESHOLD = 0.6
 
 _ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -92,9 +93,13 @@ def build_declaration(
 ) -> tuple[dict, list[str]]:
     """Map a scored report to (declaration, review_comment_lines).
 
-    Returns only V2 birth field ids that exist in the POC form. Values below
-    the threshold, or that OpenCRVS wants structured (places, addresses) while
-    we only have free text, are reported as comment lines instead.
+    Returns only V2 birth field ids that exist in the POC form. Every
+    format-valid value is prefilled — the registrar reviews the record against
+    the scan anyway, so an unfilled probably-right value just costs typing.
+    The threshold decides *flagging*, not filling: below it, the value is
+    still sent but listed as "à vérifier" in the review comment. Only values
+    OpenCRVS wants structured while we have free text (places, addresses)
+    stay comment-only.
     """
     fields = report.get("fields", {})
     decl: dict = {}
@@ -105,13 +110,12 @@ def build_declaration(
         v = f.get("value")
         return (str(v).strip() if v not in (None, "") else None), float(f.get("score", 0))
 
-    def confident(name: str) -> str | None:
+    def take(name: str) -> str | None:
         v, score = value_of(name)
         if v is None:
             return None
         if score < threshold:
-            comments.append(f"{name} (OCR, confiance {score:.2f}): {v}")
-            return None
+            comments.append(f"à vérifier — {name} (confiance {score:.2f}): {v}")
         return v
 
     def comment_only(name: str, label: str) -> None:
@@ -120,32 +124,32 @@ def build_declaration(
             comments.append(f"{label} (OCR, confiance {score:.2f}): {v}")
 
     # ---- child ----
-    if v := confident("enfant_nom"):
+    if v := take("enfant_nom"):
         decl["child.name"] = split_name(v)
-    if (v := confident("date_naissance")) and _iso_date(v):
+    if (v := take("date_naissance")) and _iso_date(v):
         decl["child.dob"] = v
-    if (v := confident("sexe")) and map_gender(v):
+    if (v := take("sexe")) and map_gender(v):
         decl["child.gender"] = map_gender(v)
     # no structured mapping possible for free-text places/times -> comment
     comment_only("lieu_naissance", "Lieu de naissance")
     comment_only("heure_naissance", "Heure de naissance")
 
     # ---- father ----
-    if v := confident("pere_nom"):
+    if v := take("pere_nom"):
         decl["father.name"] = split_name(v)
-    if (v := confident("pere_date_naissance")) and _iso_date(v):
+    if (v := take("pere_date_naissance")) and _iso_date(v):
         decl["father.dob"] = v
-    if v := confident("pere_profession"):
+    if v := take("pere_profession"):
         decl["father.occupation"] = v
     comment_only("pere_lieu_naissance", "Lieu de naissance du père")
     comment_only("pere_domicile", "Domicile du père")
 
     # ---- mother ----
-    if v := confident("mere_nom"):
+    if v := take("mere_nom"):
         decl["mother.name"] = split_name(v)
-    if (v := confident("mere_date_naissance")) and _iso_date(v):
+    if (v := take("mere_date_naissance")) and _iso_date(v):
         decl["mother.dob"] = v
-    if v := confident("mere_profession"):
+    if v := take("mere_profession"):
         decl["mother.occupation"] = v
     comment_only("mere_lieu_naissance", "Lieu de naissance de la mère")
     comment_only("mere_domicile", "Domicile de la mère")

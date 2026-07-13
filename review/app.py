@@ -287,6 +287,12 @@ def phone_session_qr(sid: str, request: Request):
 # ----------------------------------------------------------------------------
 
 
+def _opencrvs_configured() -> bool:
+    return all(os.environ.get(k) for k in
+               ("OPENCRVS_AUTH_URL", "OPENCRVS_GATEWAY_URL",
+                "OPENCRVS_CLIENT_ID", "OPENCRVS_CLIENT_SECRET"))
+
+
 @app.get("/api/config")
 def config():
     return {
@@ -295,7 +301,38 @@ def config():
                                    or os.environ.get("GOOGLE_API_KEY")),
         "max_upload_mb": MAX_UPLOAD_MB,
         "accepts": sorted(ALLOWED_SUFFIXES),
+        "opencrvs_configured": _opencrvs_configured(),
     }
+
+
+# ----------------------------------------------------------------------------
+# OpenCRVS export
+# ----------------------------------------------------------------------------
+
+
+@app.post("/api/run/{doc_id}/opencrvs")
+def send_to_opencrvs(doc_id: str):
+    """Send a processed document to OpenCRVS as a prefilled birth notification."""
+    if not _opencrvs_configured():
+        raise HTTPException(503, "OpenCRVS non configuré (variables OPENCRVS_* manquantes)")
+    rp = RUNS / doc_id / "report.json"
+    if not rp.exists():
+        raise HTTPException(404, f"no report for {doc_id}")
+    from pipeline.opencrvs_export import send_report
+    try:
+        result = send_report(rp)
+    except Exception as e:
+        raise HTTPException(502, f"envoi OpenCRVS échoué: {e}")
+    record = {
+        "event_id": result["event_id"],
+        "ts": int(time.time()),
+        "prefilled": len(result["declaration"]),
+        "prefilled_fields": sorted(result["declaration"].keys()),
+    }
+    (RUNS / doc_id / "opencrvs.json").write_text(
+        json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    return record
 
 
 # ----------------------------------------------------------------------------
@@ -314,6 +351,8 @@ def runs():
     out = []
     for rp in sorted(RUNS.glob("*/report.json"), key=lambda p: -p.stat().st_mtime):
         r = json.loads(rp.read_text(encoding="utf-8"))
+        ocrvs_p = rp.parent / "opencrvs.json"
+        ocrvs = json.loads(ocrvs_p.read_text(encoding="utf-8")) if ocrvs_p.exists() else None
         out.append(
             {
                 "doc_id": r["doc_id"],
@@ -321,6 +360,7 @@ def runs():
                 "review_count": len(r.get("fields_for_review", [])),
                 "total": r.get("fields_total", 0),
                 "corrected": (rp.parent / "corrected.json").exists(),
+                "opencrvs": ocrvs,
             }
         )
     return out

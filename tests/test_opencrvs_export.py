@@ -68,17 +68,18 @@ def test_build_declaration():
     assert decl["mother.name"] == {"firstname": "Marietou", "surname": "SOW"}
     assert decl["informant.relation"] == "FATHER"
 
-    # non-ISO date must NOT be prefilled
+    # non-ISO date must NOT be prefilled (format gate is absolute)
     assert "mother.dob" not in decl
-    # low-confidence value must NOT be prefilled
-    assert "mother.occupation" not in decl
+    # low-confidence value IS prefilled...
+    assert decl["mother.occupation"] == "sans profession"
+    # ...but flagged for the registrar
+    assert any("à vérifier" in c and "sans profession" in c for c in comments)
     # free-text place has no structured field
     assert not any(k.startswith("child.placeOfBirth") for k in decl)
 
     joined = "\n".join(comments)
-    # ...but everything left out is surfaced to the registrar
+    # everything unmapped is surfaced to the registrar
     assert "Clinique du Belvédère" in joined
-    assert "sans profession" in joined
     assert "Jean PORQUET" in joined
     assert "17:00" in joined
 
