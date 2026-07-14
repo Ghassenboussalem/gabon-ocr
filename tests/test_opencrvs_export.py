@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from pipeline.opencrvs_export import (
     build_declaration,
+    enrich_birth_place,
     map_gender,
     map_informant_relation,
     split_name,
@@ -123,14 +124,47 @@ def test_field_name_aliases():
     assert not any("YAHIA" in c for c in comments)
 
 
+def test_enrich_birth_place(monkeypatch):
+    """A resolved city becomes an international address; an unresolved one
+    (low VLM confidence / unknown pack) leaves the declaration untouched."""
+    import pipeline.opencrvs_export as ox
+
+    report = {
+        "localization": {"country": "tn"},
+        "fields": {"lieu_naissance": _field("BEN GUERDANE", 0.9)},
+    }
+
+    monkeypatch.setattr(ox, "resolve_place", lambda *a, **k: {
+        "country": "TUN", "state": "Médenine", "district": "Ben Guerdane",
+        "postcode": "4160", "confidence": 0.95})
+    decl, comments = {}, []
+    enrich_birth_place(decl, comments, report)
+    assert decl["child.placeOfBirth"] == "OTHER"
+    assert decl["child.birthLocation.other"]["country"] == "TUN"
+    assert decl["child.birthLocation.other"]["addressType"] == "INTERNATIONAL"
+    details = decl["child.birthLocation.other"]["streetLevelDetails"]
+    assert details == {"state": "Médenine", "district2": "Ben Guerdane",
+                       "cityOrTown": "Ben Guerdane", "postcodeOrZip": "4160"}
+    assert any("résolu automatiquement" in c for c in comments)
+
+    monkeypatch.setattr(ox, "resolve_place", lambda *a, **k: None)
+    decl, comments = {}, []
+    enrich_birth_place(decl, comments, report)
+    assert decl == {} and comments == []
+
+
 def test_empty_report():
     decl, comments = build_declaration({"fields": {}})
     assert decl == {} and comments == []
 
 
 if __name__ == "__main__":
+    import inspect
     for name, fn in sorted(globals().items()):
         if name.startswith("test_") and callable(fn):
+            if inspect.signature(fn).parameters:
+                print(f"{name}: SKIPPED (needs pytest fixtures)")
+                continue
             fn()
             print(f"{name}: OK")
     print("ALL TESTS PASSED")

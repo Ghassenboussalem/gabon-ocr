@@ -261,6 +261,129 @@ def build_declaration(
 
 
 # ----------------------------------------------------------------------------
+# place resolution (city -> admin hierarchy) via the VLM
+# ----------------------------------------------------------------------------
+
+# pack code -> (French country name for the prompt, ISO3 for the COUNTRY field)
+_PACK_COUNTRIES = {
+    "ao": ("Angola", "AGO"), "bj": ("Bénin", "BEN"), "cd": ("RD Congo", "COD"),
+    "cg": ("Congo-Brazzaville", "COG"), "ci": ("Côte d'Ivoire", "CIV"),
+    "cm": ("Cameroun", "CMR"), "cv": ("Cap-Vert", "CPV"),
+    "dz": ("Algérie", "DZA"), "eg": ("Égypte", "EGY"), "ga": ("Gabon", "GAB"),
+    "gn": ("Guinée", "GIN"), "ke": ("Kenya", "KEN"), "lb": ("Liban", "LBN"),
+    "lr": ("Libéria", "LBR"), "ma": ("Maroc", "MAR"), "mg": ("Madagascar", "MDG"),
+    "ml": ("Mali", "MLI"), "mr": ("Mauritanie", "MRT"), "mu": ("Maurice", "MUS"),
+    "ng": ("Nigéria", "NGA"), "rw": ("Rwanda", "RWA"), "sc": ("Seychelles", "SYC"),
+    "sl": ("Sierra Leone", "SLE"), "sn": ("Sénégal", "SEN"), "tg": ("Togo", "TGO"),
+    "tn": ("Tunisie", "TUN"), "za": ("Afrique du Sud", "ZAF"),
+}
+
+# below this the VLM's place resolution is dropped (honesty gate: no
+# confident-wrong prefill of administrative areas)
+PLACE_CONFIDENCE_THRESHOLD = 0.7
+
+
+def resolve_place(place: str, country_code: str, cache_dir: Path | None = None) -> dict | None:
+    """Resolve a free-text birthplace to {state, district, postcode?}.
+
+    Asks the VLM (same Gemini backend as extraction) for the administrative
+    hierarchy of a known city. Returns None when the country pack is unknown,
+    the model is unsure (confidence gate), or anything fails — the caller
+    then simply leaves the place in the review comment, as before.
+    """
+    known = _PACK_COUNTRIES.get(country_code)
+    if not known:
+        return None
+    country_name, iso3 = known
+
+    cache_file = (cache_dir / "place_lookup.json") if cache_dir else None
+    if cache_file and cache_file.exists():
+        cached = json.loads(cache_file.read_text(encoding="utf-8"))
+        if cached.get("place") == place:
+            return cached.get("resolved")
+
+    try:
+        from .vlm_client import extract_json, make_client
+        client = make_client("gemini")
+        raw = client.chat(
+            "Acte d'état civil — pays : " + country_name + ".\n"
+            f"Le lieu de naissance lu par OCR est : « {place} ».\n"
+            "Donne la hiérarchie administrative RÉELLE de ce lieu dans ce pays, "
+            "en JSON strict :\n"
+            '{"state": "<région/gouvernorat/province>", '
+            '"district": "<département/délégation/district/ville>", '
+            '"postcode": "<code postal, ou null si inconnu>", '
+            '"confidence": <0.0-1.0>}\n'
+            "confidence = ta certitude que ce lieu existe dans ce pays et que la "
+            "hiérarchie est exacte. Lieu ambigu, illisible ou inconnu -> confidence "
+            "basse. Réponds UNIQUEMENT le JSON.",
+            thinking_budget=0,
+        )
+        out = extract_json(raw)
+    except Exception:
+        return None
+
+    resolved = None
+    if (
+        isinstance(out, dict)
+        and out.get("state") and out.get("district")
+        and float(out.get("confidence", 0)) >= PLACE_CONFIDENCE_THRESHOLD
+    ):
+        resolved = {
+            "country": iso3,
+            "state": str(out["state"]),
+            "district": str(out["district"]),
+            "postcode": str(out["postcode"]) if out.get("postcode") else None,
+            "confidence": float(out["confidence"]),
+        }
+
+    if cache_file:
+        cache_file.write_text(
+            json.dumps({"place": place, "resolved": resolved}, ensure_ascii=False, indent=1),
+            encoding="utf-8",
+        )
+    return resolved
+
+
+def enrich_birth_place(
+    declaration: dict, comments: list[str], report: dict, run_dir: Path | None = None
+) -> None:
+    """Prefill child.placeOfBirth as an international address when the OCR
+    birthplace resolves to a known city (state/district/zip via the VLM).
+
+    Category is OTHER, never HEALTH_FACILITY/PRIVATE_HOME: the scan usually
+    does not say where the delivery physically happened, and facilities would
+    need instance UUIDs anyway.
+    """
+    if "child.placeOfBirth" in declaration:
+        return
+    place = ((report.get("fields", {}).get("lieu_naissance") or {}).get("value") or "").strip()
+    country = (report.get("localization") or {}).get("country") or ""
+    if not place:
+        return
+    resolved = resolve_place(place, country, cache_dir=run_dir)
+    if not resolved:
+        return
+
+    details = {"state": resolved["state"], "district2": resolved["district"],
+               "cityOrTown": place.title()}
+    if resolved.get("postcode"):
+        details["postcodeOrZip"] = resolved["postcode"]
+    declaration["child.placeOfBirth"] = "OTHER"
+    declaration["child.birthLocation.other"] = {
+        "country": resolved["country"],
+        "addressType": "INTERNATIONAL",
+        "streetLevelDetails": details,
+    }
+    comments.append(
+        f"Lieu de naissance résolu automatiquement (confiance {resolved['confidence']:.2f}): "
+        f"{resolved['state']} / {resolved['district']}"
+        + (f" / CP {resolved['postcode']}" if resolved.get("postcode") else "")
+        + " — à confirmer"
+    )
+
+
+# ----------------------------------------------------------------------------
 # API client
 # ----------------------------------------------------------------------------
 
@@ -386,13 +509,14 @@ def send_report(
     """
     report = json.loads(Path(report_path).read_text(encoding="utf-8"))
     declaration, comments = build_declaration(report, threshold)
-    doc_id = report.get("doc_id", Path(report_path).parent.name)
+    run_dir = Path(report_path).parent
+    enrich_birth_place(declaration, comments, report, run_dir=run_dir)
+    doc_id = report.get("doc_id", run_dir.name)
     header = f"Prérempli par OCR (document {doc_id})."
     comment = "\n".join([header] + comments)
 
     # attach the raw scan as proof of birth when the run kept it
     # (run_pipeline copies the input to original.<ext>)
-    run_dir = Path(report_path).parent
     original = next(
         (p for p in run_dir.glob("original.*")
          if p.suffix.lower() in (".jpg", ".jpeg", ".png", ".pdf", ".tif", ".tiff", ".webp")),
