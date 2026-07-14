@@ -44,6 +44,9 @@ Write-Host "[2/4] Conteneurs (mongo, elasticsearch, postgres...) : lances" -Fore
 # chaque service core tourne dans SA tache planifiee (plus de monolithe lerna
 # qui meurt en laissant des orphelins) — scripts /root/run_<svc>.sh, logs
 # /var/log/opencrvs-<svc>.log dans la distro
+# NB : les run_<svc>.sh sont idempotents (guard pose par tools/patch_run_scripts.sh :
+# tue les survivants du package + libere le port avant yarn start) — relancer une
+# tache ne cree jamais de doublon
 foreach ($t in 'auth', 'user-mgnt', 'workflow', 'search', 'metrics', 'notification',
                'config', 'documents', 'webhooks', 'events', 'gateway', 'client',
                'login', 'countryconfig') {

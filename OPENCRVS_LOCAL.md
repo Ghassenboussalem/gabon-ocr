@@ -86,6 +86,17 @@ La déclaration pré-remplie apparaît dans la file **Notifications**
   wsl -d ubuntu-opencrvs -u root -- touch /opt/opencrvs/opencrvs-core/packages/gateway/src/index.ts
   ```
   (remplacer `gateway` par le nom du service en panne)
+- **Tâches tuées côté Windows mais processus Linux survivants** (symptôme :
+  tâche « Ready » avec code 0xC000013A, certains ports répondent encore, d'autres
+  sont à 000) : il suffit de relancer les tâches des services morts — les scripts
+  `/root/run_<svc>.sh` contiennent un **guard d'idempotence** (posé par
+  `tools/patch_run_scripts.sh`) qui tue les survivants du même package et libère
+  le port avant `yarn start`. Un restart de tâche ne crée donc jamais de doublon
+  (ni de watchers gen:types dupliqués qui corrompaient `schema.d.ts`).
+  Si les scripts sont recréés un jour, ré-appliquer le patch :
+  ```powershell
+  wsl -d ubuntu-opencrvs -u root -- bash -c "tr -d '\r' < /mnt/c/Users/Ghassen/Documents/gabon-ocr/tools/patch_run_scripts.sh | bash"
+  ```
 - **JAMAIS `pkill -f node` dans la distro** pendant que le stack tourne :
   ça tue aussi les services core (leçon apprise…). Pour tout redémarrer
   proprement :

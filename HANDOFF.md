@@ -62,12 +62,14 @@ Le token GitHub est dans le gestionnaire d'identifiants Windows (compte réel : 
 9. `run_pipeline` : `sys.stdout.reconfigure(errors="replace")` déjà en place (consoles cp1252).
 10. Les envois OpenCRVS ne sont PAS idempotents (renvoyer = doublon).
 
-## 7. ⏭️ À FAIRE — première chose dans la nouvelle session
+## 7. ✅ FAIT (14/07/2026) — client d'intégration recréé
 
-**Le client d'intégration OpenCRVS a été perdu dans le rollback Mongo (§6.7).** L'utilisateur doit :
-1. http://localhost:3020 → `j.campbell`/`test` → Configuration → Integrations → Create client (type **Event notification**)
-2. Donner le nouveau Client ID + Secret → les mettre dans `.env` (`OPENCRVS_CLIENT_ID/SECRET`)
-3. Vérifier : `.venv\Scripts\python.exe tools\send_to_opencrvs.py runs\mg_batch_test` → event id = OK.
+Le client Event notification perdu dans le rollback Mongo a été recréé, les
+nouveaux identifiants sont dans `.env` (`OPENCRVS_CLIENT_ID/SECRET` +
+`OPENCRVS_SHA_SECRET`), et l'envoi de test a réussi (event
+`5997658b-b381-4561-9220-00ab0fcdf9f2`). Au passage, les `run_<svc>.sh` de la
+distro sont désormais **idempotents** (`tools/patch_run_scripts.sh`) : relancer
+une tâche ne crée plus de doublon de port ni de watchers gen:types dupliqués.
 
 ## 8. Feuille de route restante
 
