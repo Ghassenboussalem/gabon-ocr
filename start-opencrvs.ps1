@@ -41,8 +41,13 @@ wsl -d ubuntu-opencrvs -u root -- bash -c "cd /opt/opencrvs/opencrvs-core && doc
 Write-Host "[2/4] Conteneurs (mongo, elasticsearch, postgres...) : lances" -ForegroundColor Green
 
 # ---------- 3. Taches planifiees ----------
-foreach ($t in 'opencrvs-services', 'opencrvs-events', 'opencrvs-gateway', 'opencrvs-client', 'opencrvs-countryconfig', 'opencrvs-login') {
-    Start-ScheduledTask -TaskName $t
+# chaque service core tourne dans SA tache planifiee (plus de monolithe lerna
+# qui meurt en laissant des orphelins) — scripts /root/run_<svc>.sh, logs
+# /var/log/opencrvs-<svc>.log dans la distro
+foreach ($t in 'auth', 'user-mgnt', 'workflow', 'search', 'metrics', 'notification',
+               'config', 'documents', 'webhooks', 'events', 'gateway', 'client',
+               'login', 'countryconfig') {
+    Start-ScheduledTask -TaskName ('opencrvs-' + $t)
 }
 # l'app OCR (uvicorn) : enregistree au premier lancement
 if (-not (Get-ScheduledTask -TaskName 'gabonocr-webapp')) {
@@ -57,17 +62,23 @@ Write-Host "[3/4] Services (taches planifiees) : lances" -ForegroundColor Green
 Write-Host "[4/4] Attente des services (3-5 min au premier demarrage)..." -ForegroundColor Yellow
 Write-Host ""
 
-# nom -> url ; fix 'touch' = repare via nodemon si bloque, 'task' = restart de la tache dediee
+# nom -> url ; chaque service en panne est repare en relancant SA tache dediee
 $checks = @(
-    @{ n = 'auth';          u = 'http://localhost:4040/ping'; fix = 'touch'; pkg = 'auth' },
-    @{ n = 'user-mgnt';     u = 'http://localhost:3030/ping'; fix = 'touch'; pkg = 'user-mgnt' },
-    @{ n = 'workflow';      u = 'http://localhost:5050/ping'; fix = 'touch'; pkg = 'workflow' },
-    @{ n = 'events';        u = 'http://localhost:5555/ping'; fix = 'task';  task = 'opencrvs-events' },
-    @{ n = 'gateway';       u = 'http://localhost:7070/ping'; fix = 'task';  task = 'opencrvs-gateway' },
-    @{ n = 'countryconfig'; u = 'http://localhost:3040/ping'; fix = 'task';  task = 'opencrvs-countryconfig' },
-    @{ n = 'client';        u = 'http://localhost:3000';      fix = 'task';  task = 'opencrvs-client' },
-    @{ n = 'login';         u = 'http://localhost:3020';      fix = 'task';  task = 'opencrvs-login' },
-    @{ n = 'appOCR';        u = 'http://localhost:8000/healthz'; fix = 'task'; task = 'gabonocr-webapp' }
+    @{ n = 'auth';          u = 'http://localhost:4040/ping'; task = 'opencrvs-auth' },
+    @{ n = 'user-mgnt';     u = 'http://localhost:3030/ping'; task = 'opencrvs-user-mgnt' },
+    @{ n = 'workflow';      u = 'http://localhost:5050/ping'; task = 'opencrvs-workflow' },
+    @{ n = 'search';        u = 'http://localhost:9090/ping'; task = 'opencrvs-search' },
+    @{ n = 'metrics';       u = 'http://localhost:1050/ping'; task = 'opencrvs-metrics' },
+    @{ n = 'notification';  u = 'http://localhost:2020/ping'; task = 'opencrvs-notification' },
+    @{ n = 'config';        u = 'http://localhost:2021/ping'; task = 'opencrvs-config' },
+    @{ n = 'documents';     u = 'http://localhost:9050/ping'; task = 'opencrvs-documents' },
+    @{ n = 'webhooks';      u = 'http://localhost:2525/ping'; task = 'opencrvs-webhooks' },
+    @{ n = 'events';        u = 'http://localhost:5555/ping'; task = 'opencrvs-events' },
+    @{ n = 'gateway';       u = 'http://localhost:7070/ping'; task = 'opencrvs-gateway' },
+    @{ n = 'countryconfig'; u = 'http://localhost:3040/ping'; task = 'opencrvs-countryconfig' },
+    @{ n = 'client';        u = 'http://localhost:3000';      task = 'opencrvs-client' },
+    @{ n = 'login';         u = 'http://localhost:3020';      task = 'opencrvs-login' },
+    @{ n = 'appOCR';        u = 'http://localhost:8000/healthz'; task = 'gabonocr-webapp' }
 )
 $fixed = @{}
 $deadline = (Get-Date).AddMinutes(12)
@@ -84,18 +95,12 @@ while ($true) {
             $allUp = $false
             $line += ($c.n + " [" + $code + "]")
             # auto-reparation : une seule fois par service, apres 4 min
-            if ((Get-Date) -gt $healAfter -and $c.fix -and -not $fixed[$c.n]) {
+            if ((Get-Date) -gt $healAfter -and -not $fixed[$c.n]) {
                 $fixed[$c.n] = $true
-                if ($c.fix -eq 'touch') {
-                    $p = "/opt/opencrvs/opencrvs-core/packages/" + $c.pkg + "/src/index.ts"
-                    wsl -d ubuntu-opencrvs -u root -- touch $p
-                    $line[-1] += ' (reparation...)'
-                } elseif ($c.fix -eq 'task') {
-                    Stop-ScheduledTask -TaskName $c.task
-                    Start-Sleep -Seconds 2
-                    Start-ScheduledTask -TaskName $c.task
-                    $line[-1] += ' (relance...)'
-                }
+                Stop-ScheduledTask -TaskName $c.task
+                Start-Sleep -Seconds 2
+                Start-ScheduledTask -TaskName $c.task
+                $line[-1] += ' (relance...)'
             }
         }
     }
