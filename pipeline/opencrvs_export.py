@@ -75,6 +75,33 @@ def map_gender(value: str) -> str | None:
     return None
 
 
+# French nationality adjective stem -> ISO3 country code (value format of the
+# V2 COUNTRY field type). Stems match both genders (TUNISIEN(NE)). CONGOLAIS
+# is ambiguous (COG/COD) and deliberately absent — it stays in the comment.
+_NATIONALITY_STEMS = [
+    ("TUNISIEN", "TUN"), ("MAROCAIN", "MAR"), ("ALGERIEN", "DZA"),
+    ("SENEGALAIS", "SEN"), ("MALIEN", "MLI"), ("IVOIRIEN", "CIV"),
+    ("CAMEROUNAIS", "CMR"), ("GABONAIS", "GAB"), ("GUINEEN", "GIN"),
+    ("BENINOIS", "BEN"), ("TOGOLAIS", "TGO"), ("NIGERIAN", "NGA"),
+    ("NIGERIEN", "NER"), ("KENYAN", "KEN"), ("RWANDAIS", "RWA"),
+    ("MAURITANIEN", "MRT"), ("MAURICIEN", "MUS"), ("MALGACHE", "MDG"),
+    ("EGYPTIEN", "EGY"), ("LIBANAIS", "LBN"), ("ANGOLAIS", "AGO"),
+    ("CAPVERDIEN", "CPV"), ("SEYCHELLOIS", "SYC"), ("SIERRALEONAIS", "SLE"),
+    ("LIBERIEN", "LBR"), ("SUDAFRICAIN", "ZAF"), ("BURKINAB", "BFA"),
+    ("TCHADIEN", "TCD"), ("CENTRAFRICAIN", "CAF"), ("FRANCAIS", "FRA"),
+    ("COMORIEN", "COM"), ("DJIBOUTIEN", "DJI"), ("BURUNDAIS", "BDI"),
+    ("ZAMBIEN", "ZMB"), ("GHANEEN", "GHA"), ("GAMBIEN", "GMB"),
+]
+
+
+def map_nationality(value: str) -> str | None:
+    v = re.sub(r"[^A-Z]", "", _strip_accents(value).upper())
+    for stem, code in _NATIONALITY_STEMS:
+        if v.startswith(stem):
+            return code
+    return None
+
+
 def map_informant_relation(value: str) -> str | None:
     v = _strip_accents(value).lower()
     if "pere" in v:
@@ -172,6 +199,11 @@ def build_declaration(
         decl["father.name"] = v
     if (v := take("pere_date_naissance")) and _iso_date(v):
         decl["father.dob"] = v
+    if v := take("pere_nationalite"):
+        if code := map_nationality(v):
+            decl["father.nationality"] = code
+        else:
+            comments.append(f"Nationalité du père (OCR, non mappée): {v}")
     if v := take("pere_profession"):
         decl["father.occupation"] = v
     comment_only("pere_lieu_naissance", "Lieu de naissance du père")
@@ -186,17 +218,25 @@ def build_declaration(
         decl["mother.name"] = v
     if (v := take("mere_date_naissance")) and _iso_date(v):
         decl["mother.dob"] = v
+    if v := take("mere_nationalite"):
+        if code := map_nationality(v):
+            decl["mother.nationality"] = code
+        else:
+            comments.append(f"Nationalité de la mère (OCR, non mappée): {v}")
     if v := take("mere_profession"):
         decl["mother.occupation"] = v
     comment_only("mere_lieu_naissance", "Lieu de naissance de la mère")
     comment_only("mere_domicile", "Domicile de la mère")
 
     # ---- informant (declarant) ----
-    for name in ("declarant_qualite", "declarant"):
+    for name in ("declarant_qualite", "declarant_lien", "declarant"):
         v, _ = value_of(name)
-        if v and (rel := map_informant_relation(v)):
+        if not v:
+            continue
+        if "informant.relation" not in decl and (rel := map_informant_relation(v)):
             decl["informant.relation"] = rel
-            break
+        else:
+            comment_only(name, name)
 
     # anything extracted but not handled above -> visible to the registrar
     handled = {
@@ -210,7 +250,8 @@ def build_declaration(
         "mere_nom", "mere_nom_complet", "mere_nom_jeune_fille",
         "mere_nom_famille", "mere_prenoms", "mere_prenom",
         "mere_date_naissance", "mere_profession", "mere_lieu_naissance",
-        "mere_domicile", "declarant_qualite", "declarant",
+        "mere_domicile", "declarant_qualite", "declarant_lien", "declarant",
+        "pere_nationalite", "mere_nationalite",
     }
     for name in fields:
         if name not in handled:
@@ -264,6 +305,52 @@ class OpenCRVSClient:
         )
         return out["id"]
 
+    def upload_file(self, event_id: str, file_path: str | Path) -> dict:
+        """Upload a scan to MinIO via the gateway and return a FILE field value.
+
+        POST {gateway}/upload (multipart: file, transactionId, path=eventId)
+        stores the file as /<bucket>/<eventId>/<transactionId>.<ext> and
+        returns that path; the dict slots into any documents.* FILE field.
+        """
+        import urllib.request
+
+        p = Path(file_path)
+        mime = {
+            ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png",
+            ".pdf": "application/pdf", ".tif": "image/tiff",
+            ".tiff": "image/tiff", ".webp": "image/webp",
+        }.get(p.suffix.lower(), "application/octet-stream")
+
+        boundary = uuid.uuid4().hex
+        parts = []
+        for name, value in (("transactionId", str(uuid.uuid4())), ("path", event_id)):
+            parts.append(
+                f'--{boundary}\r\nContent-Disposition: form-data; name="{name}"'
+                f"\r\n\r\n{value}\r\n".encode()
+            )
+        parts.append(
+            f'--{boundary}\r\nContent-Disposition: form-data; name="file"; '
+            f'filename="{p.name}"\r\nContent-Type: {mime}\r\n\r\n'.encode()
+            + p.read_bytes() + b"\r\n"
+        )
+        parts.append(f"--{boundary}--\r\n".encode())
+        body = b"".join(parts)
+
+        req = urllib.request.Request(
+            f"{self.gateway_url}/upload",
+            data=body,
+            headers={
+                "Content-Type": f"multipart/form-data; boundary={boundary}",
+                **self._auth_headers(),
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=120) as r:
+            raw = r.read().decode().strip()
+        # the handler returns the FullDocumentPath as a bare (JSON) string
+        path = json.loads(raw) if raw.startswith('"') else raw
+        return {"path": path, "originalFilename": p.name, "type": mime}
+
     def notify(
         self,
         event_id: str,
@@ -303,12 +390,25 @@ def send_report(
     header = f"Prérempli par OCR (document {doc_id})."
     comment = "\n".join([header] + comments)
 
+    # attach the raw scan as proof of birth when the run kept it
+    # (run_pipeline copies the input to original.<ext>)
+    run_dir = Path(report_path).parent
+    original = next(
+        (p for p in run_dir.glob("original.*")
+         if p.suffix.lower() in (".jpg", ".jpeg", ".png", ".pdf", ".tif", ".tiff", ".webp")),
+        None,
+    )
+
     result = {"declaration": declaration, "comment": comment}
     if dry_run:
+        if original:
+            result["attachment"] = original.name
         return result
 
     client = OpenCRVSClient()
     event_id = client.create_event("birth")
+    if original:
+        declaration["documents.proofOfBirth"] = client.upload_file(event_id, original)
     client.notify(event_id, declaration, comment=comment)
     result["event_id"] = event_id
     return result

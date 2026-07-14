@@ -73,6 +73,13 @@ def main() -> None:
     out = Path(args.out or f"runs/{src.stem}")
     out.mkdir(parents=True, exist_ok=True)
 
+    # keep the raw scan next to the outputs: the OpenCRVS export attaches it
+    # to the declaration as proof of birth
+    original = out / f"original{src.suffix.lower()}"
+    if not original.exists():
+        import shutil
+        shutil.copyfile(src, original)
+
     if src.suffix.lower() == ".pdf":
         from pipeline.pdfio import pdf_first_page_png
         png = out / "source_page1.png"

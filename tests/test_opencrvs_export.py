@@ -100,6 +100,9 @@ def test_field_name_aliases():
             "sexe": _field("MASCULIN", 0.9),
             "pere_nom_complet": _field("HEDI BEN DHAOU", 0.9),
             "mere_nom_complet": _field("MABROUKA YAHIA", 0.9),
+            "pere_nationalite": _field("TUNISIENNE", 0.9),
+            "mere_nationalite": _field("CONGOLAISE", 0.9),   # ambiguous ISO code
+            "declarant": _field("MONTASSAR AZREG", 0.8),     # not a relation
         },
     }
     decl, comments = build_declaration(report, threshold=0.6)
@@ -108,6 +111,14 @@ def test_field_name_aliases():
     assert decl["father.name"] == {"firstname": "HEDI BEN", "surname": "DHAOU"}
     assert decl["mother.name"] == {"firstname": "MABROUKA", "surname": "YAHIA"}
     assert decl["child.gender"] == "male"
+    # nationality adjective -> ISO3 COUNTRY code
+    assert decl["father.nationality"] == "TUN"
+    # ambiguous nationality is NOT prefilled but stays visible
+    assert "mother.nationality" not in decl
+    assert any("CONGOLAISE" in c for c in comments)
+    # a declarant that is not a relation stays visible too
+    assert "informant.relation" not in decl
+    assert any("MONTASSAR AZREG" in c for c in comments)
     # consumed aliases must not be duplicated as comments
     assert not any("YAHIA" in c for c in comments)
 
