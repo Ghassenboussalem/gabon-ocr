@@ -123,9 +123,38 @@ def build_declaration(
         if v is not None:
             comments.append(f"{label} (OCR, confiance {score:.2f}): {v}")
 
+    def take_first(names: tuple[str, ...]) -> str | None:
+        for n in names:
+            if v := take(n):
+                return v
+        return None
+
+    def take_person_name(
+        full_or_surname: tuple[str, ...],
+        surname_only: tuple[str, ...],
+        given: tuple[str, ...],
+    ) -> dict | None:
+        """Country packs name the same thing differently: one full-name field
+        (enfant_nom), split surname/given fields (nom + prenoms), or both.
+        A dedicated given-name field means the other field is the surname —
+        only a lone full-name field needs the uppercase split heuristic."""
+        first = take_first(given)
+        family = take_first(surname_only) or take_first(full_or_surname)
+        if family and first:
+            return {"firstname": first, "surname": family}
+        if family:
+            return split_name(family)
+        if first:
+            return split_name(first)
+        return None
+
     # ---- child ----
-    if v := take("enfant_nom"):
-        decl["child.name"] = split_name(v)
+    if v := take_person_name(
+        ("enfant_nom", "nom"),
+        ("enfant_nom_famille", "nom_famille"),
+        ("enfant_prenoms", "enfant_prenom", "prenoms", "prenom"),
+    ):
+        decl["child.name"] = v
     if (v := take("date_naissance")) and _iso_date(v):
         decl["child.dob"] = v
     if (v := take("sexe")) and map_gender(v):
@@ -135,8 +164,12 @@ def build_declaration(
     comment_only("heure_naissance", "Heure de naissance")
 
     # ---- father ----
-    if v := take("pere_nom"):
-        decl["father.name"] = split_name(v)
+    if v := take_person_name(
+        ("pere_nom", "pere_nom_complet"),
+        ("pere_nom_famille",),
+        ("pere_prenoms", "pere_prenom"),
+    ):
+        decl["father.name"] = v
     if (v := take("pere_date_naissance")) and _iso_date(v):
         decl["father.dob"] = v
     if v := take("pere_profession"):
@@ -145,8 +178,12 @@ def build_declaration(
     comment_only("pere_domicile", "Domicile du père")
 
     # ---- mother ----
-    if v := take("mere_nom"):
-        decl["mother.name"] = split_name(v)
+    if v := take_person_name(
+        ("mere_nom", "mere_nom_complet", "mere_nom_jeune_fille"),
+        ("mere_nom_famille",),
+        ("mere_prenoms", "mere_prenom"),
+    ):
+        decl["mother.name"] = v
     if (v := take("mere_date_naissance")) and _iso_date(v):
         decl["mother.dob"] = v
     if v := take("mere_profession"):
@@ -163,10 +200,17 @@ def build_declaration(
 
     # anything extracted but not handled above -> visible to the registrar
     handled = {
-        "enfant_nom", "date_naissance", "sexe", "lieu_naissance", "heure_naissance",
-        "pere_nom", "pere_date_naissance", "pere_profession", "pere_lieu_naissance",
-        "pere_domicile", "mere_nom", "mere_date_naissance", "mere_profession",
-        "mere_lieu_naissance", "mere_domicile", "declarant_qualite", "declarant",
+        "enfant_nom", "nom", "enfant_nom_famille", "nom_famille",
+        "enfant_prenoms", "enfant_prenom", "prenoms", "prenom",
+        "date_naissance", "sexe", "lieu_naissance", "heure_naissance",
+        "pere_nom", "pere_nom_complet", "pere_nom_famille",
+        "pere_prenoms", "pere_prenom",
+        "pere_date_naissance", "pere_profession", "pere_lieu_naissance",
+        "pere_domicile",
+        "mere_nom", "mere_nom_complet", "mere_nom_jeune_fille",
+        "mere_nom_famille", "mere_prenoms", "mere_prenom",
+        "mere_date_naissance", "mere_profession", "mere_lieu_naissance",
+        "mere_domicile", "declarant_qualite", "declarant",
     }
     for name in fields:
         if name not in handled:

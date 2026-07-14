@@ -88,6 +88,30 @@ def test_build_declaration():
     assert all(k.startswith(allowed_prefixes) for k in decl)
 
 
+def test_field_name_aliases():
+    """Tunisia-style packs: split nom/prenoms for the child, *_nom_complet
+    for the parents — every pack vocabulary must reach the declaration."""
+    report = {
+        "doc_id": "tn_doc",
+        "fields": {
+            "nom": _field("YAHIA", 0.9),
+            "prenoms": _field("ALI", 0.9),
+            "date_naissance": _field("1981-03-10", 0.9),
+            "sexe": _field("MASCULIN", 0.9),
+            "pere_nom_complet": _field("HEDI BEN DHAOU", 0.9),
+            "mere_nom_complet": _field("MABROUKA YAHIA", 0.9),
+        },
+    }
+    decl, comments = build_declaration(report, threshold=0.6)
+    # split fields compose directly — no uppercase heuristic involved
+    assert decl["child.name"] == {"firstname": "ALI", "surname": "YAHIA"}
+    assert decl["father.name"] == {"firstname": "HEDI BEN", "surname": "DHAOU"}
+    assert decl["mother.name"] == {"firstname": "MABROUKA", "surname": "YAHIA"}
+    assert decl["child.gender"] == "male"
+    # consumed aliases must not be duplicated as comments
+    assert not any("YAHIA" in c for c in comments)
+
+
 def test_empty_report():
     decl, comments = build_declaration({"fields": {}})
     assert decl == {} and comments == []
