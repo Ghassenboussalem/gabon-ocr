@@ -55,7 +55,7 @@ foreach ($t in 'auth', 'user-mgnt', 'workflow', 'search', 'metrics', 'notificati
 # l'app OCR (uvicorn) : enregistree au premier lancement
 if (-not (Get-ScheduledTask -TaskName 'gabonocr-webapp')) {
     $s = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit ([TimeSpan]::Zero)
-    $a = New-ScheduledTaskAction -Execute "$GABON\.venv\Scripts\python.exe" -Argument '-m uvicorn review.app:app --port 8000' -WorkingDirectory $GABON
+    $a = New-ScheduledTaskAction -Execute "$GABON\.venv\Scripts\python.exe" -Argument '-m uvicorn review.app:app --host 0.0.0.0 --port 8000' -WorkingDirectory $GABON
     Register-ScheduledTask -TaskName 'gabonocr-webapp' -Action $a -Settings $s -Force | Out-Null
 }
 Start-ScheduledTask -TaskName 'gabonocr-webapp'
@@ -122,4 +122,38 @@ Write-Host ""
 Write-Host "=== TOUT EST VERT ===" -ForegroundColor Green
 Write-Host "  OpenCRVS : http://localhost:3020   (k.mweene / test, 2FA 000000)"
 Write-Host "  App OCR  : http://localhost:8000"
+Write-Host ""
+
+# ---------- 5. Verification de l'integration OCR -> OpenCRVS ----------
+# un arret brutal du PC fait rollbacker Mongo : le client d'integration
+# disparait et les UUIDs de lieux peuvent changer (HANDOFF.md 6.7)
+$envPath = "$GABON\.env"
+$envLines = Get-Content $envPath
+$cid = (($envLines | Where-Object { $_ -match '^OPENCRVS_CLIENT_ID=' }) -replace '.*=', '')
+$csec = (($envLines | Where-Object { $_ -match '^OPENCRVS_CLIENT_SECRET=' }) -replace '.*=', '')
+$cloc = (($envLines | Where-Object { $_ -match '^OPENCRVS_LOCATION_ID=' }) -replace '.*=', '')
+
+# 5a. l'UUID du bureau d'Ibombo doit etre celui de k.mweene
+$office = (docker exec opencrvs-mongo1-1 mongo user-mgnt --quiet --eval "print(db.users.findOne({username:'k.mweene'}).primaryOfficeId)" 2>$null | Select-Object -Last 1)
+if ($office -and $cloc -and $office.Trim() -ne $cloc.Trim()) {
+    (Get-Content $envPath) -replace "^OPENCRVS_LOCATION_ID=.*", "OPENCRVS_LOCATION_ID=$($office.Trim())" | Set-Content $envPath -Encoding ascii
+    Write-Host "  ! OPENCRVS_LOCATION_ID mis a jour dans .env (rollback/seed Mongo a change l'UUID du bureau)" -ForegroundColor Yellow
+}
+
+# 5b. le client d'integration doit pouvoir obtenir un token
+$tokenOk = $false
+if ($cid -and $csec) {
+    try {
+        $null = Invoke-WebRequest -Uri 'http://localhost:4040/token' -Method POST -ContentType 'application/x-www-form-urlencoded' -Body "client_id=$cid&client_secret=$csec&grant_type=client_credentials" -UseBasicParsing -TimeoutSec 10
+        $tokenOk = $true
+    } catch {}
+}
+if ($tokenOk) {
+    Write-Host "  Integration OCR->OpenCRVS : token OK" -ForegroundColor Green
+} else {
+    Write-Host "  ! CLIENT D'INTEGRATION PERDU (rollback Mongo) - a recreer :" -ForegroundColor Red
+    Write-Host "    1. http://localhost:3020 -> j.campbell / test (2FA 000000)"
+    Write-Host "    2. Configuration -> Integrations -> Create client (type Event notification)"
+    Write-Host "    3. Mettre le nouveau Client ID + Secret dans $envPath (OPENCRVS_CLIENT_ID/SECRET)"
+}
 Write-Host ""
