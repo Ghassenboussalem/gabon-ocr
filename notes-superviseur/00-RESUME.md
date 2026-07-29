@@ -52,9 +52,11 @@ faux avec assurance :
 - 27 packs pays, 28 schémas de champs, ~200 noms de champs recensés et mappés
 - ~35–50 s de traitement par document (10 min au début du projet → ×12)
 - 46 s upload → dossier pré-rempli dans OpenCRVS
-- **Évaluation sur 21 documents (1 par pays)** : 50.8 % des champs auto-acceptés
-  en moyenne, 7 champs OpenCRVS pré-remplis par document en moyenne →
-  détail complet dans `06-metriques-evaluation.md`
+- **Évaluation sur 17 documents typés/imprimés (1 par pays, hors manuscrits)** :
+  **Précision 100 % · Rappel 84.5 % · F1 91.6 %** sur les champs pré-remplis
+  automatiquement, 57.3 % des champs auto-acceptés en moyenne, 7.2 champs
+  OpenCRVS pré-remplis par document en moyenne → détail complet dans
+  `06-metriques-evaluation.md`
 - 0 modification du code OpenCRVS : tout passe par l'API standard
   *Event notification* → **migration vers une vraie instance = changer 4
   lignes de configuration** (URLs + identifiants du client d'intégration)

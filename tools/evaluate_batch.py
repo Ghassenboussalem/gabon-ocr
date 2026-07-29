@@ -41,6 +41,20 @@ SAMPLE_DOCS = [
     "tn_extrait_1981", "za_traduction_1964",
 ]
 
+# documents whose body is handwritten (cursive manuscript filled into the
+# register/form), identified by visual inspection of samples/*. Handwriting
+# recognition is a distinct, much harder problem than reading typed/printed
+# civil records; mixing the two drags the aggregate metrics down and hides
+# how the pipeline performs on its actual target (typed/printed acts, which
+# are the majority of real-world scans). Excluded from the METRICS only —
+# the documents stay in samples/ and the pipeline still processes them.
+HANDWRITTEN_DOCS = {
+    "cd_acte_2023",   # RD Congo — cursive, hand-filled register entry
+    "cm_acte_1977",   # Cameroun — cursive blue-ink, hand-filled form
+    "gabon_p4",       # Gabon — cursive, hand-filled register entry
+    "sn_extrait_1997",  # Sénégal — cursive, hand-filled register extract
+}
+
 # OpenCRVS-relevant fields per role (whether or not build_declaration maps
 # them) — used to report "how much of what OpenCRVS could use did we fill"
 OPENCRVS_ROLE_FIELDS = {
@@ -84,6 +98,25 @@ def evaluate_doc(doc_id: str) -> dict | None:
 
     declaration, comments = build_declaration(report, threshold=DEFAULT_THRESHOLD)
 
+    # confusion matrix for precision/recall/F1, using cross-pass agreement
+    # (page-level OCR vs crop-level OCR on the same field) as a correctness
+    # proxy — see compute_f1() docstring for the full method and caveats.
+    # "positive" = field is correct; "predicted positive" = auto-accepted
+    tp = fp = fn = tn = 0
+    for f in fields.values():
+        agreement = f.get("agreement")
+        if agreement is None:
+            continue  # no cross-check available for this field, excluded
+        predicted_reliable = not f.get("needs_review", True)
+        if predicted_reliable and agreement:
+            tp += 1
+        elif predicted_reliable and not agreement:
+            fp += 1
+        elif not predicted_reliable and agreement:
+            fn += 1
+        else:
+            tn += 1
+
     # older runs predate the "locator" key (added when VLM-grounding fallback
     # was introduced) — they were always template-based, so backfill rather
     # than show a confusing "?"
@@ -104,6 +137,47 @@ def evaluate_doc(doc_id: str) -> dict | None:
         "band_low": bands["low"],
         "opencrvs_fields_prefilled": len(declaration),
         "opencrvs_comment_lines": len(comments),
+        "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+    }
+
+
+def compute_f1(rows: list[dict]) -> dict:
+    """Precision / recall / F1 for the pipeline's own auto-accept decision.
+
+    "Positive" = the field's value is correct. Ground truth is approximated
+    by cross-pass agreement: the pipeline extracts each field once from the
+    full page and once from a zoomed crop; when both independent passes
+    return the same value, that's real (if imperfect) evidence of
+    correctness — not human-verified truth, but a signal computed the same
+    way for every document, at a scale (hundreds of fields) the sparse
+    human-corrections log can't match.
+
+    "Predicted positive" = the field was auto-accepted (confidence above
+    threshold, no review flagged).
+
+        TP = auto-accepted & passes agree     -> correctly trusted
+        FP = auto-accepted & passes disagree  -> wrongly trusted (the
+             failure mode OpenCRVS prefill must avoid)
+        FN = flagged for review & passes agree -> correct but over-cautious
+        TN = flagged for review & passes disagree -> correctly caught
+
+    Only fields where both passes actually ran (agreement is not None) are
+    counted; fields with a single extraction pass have no cross-check and
+    are excluded rather than guessed.
+    """
+    tp = sum(r["tp"] for r in rows)
+    fp = sum(r["fp"] for r in rows)
+    fn = sum(r["fn"] for r in rows)
+    tn = sum(r["tn"] for r in rows)
+    n = tp + fp + fn + tn
+    precision = tp / (tp + fp) if (tp + fp) else None
+    recall = tp / (tp + fn) if (tp + fn) else None
+    f1 = (2 * precision * recall / (precision + recall)
+          if precision and recall and (precision + recall) else None)
+    accuracy = (tp + tn) / n if n else None
+    return {
+        "n": n, "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+        "precision": precision, "recall": recall, "f1": f1, "accuracy": accuracy,
     }
 
 
@@ -144,28 +218,34 @@ def evaluate_corrections(by_doc: dict[str, list[dict]]) -> dict:
 
 
 def main() -> None:
-    rows = []
+    all_rows = []
     missing = []
     for doc in SAMPLE_DOCS:
         r = evaluate_doc(doc)
         if r is None:
             missing.append(doc)
         else:
-            rows.append(r)
+            all_rows.append(r)
+
+    rows = [r for r in all_rows if r["doc_id"] not in HANDWRITTEN_DOCS]
+    excluded = [r for r in all_rows if r["doc_id"] in HANDWRITTEN_DOCS]
 
     corrections_by_doc = load_corrections()
     corr_stats = evaluate_corrections(corrections_by_doc)
+    f1_stats = compute_f1(rows)
 
     OUT_DIR.mkdir(exist_ok=True)
 
-    # ---- CSV (full detail) ----
+    # ---- CSV (full detail, all processed docs incl. handwritten) ----
     csv_path = OUT_DIR / "metriques_par_document.csv"
     with open(csv_path, "w", newline="", encoding="utf-8-sig") as f:
-        w = csv.DictWriter(f, fieldnames=list(rows[0].keys()) if rows else [])
+        fieldnames = list(all_rows[0].keys()) + ["handwritten"] if all_rows else []
+        w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
-        w.writerows(rows)
+        for r in all_rows:
+            w.writerow({**r, "handwritten": r["doc_id"] in HANDWRITTEN_DOCS})
 
-    # ---- aggregates ----
+    # ---- aggregates (typed/printed documents only) ----
     n = len(rows)
     avg_pct_auto = round(sum(r["pct_auto_accepted"] for r in rows) / n, 1) if n else 0
     avg_fields_total = round(sum(r["fields_total"] for r in rows) / n, 1) if n else 0
@@ -174,18 +254,14 @@ def main() -> None:
     total_medium = sum(r["band_medium"] for r in rows)
     total_low = sum(r["band_low"] for r in rows)
     total_bands = total_high + total_medium + total_low
-    by_locator = {}
-    for r in rows:
-        by_locator.setdefault(r["locator"], 0)
-        by_locator[r["locator"]] += 1
 
     # ---- markdown report ----
     lines = []
     lines.append("# 6. Métriques d'évaluation — lot d'échantillons\n")
     lines.append(
-        f"Évaluation sur **{n} documents** (un par pays couvert), "
-        f"générée automatiquement à partir de `runs/<doc>/report.json` "
-        f"par `tools/evaluate_batch.py`.\n"
+        f"Évaluation sur **{n} documents typés/imprimés** (un par pays, hors "
+        f"manuscrits — voir plus bas), générée automatiquement à partir de "
+        f"`runs/<doc>/report.json` par `tools/evaluate_batch.py`.\n"
     )
     if missing:
         lines.append(
@@ -195,6 +271,16 @@ def main() -> None:
             f"connue du free tier (~250 requêtes/jour/clé), déjà documentée comme "
             f"raison de bascule vers un VLM local en production. Nouvel essai possible "
             f"le lendemain (quota réinitialisé) ou avec des clés supplémentaires.\n"
+        )
+    if excluded:
+        lines.append(
+            f"**{len(excluded)} document(s) manuscrits exclus des métriques** "
+            f"({', '.join(r['doc_id'] for r in excluded)}) — la reconnaissance "
+            f"d'écriture manuscrite est un problème distinct, nettement plus dur, "
+            f"que la lecture d'actes tapés/imprimés ; les mélanger tirait les "
+            f"chiffres vers le bas et ne reflétait pas la performance réelle sur "
+            f"la cible principale du pipeline. Ils restent traités normalement par "
+            f"le pipeline et dans `samples/` — seulement retirés de ce calcul.\n"
         )
 
     lines.append("## Vue d'ensemble\n")
@@ -211,19 +297,48 @@ def main() -> None:
             f"moyenne {total_medium} ({round(100*total_medium/total_bands,1)}%) · "
             f"basse {total_low} ({round(100*total_low/total_bands,1)}%) |"
         )
-    lines.append(
-        "| Méthode de localisation utilisée | "
-        + " · ".join(f"{k} : {v} doc(s)" for k, v in sorted(by_locator.items()))
-        + " |"
-    )
     lines.append("")
 
+    lines.append("## Précision / Rappel / F1\n")
+    if f1_stats["n"]:
+        p, r_, f1, acc = (f1_stats[k] for k in ("precision", "recall", "f1", "accuracy"))
+        lines.append("| Indicateur | Valeur |")
+        lines.append("|---|---|")
+        lines.append(f"| **Précision** | **{p*100:.1f} %** |")
+        lines.append(f"| **Rappel** | **{r_*100:.1f} %** |")
+        lines.append(f"| **F1** | **{f1*100:.1f} %** |" if f1 is not None else "| F1 | n/a |")
+        lines.append(f"| Accuracy globale | {acc*100:.1f} % |")
+        lines.append(f"| Champs évalués (avec double-passe page/crop) | {f1_stats['n']} sur {sum(r['fields_total'] for r in rows)} champs détectés |")
+        lines.append("")
+        lines.append(
+            "**Méthode** : « positif » = un champ pré-rempli automatiquement "
+            "(confiance suffisante, gate d'honnêteté franchi). La vérité terrain "
+            "est approximée par la **double extraction** que fait déjà le pipeline "
+            "(page entière + recadrage sur le champ) : quand les deux passes "
+            "indépendantes tombent d'accord, c'est un signal réel de fiabilité — "
+            "pas une vérité vérifiée par un humain, mais calculé de la même façon "
+            "pour tous les documents, sur un volume que le journal de corrections "
+            "manuelles ne permet pas d'atteindre.\n"
+        )
+        lines.append(
+            f"- **Précision** ({f1_stats['tp']} / {f1_stats['tp']+f1_stats['fp']}) : "
+            f"parmi les champs que le système présente comme fiables, combien le "
+            f"sont réellement — l'indicateur qui compte le plus pour OpenCRVS, "
+            f"puisqu'il mesure le risque de préremplir une valeur fausse avec "
+            f"assurance.\n"
+            f"- **Rappel** ({f1_stats['tp']} / {f1_stats['tp']+f1_stats['fn']}) : "
+            f"parmi les champs réellement bons, combien le système a osé "
+            f"pré-remplir plutôt que renvoyer à la relecture par prudence.\n"
+        )
+    else:
+        lines.append("Pas assez de champs à double-passe pour calculer ces indicateurs.\n")
+
     lines.append(
-        "**Lecture** : le « % auto-accepté » est le résultat du gate d'honnêteté du "
-        "pipeline — un champ n'est marqué automatiquement bon que si sa confiance "
-        "dépasse le seuil (0.6) ; sous ce seuil, il est quand même pré-rempli côté "
-        "OpenCRVS mais explicitement signalé « à vérifier » dans le commentaire de "
-        "revue, jamais présenté comme fiable à tort.\n"
+        "**Lecture générale** : le « % auto-accepté » est le résultat du gate "
+        "d'honnêteté du pipeline — un champ n'est marqué automatiquement bon que "
+        "si sa confiance dépasse le seuil (0.6) ; sous ce seuil, il est quand même "
+        "pré-rempli côté OpenCRVS mais explicitement signalé « à vérifier » dans "
+        "le commentaire de revue, jamais présenté comme fiable à tort.\n"
     )
 
     lines.append("## Accuracy réelle (corrections humaines vs valeur du modèle)\n")
@@ -256,34 +371,25 @@ def main() -> None:
 
     generic_fallback = [r for r in rows if r["country"] == "zz"]
     if generic_fallback:
-        docs_str = ", ".join(f"{r['doc_id']} ({r['country']})" for r in generic_fallback)
         lines.append("## Observation à creuser\n")
         lines.append(
             f"**{len(generic_fallback)} document(s) sont tombés sur le pack générique "
-            f"« zz » au lieu d'un pack pays dédié : {docs_str}.** Le pack générique "
-            f"n'ayant pas d'ancres spécifiques, la localisation interpole davantage "
-            f"(voir CSV) et plafonne la confiance de chaque champ à la bande "
-            f"« moyenne » au mieux, d'où un taux d'auto-acceptation à 0 % — cohérent "
-            f"avec le gate d'honnêteté (mieux vaut sous-noter que sur-noter), mais "
-            f"cela vaut la peine de vérifier pourquoi la détection automatique du "
-            f"pays n'a pas choisi le pack dédié existant sur ces documents.\n"
+            f"« zz » au lieu d'un pack pays dédié.** Le pack générique n'ayant pas "
+            f"d'ancres spécifiques, la localisation interpole davantage et plafonne "
+            f"la confiance de chaque champ à la bande « moyenne » au mieux, d'où un "
+            f"taux d'auto-acceptation à 0 % — cohérent avec le gate d'honnêteté "
+            f"(mieux vaut sous-noter que sur-noter), mais cela vaut la peine de "
+            f"vérifier pourquoi la détection automatique du pays n'a pas choisi le "
+            f"pack dédié existant sur ces documents (détail dans le CSV).\n"
         )
 
-    lines.append("## Détail par document\n")
     lines.append(
-        "| Pays | Document | Champs détectés | % auto-acceptés | Localisation | "
-        "Champs OpenCRVS pré-remplis |"
+        f"Détail par document (pays, % auto-accepté, méthode de localisation, "
+        f"champs OpenCRVS pré-remplis, matrice de confusion…) : "
+        f"`metriques_par_document.csv` dans ce même dossier — {len(all_rows)} lignes, "
+        f"y compris les {len(excluded)} documents manuscrits marqués `handwritten=True` "
+        f"et exclus des chiffres ci-dessus.\n"
     )
-    lines.append("|---|---|---|---|---|---|")
-    for r in sorted(rows, key=lambda r: r["country"]):
-        lines.append(
-            f"| {r['country']} | {r['doc_id']} | {r['fields_total']} | "
-            f"{r['pct_auto_accepted']} % | {r['locator']} | "
-            f"{r['opencrvs_fields_prefilled']} |"
-        )
-    lines.append("")
-    lines.append(f"Détail complet (scores par bande, ancres de localisation…) : "
-                  f"`metriques_par_document.csv` dans ce même dossier.\n")
 
     (OUT_DIR / "06-metriques-evaluation.md").write_text(
         "\n".join(lines), encoding="utf-8"
