@@ -53,6 +53,7 @@ HANDWRITTEN_DOCS = {
     "cm_acte_1977",   # Cameroun — cursive blue-ink, hand-filled form
     "gabon_p4",       # Gabon — cursive, hand-filled register entry
     "sn_extrait_1997",  # Sénégal — cursive, hand-filled register extract
+    "rw_acte_2013",   # Rwanda — cursive, hand-filled register entry
 }
 
 # OpenCRVS-relevant fields per role (whether or not build_declaration maps

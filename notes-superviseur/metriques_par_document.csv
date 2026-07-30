@@ -19,5 +19,9 @@ ml_copie_2024,ml,template,20,1,0,29,3,10.3,3,6,20,9,26,3,0,1,0,False
 mr_extrait_1987,mr,template,6,4,,27,18,66.7,18,9,0,9,15,18,0,9,0,False
 mu_extract_1991,mu,template,19,0,,26,22,84.6,22,0,4,5,14,22,0,0,0,False
 ng_certificat_1978,ng,template,12,1,0,17,14,82.4,14,1,2,5,12,14,0,1,2,False
+rw_acte_2013,rw,template,6,4,0,13,0,0.0,0,10,3,3,8,0,0,0,0,True
+sl_acte_1974,sl,template,13,3,0,16,9,56.2,9,0,7,7,11,9,0,0,5,False
 sn_extrait_1997,sn,template,13,4,,25,16,64.0,16,8,1,5,17,16,0,8,0,True
+tg_declaration_1963,tg,template,22,5,0,29,21,72.4,21,5,3,7,21,21,0,5,2,False
 tn_extrait_1981,tn,template,20,4,,25,18,72.0,18,3,4,7,13,18,0,4,0,False
+za_traduction_1964,zz,template,1,0,0,17,0,0.0,0,9,8,6,9,0,0,0,0,False
