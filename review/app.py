@@ -38,7 +38,10 @@ import time
 from io import BytesIO
 from pathlib import Path
 
+import asyncio
+
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -62,6 +65,16 @@ app = FastAPI(title="Gabon OCR")
 RUNS.mkdir(exist_ok=True)
 UPLOADS.mkdir(exist_ok=True)
 app.mount("/files", StaticFiles(directory=RUNS), name="files")
+
+# the OpenCRVS client (localhost:3000 by default) calls /api/opencrvs/* from
+# its own origin — a plain browser fetch needs this to not be blocked. Scoped
+# to local dev origins only; not meant for a public deployment.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1|\d+\.\d+\.\d+\.\d+):\d+",
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
 
 # in-memory state (single-process server; survives requests, not restarts)
 JOBS: dict[str, dict] = {}          # job_id -> {proc, log, started, source}
@@ -333,6 +346,106 @@ def send_to_opencrvs(doc_id: str):
         json.dumps(record, indent=2, ensure_ascii=False), encoding="utf-8"
     )
     return record
+
+
+# ----------------------------------------------------------------------------
+# OpenCRVS in-form integration — the "scan here" panel on the declare pages
+# (countryconfig fork, FieldType.FILE + FieldType.HTTP, see mosip.ts for the
+# established pattern this mirrors). Both endpoints below are synchronous:
+# they block until OCR finishes and hand back the declaration already
+# shaped as V2 field ids, so each destination field's `value` formula can
+# read straight off the response (field('page.ocr-fetch').get('data.child.dob'))
+# with zero polling logic needed on the form side.
+# ----------------------------------------------------------------------------
+
+ANALYZE_TIMEOUT_S = 110  # keep a margin under the HTTP field's own timeout
+
+
+def _declaration_payload(job_id: str) -> dict:
+    """report.json -> the flat V2-field-id dict the OpenCRVS form consumes."""
+    from pipeline.opencrvs_export import build_declaration, enrich_birth_place
+
+    report = json.loads((RUNS / job_id / "report.json").read_text(encoding="utf-8"))
+    declaration, comments = build_declaration(report)
+    enrich_birth_place(declaration, comments, report, run_dir=RUNS / job_id)
+    return {
+        "job_id": job_id,
+        "declaration": declaration,
+        "comment": "\n".join(comments),
+        "review_url": f"/review?doc={job_id}",
+    }
+
+
+class MinioPathPayload(BaseModel):
+    path: str  # FullDocumentPath OpenCRVS returned after the FILE field's own
+               # upload, e.g. "/ocrvs/<eventId>/<uuid>.jpg"
+
+
+def _minio_client():
+    from minio import Minio
+    return Minio(
+        os.environ.get("OPENCRVS_MINIO_HOST", "localhost:3535"),
+        access_key=os.environ.get("OPENCRVS_MINIO_ACCESS_KEY", "minioadmin"),
+        secret_key=os.environ.get("OPENCRVS_MINIO_SECRET_KEY", "minioadmin"),
+        secure=os.environ.get("OPENCRVS_MINIO_SECURE", "").lower() == "true",
+    )
+
+
+@app.post("/api/opencrvs/analyze")
+async def opencrvs_analyze(payload: MinioPathPayload):
+    """Desktop-upload path: the OpenCRVS FILE field uploads to OpenCRVS's own
+    MinIO like any other document field (e.g. documents.proofOfBirth already
+    does) — FieldType.HTTP can only send JSON, never raw file bytes, so we
+    can't receive the upload directly. Instead an HTTP field sends us the
+    resulting path and we fetch the bytes ourselves before running OCR."""
+    m = re.match(r"^/([^/]+)/(.+)$", payload.path)
+    if not m:
+        raise HTTPException(400, f"chemin MinIO invalide: {payload.path!r}")
+    bucket, key = m.group(1), m.group(2)
+    suffix = Path(key).suffix.lower()
+    if suffix not in ALLOWED_SUFFIXES:
+        raise HTTPException(415, f"format non supporté ({suffix or 'sans extension'})")
+
+    try:
+        client = _minio_client()
+        blob = await asyncio.to_thread(
+            lambda: client.get_object(bucket, key).read()
+        )
+    except Exception as e:
+        raise HTTPException(502, f"lecture MinIO échouée: {e}")
+    if not blob:
+        raise HTTPException(400, "fichier vide")
+
+    saved = UPLOADS / f"{time.strftime('%Y%m%d_%H%M%S')}_{_slug(Path(key).name)}{suffix}"
+    saved.write_bytes(blob)
+    job_id = _start_job(saved, Path(key).name)
+
+    proc = JOBS[job_id]["proc"]
+    try:
+        await asyncio.wait_for(asyncio.to_thread(proc.wait), timeout=ANALYZE_TIMEOUT_S)
+    except asyncio.TimeoutError:
+        raise HTTPException(504, "analyse trop longue — réessayer ou ouvrir /review")
+    if not (RUNS / job_id / "report.json").exists():
+        raise HTTPException(502, "l'OCR a échoué — voir /review pour le détail")
+    return _declaration_payload(job_id)
+
+
+@app.get("/api/opencrvs/analyze/phone/{sid}")
+async def opencrvs_analyze_phone(sid: str):
+    """QR/phone path: long-polls the phone session started by /api/phone-session
+    until its upload (from /m/{sid}) has finished processing."""
+    if sid not in PHONE:
+        raise HTTPException(404, "session inconnue — réaffichez le QR")
+    deadline = time.time() + ANALYZE_TIMEOUT_S
+    job_id = None
+    while time.time() < deadline:
+        job_id = PHONE[sid].get("job_id")
+        if job_id and (RUNS / job_id / "report.json").exists():
+            return _declaration_payload(job_id)
+        if job_id and job_id in JOBS and JOBS[job_id]["proc"].poll() not in (None, 0):
+            raise HTTPException(502, "l'OCR a échoué — voir /review pour le détail")
+        await asyncio.sleep(1.5)
+    raise HTTPException(504, "toujours pas de photo reçue ou analyse trop longue")
 
 
 # ----------------------------------------------------------------------------
