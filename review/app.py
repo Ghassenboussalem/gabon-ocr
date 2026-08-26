@@ -430,6 +430,64 @@ async def opencrvs_analyze(payload: MinioPathPayload):
     return _declaration_payload(job_id)
 
 
+@app.get("/api/opencrvs/qr.svg")
+def opencrvs_qr(request: Request):
+    """QR shown inside the OpenCRVS declare form.
+
+    The form panel embeds this at a fixed URL (a PARAGRAPH cannot build a
+    dynamic one), so a session is minted per request here and the phone
+    page it points at is the same /m/{sid} capture flow the OCR site uses.
+    The form then collects the result through .../analyze/phone/latest.
+    """
+    import qrcode
+    import qrcode.image.svg
+
+    sid = secrets.token_urlsafe(16)
+    PHONE[sid] = {"created": time.time(), "job_id": None}
+    cutoff = time.time() - 7200
+    for k in [k for k, v in PHONE.items() if v["created"] < cutoff]:
+        PHONE.pop(k, None)
+
+    url = f"{_public_base(request)}/m/{sid}"
+    img = qrcode.make(url, image_factory=qrcode.image.svg.SvgPathImage,
+                      box_size=11, border=2)
+    buf = BytesIO()
+    img.save(buf)
+    return Response(
+        buf.getvalue(),
+        media_type="image/svg+xml",
+        # each render must mint a fresh session, never reuse a cached image
+        headers={"X-QR-Url": url, "Cache-Control": "no-store"},
+    )
+
+
+@app.get("/api/opencrvs/analyze/phone/latest")
+async def opencrvs_analyze_phone_latest():
+    """Collect whatever the phone most recently captured.
+
+    The form's QR is a static URL, so the page cannot know which session id
+    was minted for it; instead the registrar taps "j'ai photographié" and we
+    return the newest phone capture. Scoped to the last 30 minutes so an old
+    document can never leak into a fresh declaration.
+    """
+    def _newest_recent_sid() -> str | None:
+        recent = [(v["created"], k) for k, v in PHONE.items()
+                  if v.get("job_id") and v["created"] > time.time() - 1800]
+        return max(recent)[1] if recent else None
+
+    deadline = time.time() + ANALYZE_TIMEOUT_S
+    while time.time() < deadline:
+        sid = _newest_recent_sid()
+        if sid:
+            job_id = PHONE[sid]["job_id"]
+            if (RUNS / job_id / "report.json").exists():
+                return _declaration_payload(job_id)
+            if job_id in JOBS and JOBS[job_id]["proc"].poll() not in (None, 0):
+                raise HTTPException(502, "l'OCR a échoué — voir /review pour le détail")
+        await asyncio.sleep(1.5)
+    raise HTTPException(504, "aucune photo reçue du téléphone — scannez le QR puis réessayez")
+
+
 @app.get("/api/opencrvs/analyze/phone/{sid}")
 async def opencrvs_analyze_phone(sid: str):
     """QR/phone path: long-polls the phone session started by /api/phone-session
