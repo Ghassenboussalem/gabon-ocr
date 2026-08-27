@@ -57,8 +57,8 @@ export const ocrParent = () => [field(UPLOAD_FETCH), field(PHONE_FETCH)]
  * parent changes. Every OCR-filled field therefore needs both.
  */
 export const ocrValue = (fieldId: string) => [
-  field(UPLOAD_FETCH).get(`data.declaration.${fieldId}`),
-  field(PHONE_FETCH).get(`data.declaration.${fieldId}`)
+  field(UPLOAD_FETCH).get(`data.fields.${fieldId}`),
+  field(PHONE_FETCH).get(`data.fields.${fieldId}`)
 ]
 
 /**
@@ -86,19 +86,29 @@ export const getOcrPrefillFields = (): FieldConfigInput[] => {
       conditionals: [hiddenOnReview]
     },
     {
+      id: 'child.ocr-title',
+      type: FieldType.PARAGRAPH,
+      label: {
+        defaultMessage: 'Pré-remplir depuis un acte scanné',
+        description: 'Title of the OCR prefill panel',
+        id: 'event.birth.action.declare.form.section.child.field.ocr.title'
+      },
+      configuration: { styles: { fontVariant: 'h4' } },
+      conditionals: [hiddenOnReview]
+    },
+    {
       id: 'child.ocr-intro',
       type: FieldType.PARAGRAPH,
       label: {
         defaultMessage:
-          '<strong>Pré-remplir depuis un acte scanné</strong><br/>' +
-          "Déposez une photo ou un PDF de l'acte ci-dessous, ou scannez le " +
-          'QR code pour photographier avec un téléphone. Les champs du ' +
+          "Déposez une photo ou un PDF de l'acte ci-dessous, ou ouvrez le " +
+          'site OCR sur un téléphone pour le photographier. Les champs du ' +
           'formulaire se remplissent automatiquement : vérifiez-les ensuite ' +
           'sur la page de relecture.',
         description: 'Intro text of the OCR prefill panel',
         id: 'event.birth.action.declare.form.section.child.field.ocr.intro'
       },
-      configuration: { styles: { fontVariant: 'reg16' } },
+      configuration: { styles: { fontVariant: 'reg16', hint: true } },
       conditionals: [hiddenOnReview]
     },
     {
@@ -142,17 +152,22 @@ export const getOcrPrefillFields = (): FieldConfigInput[] => {
       }
     },
     {
-      id: 'child.ocr-qr',
-      type: FieldType.PARAGRAPH,
+      id: 'child.ocr-qr-link',
+      type: FieldType.LINK_BUTTON,
       label: {
-        defaultMessage:
-          "<em>ou photographiez l'acte avec un téléphone :</em><br/>" +
-          `<img alt="QR code" width="180" height="180" ` +
-          `src="${OCR_PREFILL_URL}/api/opencrvs/qr.svg"/>`,
-        description: 'QR code block of the OCR prefill panel',
-        id: 'event.birth.action.declare.form.section.child.field.ocr.qr'
+        defaultMessage: "Photographier l'acte avec un téléphone",
+        description: 'Opens the OCR site, which shows a QR to scan',
+        id: 'event.birth.action.declare.form.section.child.field.ocr.qrLink'
       },
-      configuration: { styles: { fontVariant: 'reg14' } },
+      configuration: {
+        icon: 'QrCode',
+        url: OCR_PREFILL_URL,
+        text: {
+          defaultMessage: "Photographier l'acte avec un téléphone",
+          description: 'Text of the link opening the OCR site QR page',
+          id: 'event.birth.action.declare.form.section.child.field.ocr.qrLinkText'
+        }
+      },
       conditionals: [hiddenOnReview]
     },
     {

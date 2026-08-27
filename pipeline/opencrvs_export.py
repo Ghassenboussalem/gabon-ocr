@@ -62,7 +62,14 @@ def split_name(full: str) -> dict:
     if upper and lower:
         return {"firstname": " ".join(lower), "surname": " ".join(upper)}
     if len(tokens) == 1:
-        return {"firstname": "", "surname": tokens[0]}
+        # a lone token is a given name unless it is written in the uppercase
+        # reserved for family names — an act body often names the child by
+        # first name only ("de Yamousso du sexe Féminin"), and calling that a
+        # surname leaves the required firstname empty for no reason
+        token = tokens[0]
+        if len(token) >= 2 and token.isupper():
+            return {"firstname": "", "surname": token}
+        return {"firstname": token, "surname": ""}
     return {"firstname": " ".join(tokens[:-1]), "surname": tokens[-1]}
 
 
@@ -95,10 +102,20 @@ _NATIONALITY_STEMS = [
 
 
 def map_nationality(value: str) -> str | None:
-    v = re.sub(r"[^A-Z]", "", _strip_accents(value).upper())
-    for stem, code in _NATIONALITY_STEMS:
-        if v.startswith(stem):
-            return code
+    """'TUNISIENNE' / 'Citoyen Français de Naissance' -> ISO3 country code.
+
+    Matched per word rather than on the whole string: acts phrase nationality
+    freely ("Citoyen Français de Naissance"), so the adjective is rarely the
+    first word. Each word must *start* with a stem — a plain substring search
+    would read "Somalienne" as Malian.
+    """
+    words = re.split(r"[^A-Z]+", _strip_accents(value).upper())
+    for word in words:
+        if not word:
+            continue
+        for stem, code in _NATIONALITY_STEMS:
+            if word.startswith(stem):
+                return code
     return None
 
 

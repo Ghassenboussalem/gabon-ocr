@@ -361,8 +361,27 @@ def send_to_opencrvs(doc_id: str):
 ANALYZE_TIMEOUT_S = 110  # keep a margin under the HTTP field's own timeout
 
 
+def _nest(flat: dict) -> dict:
+    """{"child.dob": v} -> {"child": {"dob": v}}.
+
+    The declare form resolves a reference like
+    field(x).get('data.fields.child.dob') by splitting on dots and walking
+    the response with lodash `get`, so a flat key that itself contains dots
+    is invisible to it. This nested copy is what the form reads;
+    `declaration` stays flat for the notification API.
+    """
+    out: dict = {}
+    for key, value in flat.items():
+        parts = key.split(".")
+        node = out
+        for part in parts[:-1]:
+            node = node.setdefault(part, {})
+        node[parts[-1]] = value
+    return out
+
+
 def _declaration_payload(job_id: str) -> dict:
-    """report.json -> the flat V2-field-id dict the OpenCRVS form consumes."""
+    """report.json -> the V2-field-id values the OpenCRVS form consumes."""
     from pipeline.opencrvs_export import build_declaration, enrich_birth_place
 
     report = json.loads((RUNS / job_id / "report.json").read_text(encoding="utf-8"))
@@ -371,6 +390,7 @@ def _declaration_payload(job_id: str) -> dict:
     return {
         "job_id": job_id,
         "declaration": declaration,
+        "fields": _nest(declaration),
         "comment": "\n".join(comments),
         "review_url": f"/review?doc={job_id}",
     }

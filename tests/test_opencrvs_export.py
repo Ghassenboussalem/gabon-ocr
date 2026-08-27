@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from pipeline.opencrvs_export import (
     build_declaration,
+    map_nationality,
     enrich_birth_place,
     map_gender,
     map_informant_relation,
@@ -45,7 +46,22 @@ def test_split_name():
         "firstname": "Titi", "surname": "BOLE MIRIAM"}
     assert split_name("Jean Dupont") == {"firstname": "Jean", "surname": "Dupont"}
     assert split_name("THIAM") == {"firstname": "", "surname": "THIAM"}
+    # a lone lowercase-cased token is a given name, not a family name: acts
+    # often name the child by first name only in the narrative body
+    assert split_name("Yamousso") == {"firstname": "Yamousso", "surname": ""}
     assert split_name("") == {"firstname": "", "surname": ""}
+
+
+def test_nationality_mapping():
+    assert map_nationality("TUNISIENNE") == "TUN"
+    # acts phrase it freely — the adjective is rarely the first word
+    assert map_nationality("Citoyen Français de Naissance") == "FRA"
+    assert map_nationality("de nationalité malienne") == "MLI"
+    # a word must *start* with the stem, or "Somalienne" reads as Malian
+    assert map_nationality("Somalienne") is None
+    # ambiguous between two Congos: never guessed
+    assert map_nationality("CONGOLAISE") is None
+    assert map_nationality("sans profession") is None
 
 
 def test_enum_mappings():

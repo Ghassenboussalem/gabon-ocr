@@ -1,25 +1,159 @@
-{ "document": "copie_integrale_cote_divoire", "fields": [
- { "name": "annee",              "fr": "POUR L'ANNEE (année du registre)",           "type": "text",  "from": "entete" },
- { "name": "reference",          "fr": "Référence en marge (ex: 778 DU 12/09/1984)", "type": "text",  "from": "page" },
- { "name": "centre",             "fr": "Centre d'état civil (marge)",                "type": "text",  "from": "page" },
- { "name": "enfant_nom",         "fr": "Nom complet de l'enfant (marge NAISSANCE DE + prénom dans le récit)", "type": "name", "from": "naissance_narrative" },
- { "name": "date_naissance",     "fr": "Date de naissance (en toutes lettres dans le récit)", "type": "date", "from": "naissance_narrative" },
- { "name": "heure_naissance",    "fr": "Heure de naissance (en toutes lettres)",     "type": "time",  "from": "naissance_narrative" },
- { "name": "lieu_naissance",     "fr": "Lieu de naissance (ex: Maternité de ..., Commune de ...)", "type": "place", "from": "naissance_narrative" },
- { "name": "sexe",               "fr": "Sexe", "type": "enum", "values": ["Masculin","Féminin"], "from": "naissance_narrative" },
- { "name": "pere_nom",           "fr": "Ayant pour père : nom complet",              "type": "name",  "from": "pere_narrative" },
- { "name": "pere_date_naissance","fr": "Date de naissance du père (en toutes lettres)", "type": "date", "from": "pere_narrative" },
- { "name": "pere_lieu_naissance","fr": "Lieu de naissance du père",                  "type": "place", "from": "pere_narrative" },
- { "name": "pere_profession",    "fr": "Profession du père",                         "type": "text",  "from": "pere_narrative" },
- { "name": "pere_domicile",      "fr": "Domicile du père",                           "type": "place", "from": "pere_narrative" },
- { "name": "mere_nom",           "fr": "Et pour mère : nom complet",                 "type": "name",  "from": "mere_narrative" },
- { "name": "mere_date_naissance","fr": "Date de naissance de la mère",               "type": "date",  "from": "mere_narrative" },
- { "name": "mere_lieu_naissance","fr": "Lieu de naissance de la mère",               "type": "place", "from": "mere_narrative" },
- { "name": "mere_profession",    "fr": "Profession de la mère ('sans' = sans profession)", "type": "text", "from": "mere_narrative" },
- { "name": "mere_domicile",      "fr": "Domicile de la mère",                        "type": "place", "from": "mere_narrative" },
- { "name": "date_etablissement", "fr": "Dressé le ... (date en toutes lettres)",     "type": "date",  "from": "dresse_narrative" },
- { "name": "declarant_qualite",  "fr": "Sur la déclaration de qui (ex: du père)",    "type": "text",  "from": "dresse_narrative" },
- { "name": "officier",           "fr": "Officier de l'état civil (Par nous ...)",    "type": "name",  "from": "dresse_narrative" },
- { "name": "lieu_delivrance",    "fr": "Pour copie certifiée conforme, <lieu>",      "type": "place", "from": "certification" },
- { "name": "date_delivrance",    "fr": "Date de délivrance de la copie",             "type": "date",  "from": "certification" }
-]}
+{
+  "document": "copie_integrale_cote_divoire",
+  "fields": [
+    {
+      "name": "annee",
+      "fr": "POUR L'ANNEE (année du registre)",
+      "type": "text",
+      "from": "entete"
+    },
+    {
+      "name": "reference",
+      "fr": "Référence en marge (ex: 778 DU 12/09/1984)",
+      "type": "text",
+      "from": "page"
+    },
+    {
+      "name": "centre",
+      "fr": "Centre d'état civil (marge)",
+      "type": "text",
+      "from": "page"
+    },
+    {
+      "name": "enfant_nom",
+      "fr": "Nom complet de l'enfant (marge NAISSANCE DE + prénom dans le récit)",
+      "type": "name",
+      "from": "naissance_narrative"
+    },
+    {
+      "name": "date_naissance",
+      "fr": "Date de naissance (en toutes lettres dans le récit)",
+      "type": "date",
+      "from": "naissance_narrative"
+    },
+    {
+      "name": "heure_naissance",
+      "fr": "Heure de naissance (en toutes lettres)",
+      "type": "time",
+      "from": "naissance_narrative"
+    },
+    {
+      "name": "lieu_naissance",
+      "fr": "Lieu de naissance (ex: Maternité de ..., Commune de ...)",
+      "type": "place",
+      "from": "naissance_narrative"
+    },
+    {
+      "name": "sexe",
+      "fr": "Sexe",
+      "type": "enum",
+      "values": [
+        "Masculin",
+        "Féminin"
+      ],
+      "from": "naissance_narrative"
+    },
+    {
+      "name": "pere_nom",
+      "fr": "Ayant pour père : nom complet",
+      "type": "name",
+      "from": "pere_narrative"
+    },
+    {
+      "name": "pere_date_naissance",
+      "fr": "Date de naissance du père (en toutes lettres)",
+      "type": "date",
+      "from": "pere_narrative"
+    },
+    {
+      "name": "pere_lieu_naissance",
+      "fr": "Lieu de naissance du père",
+      "type": "place",
+      "from": "pere_narrative"
+    },
+    {
+      "name": "pere_profession",
+      "fr": "Profession du père",
+      "type": "text",
+      "from": "pere_narrative"
+    },
+    {
+      "name": "pere_nationalite",
+      "fr": "Nationalité du père si l'acte la mentionne (ex. « Citoyen Français de Naissance »), sinon laisser vide",
+      "type": "text",
+      "from": "pere_narrative"
+    },
+    {
+      "name": "pere_domicile",
+      "fr": "Domicile du père",
+      "type": "place",
+      "from": "pere_narrative"
+    },
+    {
+      "name": "mere_nom",
+      "fr": "Et pour mère : nom complet",
+      "type": "name",
+      "from": "mere_narrative"
+    },
+    {
+      "name": "mere_date_naissance",
+      "fr": "Date de naissance de la mère",
+      "type": "date",
+      "from": "mere_narrative"
+    },
+    {
+      "name": "mere_lieu_naissance",
+      "fr": "Lieu de naissance de la mère",
+      "type": "place",
+      "from": "mere_narrative"
+    },
+    {
+      "name": "mere_profession",
+      "fr": "Profession de la mère ('sans' = sans profession)",
+      "type": "text",
+      "from": "mere_narrative"
+    },
+    {
+      "name": "mere_nationalite",
+      "fr": "Nationalité de la mère si l'acte la mentionne explicitement, sinon laisser vide",
+      "type": "text",
+      "from": "mere_narrative"
+    },
+    {
+      "name": "mere_domicile",
+      "fr": "Domicile de la mère",
+      "type": "place",
+      "from": "mere_narrative"
+    },
+    {
+      "name": "date_etablissement",
+      "fr": "Dressé le ... (date en toutes lettres)",
+      "type": "date",
+      "from": "dresse_narrative"
+    },
+    {
+      "name": "declarant_qualite",
+      "fr": "Sur la déclaration de qui (ex: du père)",
+      "type": "text",
+      "from": "dresse_narrative"
+    },
+    {
+      "name": "officier",
+      "fr": "Officier de l'état civil (Par nous ...)",
+      "type": "name",
+      "from": "dresse_narrative"
+    },
+    {
+      "name": "lieu_delivrance",
+      "fr": "Pour copie certifiée conforme, <lieu>",
+      "type": "place",
+      "from": "certification"
+    },
+    {
+      "name": "date_delivrance",
+      "fr": "Date de délivrance de la copie",
+      "type": "date",
+      "from": "certification"
+    }
+  ]
+}
