@@ -1,0 +1,130 @@
+{
+  "aggregate": {
+    "documents": 6,
+    "fields_expected": 30,
+    "fields_predicted": 30,
+    "anls": 1.0,
+    "anls_answered": 1.0,
+    "cer": 0.0,
+    "wer": 0.0,
+    "exact_precision": 1.0,
+    "exact_recall": 1.0,
+    "exact_f1": 1.0,
+    "fuzzy_precision": 1.0,
+    "fuzzy_recall": 1.0,
+    "fuzzy_f1": 1.0,
+    "coverage": 1.0,
+    "hallucination_rate": 0.0,
+    "hallucination_slots": 0,
+    "schema_conformance": 1.0,
+    "name_split_accuracy": 0.8888888888888888,
+    "place_anls": 0.6666666666666666,
+    "place_cer": 0.26606929510155314,
+    "place_rouge_l": 0.7222222222222222,
+    "place_bleu": 0.4171745623047877
+  },
+  "per_field": {
+    "child.name": {
+      "n": 6,
+      "exact": 6,
+      "fuzzy": 6,
+      "anls": 1.0,
+      "cer": 0.0,
+      "coverage": 1.0
+    },
+    "child.dob": {
+      "n": 6,
+      "exact": 6,
+      "fuzzy": 6,
+      "anls": 1.0,
+      "cer": 0.0,
+      "coverage": 1.0
+    },
+    "child.gender": {
+      "n": 6,
+      "exact": 6,
+      "fuzzy": 6,
+      "anls": 1.0,
+      "cer": 0.0,
+      "coverage": 1.0
+    },
+    "father.name": {
+      "n": 6,
+      "exact": 6,
+      "fuzzy": 6,
+      "anls": 1.0,
+      "cer": 0.0,
+      "coverage": 1.0
+    },
+    "mother.name": {
+      "n": 6,
+      "exact": 6,
+      "fuzzy": 6,
+      "anls": 1.0,
+      "cer": 0.0,
+      "coverage": 1.0
+    }
+  },
+  "per_document": [
+    {
+      "doc_id": "tn_extrait_1981",
+      "country": "tn",
+      "anls": 1.0,
+      "exact": 5,
+      "expected": 5,
+      "place_anls": 1.0
+    },
+    {
+      "doc_id": "test_coteivoire",
+      "country": "ci",
+      "anls": 1.0,
+      "exact": 5,
+      "expected": 5,
+      "place_anls": 0.0
+    },
+    {
+      "doc_id": "bj_volet_2018",
+      "country": "bj",
+      "anls": 1.0,
+      "exact": 5,
+      "expected": 5,
+      "place_anls": 1.0
+    },
+    {
+      "doc_id": "sl_acte_1974",
+      "country": "sl",
+      "anls": 1.0,
+      "exact": 5,
+      "expected": 5,
+      "place_anls": 0.0
+    },
+    {
+      "doc_id": "ng_certificat_1978",
+      "country": "ng",
+      "anls": 1.0,
+      "exact": 5,
+      "expected": 5,
+      "place_anls": 1.0
+    },
+    {
+      "doc_id": "mr_extrait_1987",
+      "country": "mr",
+      "anls": 1.0,
+      "exact": 5,
+      "expected": 5,
+      "place_anls": 1.0
+    }
+  ],
+  "missing_documents": [],
+  "config": {
+    "anls_threshold": 0.5,
+    "fuzzy_threshold": 0.8,
+    "scored_fields": [
+      "child.name",
+      "child.dob",
+      "child.gender",
+      "father.name",
+      "mother.name"
+    ]
+  }
+}

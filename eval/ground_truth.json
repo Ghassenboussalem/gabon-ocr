@@ -1,0 +1,142 @@
+{
+  "_about": {
+    "purpose": "Reference values for measuring extraction quality (ANLS, CER, field-level P/R/F1, exact match).",
+    "provenance": "Transcribed by reading each scan in samples/ directly. This is annotation, not an independent gold standard produced by a third party — it is stated plainly wherever the numbers are reported.",
+    "scope": "Typed/printed acts only. Handwritten registers are a distinct, much harder recognition problem and are measured separately, never mixed into these figures.",
+    "field_semantics": {
+      "child.name / father.name / mother.name": "Given name(s) and family name in separate slots. Scored two ways: whether the right name was read at all (order-insensitive over the words), and whether each part landed in the correct slot. The act's word order (surname-first in Nigeria and Benin, given-first elsewhere) is a typographic convention and is not itself graded.",
+      "child.dob": "ISO 8601. The act often writes the date in words; converting it is part of the task.",
+      "child.gender": "OpenCRVS enum: male | female.",
+      "birth_place": "Free-text place of birth exactly as the act words it."
+    },
+    "null_means": "Field genuinely absent from the document. Predicting a value for it counts as a hallucination."
+  },
+  "documents": {
+    "tn_extrait_1981": {
+      "country": "tn",
+      "type": "Extrait de naissance (Tunisie, bilingue FR/AR)",
+      "fields": {
+        "child.name": {
+          "firstname": "ALI",
+          "surname": "YAHIA"
+        },
+        "child.dob": "1981-03-10",
+        "child.gender": "male",
+        "father.name": {
+          "firstname": "HEDI BEN AMMAR BEN",
+          "surname": "DHAOU"
+        },
+        "mother.name": {
+          "firstname": "MABROUKA BENT MOHAMED BEN ONE",
+          "surname": "YAHIA"
+        },
+        "birth_place": "BEN GUERDANE"
+      }
+    },
+    "test_coteivoire": {
+      "country": "ci",
+      "type": "Copie intégrale du registre (Côte d'Ivoire)",
+      "fields": {
+        "child.name": {
+          "firstname": "Yamousso",
+          "surname": "THIAM"
+        },
+        "child.dob": "1959-07-23",
+        "child.gender": "female",
+        "father.name": {
+          "firstname": "Amadou",
+          "surname": "THIAM"
+        },
+        "mother.name": {
+          "firstname": "Marietou",
+          "surname": "SOW"
+        },
+        "birth_place": "Clinique du Belvédère à Abidjan"
+      }
+    },
+    "bj_volet_2018": {
+      "country": "bj",
+      "type": "Acte de naissance, volet n°1 (Bénin)",
+      "fields": {
+        "child.name": {
+          "firstname": "CABIROU",
+          "surname": "SANNI"
+        },
+        "child.dob": "1993-08-11",
+        "child.gender": "male",
+        "father.name": {
+          "firstname": "GOUDA",
+          "surname": "SANNI"
+        },
+        "mother.name": {
+          "firstname": "MARIA",
+          "surname": "SABI"
+        },
+        "birth_place": "GOGOUNOU"
+      }
+    },
+    "sl_acte_1974": {
+      "country": "sl",
+      "type": "Certificat de naissance traduit (Sierra Leone)",
+      "fields": {
+        "child.name": {
+          "firstname": "Céline",
+          "surname": "ADAMS"
+        },
+        "child.dob": "1974-10-05",
+        "child.gender": "female",
+        "father.name": {
+          "firstname": "George",
+          "surname": "ADAMS"
+        },
+        "mother.name": {
+          "firstname": "Stevena",
+          "surname": "ADAMS"
+        },
+        "birth_place": "61 Avenue Saint Peters Freetown, Sierra Léone"
+      }
+    },
+    "ng_certificat_1978": {
+      "country": "ng",
+      "type": "Certificat de naissance traduit (Nigéria)",
+      "fields": {
+        "child.name": {
+          "firstname": "Juliana Ngosi",
+          "surname": "OBIAJUNWA"
+        },
+        "child.dob": "1978-05-27",
+        "child.gender": "female",
+        "father.name": {
+          "firstname": "Raymond",
+          "surname": "OBIAJUNWA"
+        },
+        "mother.name": {
+          "firstname": "Sabina",
+          "surname": "OBIAJUNWA"
+        },
+        "birth_place": "ENUGU"
+      }
+    },
+    "mr_extrait_1987": {
+      "country": "mr",
+      "type": "Extrait d'acte de naissance RNP (Mauritanie)",
+      "fields": {
+        "child.name": {
+          "firstname": "Mamadou",
+          "surname": "Sy"
+        },
+        "child.dob": "1987-10-12",
+        "child.gender": "male",
+        "father.name": {
+          "firstname": "Abou",
+          "surname": "Sy"
+        },
+        "mother.name": {
+          "firstname": "Khardyata",
+          "surname": "Sy"
+        },
+        "birth_place": "Nouadhibou"
+      }
+    }
+  }
+}
