@@ -257,11 +257,34 @@ pré-remplis et la répartition des scores de confiance.
 Le rapport est généré **à partir des sorties des harnais**, sans valeur saisie à
 la main : relancer les mesures et le régénérer suffit à le tenir à jour.
 
+Résultats mesurés sur 9 actes tapés (69 champs de référence), documents
+choisis pour couvrir le difficile autant que le facile — dactylographie pâle,
+actes donnant l'âge des parents au lieu de leur date de naissance, actes
+narratifs denses :
+
+| Métrique | Valeur |
+|---|---|
+| ANLS | 0,967 |
+| Exact match F1 | 0,926 |
+| Fuzzy match F1 | 0,985 |
+| CER | 0,005 |
+| Couverture | 97,1 % |
+| Hallucinations | 0 % |
+| Conformité schéma | 100 % |
+| Découpage prénom / nom | 81,5 % |
+
+L'évaluation relève **6 champs erronés ou manquants sur 69** et **5 inversions
+prénom / nom**, tous listés dans le rapport : une année lue 1989 au lieu de
+1999, un prénom lu FATOUKATA pour FATOUMATA, des nationalités non extraites
+faute de champ dans le pack pays.
+
 > **Portée des chiffres.** Les références ont été transcrites dans le cadre du
 > projet, non par un annotateur indépendant : une erreur de lecture partagée par
-> le pipeline et par la transcription ne serait pas détectée. L'échantillon est
-> petit. Ces résultats montrent que le système traite correctement ces
-> documents-là — ils ne prouvent pas une absence d'erreurs en général.
+> le pipeline et par la transcription ne serait pas détectée. L'échantillon
+> reste petit. Ces résultats montrent que le système traite correctement ces
+> documents-là — ils ne prouvent pas une absence d'erreurs en général. Faire
+> vérifier quelques références par un officier d'état civil est la prochaine
+> étape qui lèverait cette réserve.
 
 ---
 

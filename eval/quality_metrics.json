@@ -1,68 +1,116 @@
 {
   "aggregate": {
-    "documents": 6,
-    "fields_expected": 30,
-    "fields_predicted": 30,
-    "anls": 1.0,
-    "anls_answered": 1.0,
-    "cer": 0.0,
-    "wer": 0.0,
-    "exact_precision": 1.0,
-    "exact_recall": 1.0,
-    "exact_f1": 1.0,
+    "documents": 9,
+    "fields_expected": 69,
+    "fields_predicted": 67,
+    "anls": 0.9666527313266444,
+    "anls_answered": 0.99550803673938,
+    "cer": 0.0045149253731343285,
+    "wer": 0.033582089552238806,
+    "exact_precision": 0.9402985074626866,
+    "exact_recall": 0.9130434782608695,
+    "exact_f1": 0.9264705882352942,
     "fuzzy_precision": 1.0,
-    "fuzzy_recall": 1.0,
-    "fuzzy_f1": 1.0,
-    "coverage": 1.0,
+    "fuzzy_recall": 0.9710144927536232,
+    "fuzzy_f1": 0.9852941176470589,
+    "coverage": 0.9710144927536232,
     "hallucination_rate": 0.0,
-    "hallucination_slots": 0,
+    "hallucination_slots": 30,
     "schema_conformance": 1.0,
-    "name_split_accuracy": 0.8888888888888888,
+    "name_split_accuracy": 0.8148148148148148,
     "place_anls": 0.6666666666666666,
-    "place_cer": 0.26606929510155314,
-    "place_rouge_l": 0.7222222222222222,
-    "place_bleu": 0.4171745623047877
+    "place_cer": 0.25724064117881323,
+    "place_rouge_l": 0.7037037037037037,
+    "place_bleu": 0.41062482914820386
   },
   "per_field": {
     "child.name": {
-      "n": 6,
-      "exact": 6,
-      "fuzzy": 6,
+      "n": 9,
+      "exact": 9,
+      "fuzzy": 9,
       "anls": 1.0,
       "cer": 0.0,
       "coverage": 1.0
     },
     "child.dob": {
-      "n": 6,
-      "exact": 6,
-      "fuzzy": 6,
-      "anls": 1.0,
-      "cer": 0.0,
+      "n": 9,
+      "exact": 8,
+      "fuzzy": 9,
+      "anls": 0.9888888888888889,
+      "cer": 0.011111111111111112,
       "coverage": 1.0
     },
     "child.gender": {
-      "n": 6,
-      "exact": 6,
-      "fuzzy": 6,
+      "n": 9,
+      "exact": 9,
+      "fuzzy": 9,
       "anls": 1.0,
       "cer": 0.0,
       "coverage": 1.0
     },
     "father.name": {
-      "n": 6,
-      "exact": 6,
-      "fuzzy": 6,
+      "n": 9,
+      "exact": 8,
+      "fuzzy": 9,
+      "anls": 0.9888888888888889,
+      "cer": 0.011111111111111112,
+      "coverage": 1.0
+    },
+    "father.dob": {
+      "n": 3,
+      "exact": 3,
+      "fuzzy": 3,
       "anls": 1.0,
       "cer": 0.0,
       "coverage": 1.0
     },
+    "father.occupation": {
+      "n": 5,
+      "exact": 4,
+      "fuzzy": 5,
+      "anls": 0.9923076923076923,
+      "cer": 0.008,
+      "coverage": 1.0
+    },
+    "father.nationality": {
+      "n": 5,
+      "exact": 4,
+      "fuzzy": 4,
+      "anls": 0.8,
+      "cer": 0.0,
+      "coverage": 0.8
+    },
     "mother.name": {
-      "n": 6,
-      "exact": 6,
-      "fuzzy": 6,
+      "n": 9,
+      "exact": 8,
+      "fuzzy": 9,
+      "anls": 0.9930555555555556,
+      "cer": 0.006944444444444444,
+      "coverage": 1.0
+    },
+    "mother.dob": {
+      "n": 3,
+      "exact": 3,
+      "fuzzy": 3,
       "anls": 1.0,
       "cer": 0.0,
       "coverage": 1.0
+    },
+    "mother.occupation": {
+      "n": 4,
+      "exact": 4,
+      "fuzzy": 4,
+      "anls": 1.0,
+      "cer": 0.0,
+      "coverage": 1.0
+    },
+    "mother.nationality": {
+      "n": 4,
+      "exact": 3,
+      "fuzzy": 3,
+      "anls": 0.75,
+      "cer": 0.0,
+      "coverage": 0.75
     }
   },
   "per_document": [
@@ -70,32 +118,32 @@
       "doc_id": "tn_extrait_1981",
       "country": "tn",
       "anls": 1.0,
-      "exact": 5,
-      "expected": 5,
+      "exact": 7,
+      "expected": 7,
       "place_anls": 1.0
     },
     {
       "doc_id": "test_coteivoire",
       "country": "ci",
-      "anls": 1.0,
-      "exact": 5,
-      "expected": 5,
+      "anls": 0.9961538461538462,
+      "exact": 9,
+      "expected": 10,
       "place_anls": 0.0
     },
     {
       "doc_id": "bj_volet_2018",
       "country": "bj",
       "anls": 1.0,
-      "exact": 5,
-      "expected": 5,
+      "exact": 6,
+      "expected": 6,
       "place_anls": 1.0
     },
     {
       "doc_id": "sl_acte_1974",
       "country": "sl",
-      "anls": 1.0,
+      "anls": 0.7142857142857143,
       "exact": 5,
-      "expected": 5,
+      "expected": 7,
       "place_anls": 0.0
     },
     {
@@ -110,9 +158,109 @@
       "doc_id": "mr_extrait_1987",
       "country": "mr",
       "anls": 1.0,
-      "exact": 5,
-      "expected": 5,
+      "exact": 9,
+      "expected": 9,
       "place_anls": 1.0
+    },
+    {
+      "doc_id": "ml_copie_2024",
+      "country": "ml",
+      "anls": 0.9930555555555556,
+      "exact": 8,
+      "expected": 9,
+      "place_anls": 1.0
+    },
+    {
+      "doc_id": "dz_copie_1998",
+      "country": "dz",
+      "anls": 1.0,
+      "exact": 7,
+      "expected": 7,
+      "place_anls": 1.0
+    },
+    {
+      "doc_id": "mg_copie_1999",
+      "country": "mg",
+      "anls": 0.9777777777777779,
+      "exact": 7,
+      "expected": 9,
+      "place_anls": 0.0
+    }
+  ],
+  "errors": [
+    {
+      "doc_id": "test_coteivoire",
+      "field": "father.occupation",
+      "ref": "Directeur de la Radiodiffusion de la Côte d'Ivoire",
+      "pred": "Directeur de la Radiodiffusion de la (Côte d'Ivoire)",
+      "kind": "valeur erronée"
+    },
+    {
+      "doc_id": "sl_acte_1974",
+      "field": "father.nationality",
+      "ref": "SLE",
+      "pred": "",
+      "kind": "valeur manquante"
+    },
+    {
+      "doc_id": "sl_acte_1974",
+      "field": "mother.nationality",
+      "ref": "SLE",
+      "pred": "",
+      "kind": "valeur manquante"
+    },
+    {
+      "doc_id": "ml_copie_2024",
+      "field": "mother.name",
+      "ref": "FATOUMATA TRAORE",
+      "pred": "TRAORE FATOUKATA",
+      "kind": "valeur erronée"
+    },
+    {
+      "doc_id": "mg_copie_1999",
+      "field": "child.dob",
+      "ref": "1999-07-08",
+      "pred": "1989-07-08",
+      "kind": "valeur erronée"
+    },
+    {
+      "doc_id": "mg_copie_1999",
+      "field": "father.name",
+      "ref": "Zafindratovo ANDRIAMPALIMANANA",
+      "pred": "Zafindrat ANDRIAMPALIMANANA",
+      "kind": "valeur erronée"
+    }
+  ],
+  "swapped_names": [
+    {
+      "doc_id": "bj_volet_2018",
+      "field": "father.name",
+      "ref": "GOUDA SANNI",
+      "pred": "SANNI GOUDA"
+    },
+    {
+      "doc_id": "bj_volet_2018",
+      "field": "mother.name",
+      "ref": "MARIA SABI",
+      "pred": "SABI MARIA"
+    },
+    {
+      "doc_id": "ml_copie_2024",
+      "field": "father.name",
+      "ref": "SEKOU TRAORE",
+      "pred": "TRAORE SEKOU"
+    },
+    {
+      "doc_id": "ml_copie_2024",
+      "field": "mother.name",
+      "ref": "FATOUMATA TRAORE",
+      "pred": "TRAORE FATOUKATA"
+    },
+    {
+      "doc_id": "mg_copie_1999",
+      "field": "father.name",
+      "ref": "Zafindratovo ANDRIAMPALIMANANA",
+      "pred": "Zafindrat ANDRIAMPALIMANANA"
     }
   ],
   "missing_documents": [],
@@ -124,7 +272,13 @@
       "child.dob",
       "child.gender",
       "father.name",
-      "mother.name"
+      "father.dob",
+      "father.occupation",
+      "father.nationality",
+      "mother.name",
+      "mother.dob",
+      "mother.occupation",
+      "mother.nationality"
     ]
   }
 }

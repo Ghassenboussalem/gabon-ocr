@@ -48,8 +48,15 @@ OUT_DIR = ROOT / "notes-superviseur"
 FUZZY_THRESHOLD = 0.8
 ANLS_THRESHOLD = 0.5   # the DocVQA convention
 
+# Scored deliberately beyond the easy core. The first five are the fields a
+# declaration cannot do without; the rest are where extraction actually gets
+# hard — parent dates the act often gives only as an age, free-text
+# occupations, and nationalities that must be read rather than inferred.
 SCORED_FIELDS = ["child.name", "child.dob", "child.gender",
-                 "father.name", "mother.name"]
+                 "father.name", "father.dob", "father.occupation",
+                 "father.nationality",
+                 "mother.name", "mother.dob", "mother.occupation",
+                 "mother.nationality"]
 
 
 # ---------------------------------------------------------------- helpers ---
@@ -367,6 +374,26 @@ def main() -> None:
                 "place_anls": r["place"]["anls"],
             }
             for r in results if not r["missing"]
+        ],
+        "errors": [
+            {
+                "doc_id": r["doc_id"],
+                "field": field,
+                "ref": e["ref"],
+                "pred": e["pred"],
+                "kind": ("valeur manquante" if not e["has_pred"]
+                         else "valeur erronée"),
+            }
+            for r in results if not r["missing"]
+            for field, e in r["fields"].items()
+            if e["has_ref"] and not e["exact"]
+        ],
+        "swapped_names": [
+            {"doc_id": r["doc_id"], "field": field,
+             "ref": e["ref"], "pred": e["pred"]}
+            for r in results if not r["missing"]
+            for field, e in r["fields"].items()
+            if e.get("split_ok") is False
         ],
         "missing_documents": missing,
         "config": {

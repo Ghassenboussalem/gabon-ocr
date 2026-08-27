@@ -164,8 +164,13 @@ def main() -> None:
     story.append(Paragraph("2.1 Détail par champ", s["h2"]))
     rows = [["Champ", "n", "Exact", "ANLS", "CER", "Couverture"]]
     labels = {"child.name": "Nom de l'enfant", "child.dob": "Date de naissance",
-              "child.gender": "Sexe", "father.name": "Nom du père",
-              "mother.name": "Nom de la mère"}
+              "child.gender": "Sexe",
+              "father.name": "Nom du père", "father.dob": "Date de naissance du père",
+              "father.occupation": "Profession du père",
+              "father.nationality": "Nationalité du père",
+              "mother.name": "Nom de la mère", "mother.dob": "Date de naissance de la mère",
+              "mother.occupation": "Profession de la mère",
+              "mother.nationality": "Nationalité de la mère"}
     for k, v in per_field.items():
         rows.append([labels.get(k, k), str(v["n"]), f"{v['exact']}/{v['n']}",
                      f"{v['anls']:.2f}", f"{v['cer']:.2f}", pct(v["coverage"])])
@@ -180,11 +185,60 @@ def main() -> None:
 
     story.append(PageBreak())
 
-    # ------------------------------------------------------------ defect ------
-    story.append(Paragraph("3. Défaut identifié par l'évaluation", s["h1"]))
+    # ------------------------------------------------------------ errors ------
+    story.append(Paragraph("3. Erreurs relevées", s["h1"]))
+    errors = q.get("errors", [])
+    swapped = q.get("swapped_names", [])
     story.append(Paragraph(
-        "L'évaluation a mis en évidence un défaut réel, invisible sur les "
-        "chiffres agrégés de justesse : <b>l'ordre prénom / nom est inversé pour "
+        f"L'évaluation relève <b>{len(errors)} champs erronés ou manquants</b> "
+        f"sur {agg['fields_expected']}, et <b>{len(swapped)} inversions "
+        "prénom / nom</b>. Ils sont listés ici plutôt que résumés : un rapport "
+        "d'évaluation qui n'expose pas ses échecs ne permet pas de juger de la "
+        "portée de ses réussites.", s["body"]))
+
+    if errors:
+        rows = [["Document", "Champ", "Attendu", "Obtenu"]]
+        for e in errors:
+            rows.append([
+                Paragraph(e["doc_id"], s["cell"]),
+                Paragraph(e["field"], s["cell"]),
+                Paragraph(e["ref"] or "—", s["cell"]),
+                Paragraph(e["pred"] or "<i>(vide)</i>", s["cell"]),
+            ])
+        story.append(table(rows, [3.6 * cm, 3.4 * cm, 4.6 * cm, 4.4 * cm], align_right_from=99))
+
+    story.append(Spacer(1, 8))
+    story.append(Paragraph(
+        "Trois natures d'erreur se dégagent. Une <b>erreur de lecture de "
+        "chiffre</b> sur un acte narratif dense (une année lue 1989 au lieu de "
+        "1999) : c'est l'erreur la plus préoccupante, car une date reste "
+        "plausible même fausse et ne se signale pas d'elle-même. Des "
+        "<b>erreurs de caractère</b> sur dactylographie pâle (FATOUKATA pour "
+        "FATOUMATA, un prénom tronqué) : visibles et corrigées en un coup "
+        "d'œil par l'officier. Enfin des <b>valeurs non extraites</b>, quand "
+        "le pack pays ne prévoit pas encore le champ — la nationalité n'était "
+        "cherchée dans aucun pack avant ce travail ; elle a été ajoutée pour "
+        "la Côte d'Ivoire et reste à ajouter ailleurs.", s["body"]))
+
+    if swapped:
+        story.append(Paragraph("3.1 Inversions prénom / nom", s["h2"]))
+        rows = [["Document", "Champ", "Attendu", "Obtenu"]]
+        for e in swapped:
+            rows.append([
+                Paragraph(e["doc_id"], s["cell"]),
+                Paragraph(e["field"], s["cell"]),
+                Paragraph(e["ref"], s["cell"]),
+                Paragraph(e["pred"], s["cell"]),
+            ])
+        story.append(table(rows, [3.6 * cm, 3.4 * cm, 4.6 * cm, 4.4 * cm], align_right_from=99))
+
+    story.append(PageBreak())
+
+    # ------------------------------------------------------------ defect ------
+    story.append(Paragraph("4. Défaut identifié par l'évaluation", s["h1"]))
+    story.append(Paragraph(
+        "Le défaut le plus systématique mérite d'être isolé : <b>l'ordre prénom / "
+        "nom est inversé pour "
         "les parents lorsque l'acte écrit le nom de famille en premier et tout "
         "en majuscules</b> (cas du Bénin : « SANNI GOUDA », où SANNI est le nom "
         "de famille). L'heuristique repose sur la casse — les majuscules "
@@ -205,7 +259,7 @@ def main() -> None:
 
     # ---------------------------------------------------------- throughput ----
     if batch:
-        story.append(Paragraph("4. Rendement sur le lot d'échantillons", s["h1"]))
+        story.append(Paragraph("5. Rendement sur le lot d'échantillons", s["h1"]))
         n = len(batch)
         avg_fields = sum(float(r["fields_total"]) for r in batch) / n
         avg_auto = sum(float(r["pct_auto_accepted"]) for r in batch) / n
@@ -233,7 +287,7 @@ def main() -> None:
             s["body"]))
 
     # ------------------------------------------------------------- annexe -----
-    story.append(Paragraph("5. Annexe — métriques de génération (BLEU / ROUGE)", s["h1"]))
+    story.append(Paragraph("6. Annexe — métriques de génération (BLEU / ROUGE)", s["h1"]))
     story.append(Paragraph(
         "Calculées uniquement sur le lieu de naissance, seul champ en texte "
         "libre, et fournies pour comparabilité avec la littérature. Elles ne "
@@ -256,7 +310,7 @@ def main() -> None:
         "référence, ce que BLEU pénalise lourdement alors que la valeur reste "
         "exploitable par l'officier.", s["body"]))
 
-    story.append(Paragraph("6. Méthode et reproductibilité", s["h1"]))
+    story.append(Paragraph("7. Méthode et reproductibilité", s["h1"]))
     story.append(Paragraph(
         "Les valeurs de référence sont versionnées dans "
         "<font face='Courier'>eval/ground_truth.json</font>, avec pour chaque "

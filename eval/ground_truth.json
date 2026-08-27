@@ -2,12 +2,14 @@
   "_about": {
     "purpose": "Reference values for measuring extraction quality (ANLS, CER, field-level P/R/F1, exact match).",
     "provenance": "Transcribed by reading each scan in samples/ directly. This is annotation, not an independent gold standard produced by a third party — it is stated plainly wherever the numbers are reported.",
-    "scope": "Typed/printed acts only. Handwritten registers are a distinct, much harder recognition problem and are measured separately, never mixed into these figures.",
+    "scope": "Typed/printed acts only, chosen to span easy and hard cases rather than to flatter the result: faded typewriting, acts that give parents' ages instead of dates, and dense narrative acts are all included. Handwritten registers are a distinct, much harder recognition problem and are never mixed into these figures.",
     "field_semantics": {
       "child.name / father.name / mother.name": "Given name(s) and family name in separate slots. Scored two ways: whether the right name was read at all (order-insensitive over the words), and whether each part landed in the correct slot. The act's word order (surname-first in Nigeria and Benin, given-first elsewhere) is a typographic convention and is not itself graded.",
       "child.dob": "ISO 8601. The act often writes the date in words; converting it is part of the task.",
       "child.gender": "OpenCRVS enum: male | female.",
-      "birth_place": "Free-text place of birth exactly as the act words it."
+      "birth_place": "Free-text place of birth exactly as the act words it.",
+      "father.dob / mother.dob": "ISO 8601, and null when the act only gives an age or an approximation (\"37 ans\", \"VERS 1948\"). A date produced for those is a hallucination, not a partial credit.",
+      "*.occupation / *.nationality": "Only what the act actually states. Nationality is never inferred from a birthplace — the corpus itself disproves that shortcut: one father is born in Dakar and recorded as a French citizen."
     },
     "null_means": "Field genuinely absent from the document. Predicting a value for it counts as a hallucination."
   },
@@ -30,7 +32,13 @@
           "firstname": "MABROUKA BENT MOHAMED BEN ONE",
           "surname": "YAHIA"
         },
-        "birth_place": "BEN GUERDANE"
+        "birth_place": "BEN GUERDANE",
+        "father.dob": null,
+        "mother.dob": null,
+        "father.occupation": null,
+        "mother.occupation": null,
+        "father.nationality": "TUN",
+        "mother.nationality": "TUN"
       }
     },
     "test_coteivoire": {
@@ -51,7 +59,13 @@
           "firstname": "Marietou",
           "surname": "SOW"
         },
-        "birth_place": "Clinique du Belvédère à Abidjan"
+        "birth_place": "Clinique du Belvédère à Abidjan",
+        "father.dob": "1923-08-05",
+        "mother.dob": "1931-12-15",
+        "father.occupation": "Directeur de la Radiodiffusion de la Côte d'Ivoire",
+        "mother.occupation": "sans profession",
+        "father.nationality": "FRA",
+        "mother.nationality": null
       }
     },
     "bj_volet_2018": {
@@ -72,7 +86,13 @@
           "firstname": "MARIA",
           "surname": "SABI"
         },
-        "birth_place": "GOGOUNOU"
+        "birth_place": "GOGOUNOU",
+        "father.dob": null,
+        "mother.dob": null,
+        "father.occupation": "CHAUFFEUR",
+        "mother.occupation": null,
+        "father.nationality": null,
+        "mother.nationality": null
       }
     },
     "sl_acte_1974": {
@@ -93,7 +113,13 @@
           "firstname": "Stevena",
           "surname": "ADAMS"
         },
-        "birth_place": "61 Avenue Saint Peters Freetown, Sierra Léone"
+        "birth_place": "61 Avenue Saint Peters Freetown, Sierra Léone",
+        "father.dob": null,
+        "mother.dob": null,
+        "father.occupation": null,
+        "mother.occupation": null,
+        "father.nationality": "SLE",
+        "mother.nationality": "SLE"
       }
     },
     "ng_certificat_1978": {
@@ -114,7 +140,13 @@
           "firstname": "Sabina",
           "surname": "OBIAJUNWA"
         },
-        "birth_place": "ENUGU"
+        "birth_place": "ENUGU",
+        "father.dob": null,
+        "mother.dob": null,
+        "father.occupation": null,
+        "mother.occupation": null,
+        "father.nationality": null,
+        "mother.nationality": null
       }
     },
     "mr_extrait_1987": {
@@ -135,7 +167,94 @@
           "firstname": "Khardyata",
           "surname": "Sy"
         },
-        "birth_place": "Nouadhibou"
+        "birth_place": "Nouadhibou",
+        "father.dob": "1953-12-31",
+        "mother.dob": "1968-12-30",
+        "father.occupation": null,
+        "mother.occupation": null,
+        "father.nationality": "MRT",
+        "mother.nationality": "MRT"
+      }
+    },
+    "ml_copie_2024": {
+      "country": "ml",
+      "type": "Copie littérale d'acte de naissance (Mali) — dactylographiée, encre pâle",
+      "fields": {
+        "child.name": {
+          "firstname": "AMINA S",
+          "surname": "TRAORE"
+        },
+        "child.dob": "1998-05-01",
+        "child.gender": "female",
+        "father.name": {
+          "firstname": "SEKOU",
+          "surname": "TRAORE"
+        },
+        "father.dob": null,
+        "father.occupation": "MARABOUT",
+        "father.nationality": "MLI",
+        "mother.name": {
+          "firstname": "FATOUMATA",
+          "surname": "TRAORE"
+        },
+        "mother.dob": null,
+        "mother.occupation": "MENAGERE",
+        "mother.nationality": "MLI",
+        "birth_place": "KITA"
+      }
+    },
+    "dz_copie_1998": {
+      "country": "dz",
+      "type": "Acte de naissance, copie intégrale (Algérie) — parents décrits par leur âge",
+      "fields": {
+        "child.name": {
+          "firstname": "Nasrellah",
+          "surname": "SEBIANE"
+        },
+        "child.dob": "1998-06-15",
+        "child.gender": "male",
+        "father.name": {
+          "firstname": "Noureddine",
+          "surname": ""
+        },
+        "father.dob": null,
+        "father.occupation": "FELLAH",
+        "father.nationality": null,
+        "mother.name": {
+          "firstname": "Fatma",
+          "surname": "MEFTAH"
+        },
+        "mother.dob": null,
+        "mother.occupation": "Sans",
+        "mother.nationality": null,
+        "birth_place": "Ghazaouet"
+      }
+    },
+    "mg_copie_1999": {
+      "country": "mg",
+      "type": "Copie d'acte de l'état civil (Madagascar) — acte narratif dense",
+      "fields": {
+        "child.name": {
+          "firstname": "Hantelida",
+          "surname": "ANDRIANIRINA"
+        },
+        "child.dob": "1999-07-08",
+        "child.gender": "female",
+        "father.name": {
+          "firstname": "Zafindratovo",
+          "surname": "ANDRIAMPALIMANANA"
+        },
+        "father.dob": "1976-11-01",
+        "father.occupation": "commerçant",
+        "father.nationality": null,
+        "mother.name": {
+          "firstname": "Anta Armande",
+          "surname": "RAMAROSOA"
+        },
+        "mother.dob": "1970-04-10",
+        "mother.occupation": "commerçante",
+        "mother.nationality": null,
+        "birth_place": "Antsirabe, Rue Le Myre de Vilers"
       }
     }
   }
