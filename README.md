@@ -1,340 +1,332 @@
-# Actes OCR — extraction d'actes d'état civil (multi-pays)
+# OCR d'actes d'état civil → OpenCRVS
 
-A local-first pipeline that replicates the handwritingocr.com workflow for
-Gabonese birth certificates: image cleanup, **exact field localization**,
-two-pass VLM extraction with consensus, French-specific validation, and a
-human-in-the-loop review UI whose corrections become fine-tuning data.
+Numériser un acte de naissance africain et en pré-remplir une déclaration dans
+**OpenCRVS**, pour que l'officier d'état civil **vérifie** au lieu de
+**ressaisir**.
 
-```
- scan.png
-    │
- [1] preprocess      illumination fix · CLAHE · denoise · deskew · upscale
-    │                (optional --destamp: suppress blue/green stamp ink)
- [2] locate          printed labels OCR'd (tesseract fra) → fuzzy-matched to a
-    │                layout template → per-field bounding boxes + crops
-    │                → field_boxes.png overlay for QA
- [3] extract         PASS 1: whole page + full schema  ─┐
-    │                PASS 2: each field crop            ├─ consensus
-    │                                                   ─┘
- [4] validate        French date-in-words parser · CNIN↔birthdate cross-check
-    │                chronology · gazetteer of Gabonese places · enums
- [5] confidence      score = model + agreement + validation → route:
-    │                auto-accept / human review
- [6] review UI       crop-next-to-value verification, worst first;
-                     every correction appended to data/corrections.jsonl
-                     → export.py sft → fine-tune the local VLM → repeat
-```
+Le système lit un scan (photo, image, PDF), en extrait les champs avec un
+modèle vision-langage, les valide, leur attribue un score de confiance, puis
+alimente le registre civil numérique — soit par l'API de notification, soit
+directement **à l'intérieur du formulaire de déclaration OpenCRVS**.
 
-## Country packs
+---
 
-The pipeline is country-agnostic; everything country-specific lives in
-`config/countries/<code>/`:
+## Sommaire
 
-```
-config/countries/          layout style        country-specific analysis
-  ga/  Gabon               form (manuscrit)    CNIN↔date-de-naissance cross-check
-  tn/  Tunisie             form (table)        registry-year↔declaration check
-  bj/  Bénin               form (volet)        RED-reference-year check; late-
-                                               declaration (jugement supplétif) warn
-  rw/  Rwanda              form (bilingue FR/  acte-n°/year check (170/2013 ↔ l'an
-       manuscrit)          kinyarwanda)        deux mille treize)
-  cg/  Congo-Brazzaville   lines               registre/année check; '**' = vide
-  ci/  Côte d'Ivoire       NARRATIVE (====)    reference-year check; prose sections
-  mg/  Madagascar          NARRATIVE           registre-year; dates de délivrance/
-                                               traduction en toutes lettres
-  cv/  Cap-Vert            form (traduction)   reference-year (n° 348/03-09-1973);
-                                               '***' = occulté
-  tg/  Togo                form (volet souche) année/acte check; '/' = vide
-  dz/  Algérie             form (pointillés)   date-en-marge ↔ date-de-naissance
-  ao/  Angola              NARRATIVE           n° d'acte EN LETTRES ↔ n° en marge
-                           (traduction)        (Deux mille quatre cents vingt-sept ↔ 2427)
-  cm/  Cameroun            form (bilingue FR/  'vers <année>' toléré; section père
-                           EN, manuscrit)      souvent vide
-  mu/  Maurice             form (bilingue EN/  le NID embarque JJMMAA de la date de
-                           FR, dactylographié) naissance (S230591... ↔ 23/05/1991)
-  gn/  Guinée              form (machine à     valeurs 'ETIQUETTE :VALEUR';
-                           écrire)             double certification
-  za/  Afrique du Sud      form numéroté       le n° d'identité embarque AAMMJJ
-                           (traduction)        (640916... ↔ 1964/09/16); 'non stipulé'
-  cd/  RD Congo            form (manuscrit,    acte-n°/année check (4049/2023 ↔ l'an
-                           filigrane, tampons) deux mille vingt-trois); détection par
-                                               labels (Chefferie, Bureau Principal)
-  sn/  Sénégal             form (manuscrit,    TROIS paires lettres↔chiffres (année,
-                           cases)              n° registre, n° jugement); valeurs
-                                               au-dessus des légendes
-  eg/  Égypte              form (traduction,   n° NATIONAL embarque siècle+AAMMJJ
-                           original arabe)     (2 761010... ↔ 10/10/1976)
-  ke/  Kenya               form (traduction)   n° d'acte NNNNNNN/AAAA ↔ année d'enreg.
-  lr/  Libéria             form (traduction)   n° d'enregistrement embarque l'année
-  ng/  Nigéria             form (traduction)   NPC/... <année> ↔ année d'enregistrement
-  sc/  Seychelles          TABLE paysage       orientation 90° corrigée par vote OCR;
-                           (traduction)        extraction par bande de tableau
-  sl/  Sierra Leone        form (traduction)   '---' = null; registre n°/page/volume
-  lb/  Liban               table numérotée     rubriques 1-16; Religion/Rite
-                           1-16 (traduction)
-  ma/  Maroc               form + marge        dates HÉGIRIENNES + grégoriennes;
-                                               date-marge ↔ naissance; mentions
-                                               marginales (mariages/divorces)
-  ml/  Mali                form numéroté 1-26  'VERS <année>'; réf. jugement supplétif
-                                               dans la rubrique déclarant
-  mr/  Mauritanie          form sécurisé       cohérence inter-cadres: prénom-du-père
-                           (RNP, bilingue)     (Enfant) ↔ prénom (Père)
-  zz/  Générique           —                   pays non reconnu: schéma universel,
-                                               extraction page seule, tout en revue
-```
+- [Ce que fait le projet](#ce-que-fait-le-projet)
+- [Principe directeur : le gate d'honnêteté](#principe-directeur--le-gate-dhonnêteté)
+- [Démarrage rapide](#démarrage-rapide)
+- [Le pipeline d'extraction](#le-pipeline-dextraction)
+- [Packs pays](#packs-pays)
+- [Intégration OpenCRVS](#intégration-opencrvs)
+- [Évaluation](#évaluation)
+- [Structure du dépôt](#structure-du-dépôt)
+- [Exploitation de la plateforme locale](#exploitation-de-la-plateforme-locale)
+- [Limites connues](#limites-connues)
 
-Two layout families are supported by the same machinery. **Form layouts**
-get per-field boxes from label anchors. **Narrative layouts** (prose
-paragraphs) get *section bands* instead — "Ayant pour père → Et pour mère"
-becomes one crop mapped to several schema fields — and each pack's
-`prompt_hint` teaches the model how that country's prose is structured. The
-French dates-in-words parser, chronology checks and gazetteer validation are
-shared everywhere.
+---
 
-Each pack contains `country.json` (name, header keywords for auto-detection,
-which validators apply), `schema.json` (the logical fields), `templates/`
-(layout anchors + geometry) and `places.json` (gazetteer). By default
-`--country auto` reads the printed header ("REPUBLIQUE TUNISIENNE",
-"République Gabonaise", ...) and picks the pack; force one with
-`--country tn`. Adding a country is adding a directory — probe one clean
-specimen with `tools/probe_labels.py`, write the template from the output,
-list the fields, done. The French date-in-words parser, the two-pass
-consensus, confidence routing, the review UI and the fine-tuning flywheel
-are shared across all packs.
+## Ce que fait le projet
 
-## Quickstart (Windows)
+Trois briques indépendantes mais complémentaires :
 
-```bat
-:: 1. Python deps (Python 3.10+)
-py -m venv .venv && .venv\Scripts\activate
-pip install -r requirements.txt
+| Brique | Rôle |
+|---|---|
+| **Pipeline OCR** (`pipeline/`, `run_pipeline.py`) | scan → champs structurés + score de confiance par champ |
+| **Application web** (`review/`) | dépôt des scans (glisser-déposer ou QR téléphone), suivi, écran de correction |
+| **Intégration OpenCRVS** (`pipeline/opencrvs_export.py`, `fork/ocr.ts`) | déclaration pré-remplie, en API ou directement dans le formulaire |
 
-:: 2. Tesseract (for field localization, NOT for the handwriting itself)
-::    Install the UB Mannheim build: https://github.com/UB-Mannheim/tesseract/wiki
-::    During setup tick "French" under Additional language data, or copy
-::    fra.traineddata into ...\Tesseract-OCR\tessdata
-set TESSERACT_CMD=C:\Program Files\Tesseract-OCR\tesseract.exe
+Chiffres mesurés : **27 packs pays**, ~40 à 90 s de traitement par acte,
+~7 champs OpenCRVS pré-remplis par document en moyenne. Voir
+[Évaluation](#évaluation) pour la méthode et les limites de ces chiffres.
 
-:: 3. First run — stages 1-2 only, no model needed. Inspect the overlay!
-py run_pipeline.py samples\volet_mere_2002.png --backend none
-::    → runs\volet_mere_2002\field_boxes.png  (green = anchor found,
-::      orange = interpolated) and runs\...\crops\*.png
+---
 
-:: 4. Full run with a model (see backend matrix below)
-py run_pipeline.py samples\volet_mere_2002.png --backend ollama --model glm-ocr
-py run_pipeline.py samples\volet_mere_2002.png --backend gemini
-py run_pipeline.py samples\tn_extrait_1981.jpg --backend gemini   :: country auto-detected
+## Principe directeur : le gate d'honnêteté
 
-:: 5. Web app: upload (drag-drop, PDF ok, QR pour téléphone) + review
-uvicorn review.app:app --reload    →  http://localhost:8000
-```
+À chaque étage, le système préfère **ne rien affirmer** plutôt qu'affirmer faux :
 
-Linux/macOS: same commands with `python3` and `apt install tesseract-ocr
-tesseract-ocr-fra` (or `brew install tesseract tesseract-lang`).
+- **Localisation** — si le gabarit ne colle pas (couverture < 0,6), bascule sur
+  une localisation par le modèle plutôt que de dessiner des cadres « confiants
+  mais faux ».
+- **Valeurs peu sûres** — en dessous du seuil de confiance 0,6, la valeur est
+  quand même pré-remplie mais explicitement marquée **« à vérifier »** dans le
+  commentaire de revue. Jamais présentée comme fiable.
+- **Nationalité ambiguë** — « CONGOLAISE » (deux Congo) n'est jamais tranchée
+  automatiquement ; la valeur brute reste visible pour l'officier.
+- **Lieu d'accouchement** — la catégorie (hôpital / domicile / autre) n'est
+  jamais devinée : l'acte ne la précise généralement pas.
+- **Nationalité et lieu de naissance sont distincts** — la nationalité n'est
+  jamais déduite d'un lieu de naissance. Un acte du corpus le démontre : le père
+  y est né à Dakar mais l'acte précise « Citoyen Français de Naissance ».
 
-The repo ships with the three sample documents already processed under
-`runs/`, so the review UI has something to show the moment you start it —
-`volet_mere_2002` was run end-to-end with the mock backend
-(`--backend mock --fixture fixtures/volet_mere_2002.json`).
+---
 
-## Interface web & déploiement
+## Démarrage rapide
 
-`uvicorn review.app:app` sert trois pages :
+### Prérequis
 
-| page | rôle |
-|------|------|
-| `/` | dépôt : glisser-déposer (PNG/JPG/TIFF/WEBP/BMP/**PDF**, page 1 traitée), QR code téléphone, liste des documents avec progression en direct |
-| `/m/<session>` | page téléphone ouverte via le QR : **prendre une photo** ou choisir un fichier — le document part directement dans la file de traitement de votre PC |
-| `/review` | bureau de vérification (corrections → `data/corrections.jsonl`) |
-
-En local, le QR encode automatiquement l'adresse LAN (le téléphone doit être
-sur le même Wi-Fi). Déployée, l'application est accessible de partout.
-
-**Déployer (backend Gemini uniquement) :**
+- Python 3.12 et un environnement virtuel (`.venv`)
+- Une clé API Gemini dans `.env` (`GEMINI_API_KEY`)
+- Pour l'intégration OpenCRVS : Docker Desktop + WSL (voir
+  [`OPENCRVS_LOCAL.md`](OPENCRVS_LOCAL.md))
 
 ```bash
-# Docker n'importe où
-docker build -t gabon-ocr .
-docker run -p 8000:8000 -e GEMINI_API_KEY=... -e APP_PASSWORD=... gabon-ocr
-
-# ou Render en un clic : pousser le repo sur GitHub puis
-# New → Blueprint (render.yaml est fourni) ; renseigner GEMINI_API_KEY.
+python -m venv .venv
+.venv/Scripts/pip install -r requirements.txt
+cp .env.example .env      # puis renseigner GEMINI_API_KEY
 ```
 
-Variables d'environnement : `GEMINI_API_KEY` (obligatoire),
-`APP_PASSWORD` (protège l'UI par mot de passe — les URLs téléphone restent
-accessibles via leur session à usage unique), `PUBLIC_BASE_URL` (origine
-https à mettre dans le QR derrière un proxy), `PIPELINE_BACKEND`
-(`gemini` par défaut ; en local vous pouvez mettre `ollama`).
+### Traiter un acte en ligne de commande
 
-Le conteneur embarque tesseract + le `tessdata/` français du repo ; aucune
-configuration système n'est nécessaire.
-
-## Backend matrix
-
-| backend  | flag                                   | notes |
-|----------|----------------------------------------|-------|
-| Ollama   | `--backend ollama --model <tag>`       | needs a **vision** model (see below) |
-| Gemini   | `--backend gemini [--model id]`        | set `GEMINI_API_KEY` (aistudio.google.com/apikey); default `gemini-2.5-flash`, JSON output enforced |
-| OpenAI-compatible | `--backend openai --base-url http://localhost:8000/v1 --model <id>` | vLLM / LM Studio / llama.cpp server — the serious local-serving path |
-| mock     | `--backend mock --fixture <json>`      | no GPU: exercises validation/scoring/review |
-| none     | `--backend none`                       | stages 1–2 only: check localization quality |
-
-### Which of your local models can do this?
-
-Only **vision** models can read an image. From a typical `ollama list`:
-
-| model              | vision? | verdict for this task |
-|--------------------|---------|------------------------|
-| `glm-ocr`          | ✅      | best of the already-installed options — OCR-tuned VLM, start here |
-| `llava`            | ✅      | works, but 2023-era; expect weak French cursive accuracy |
-| `qwen2.5:7b`       | ❌ text-only | cannot see images — will not work |
-| `llama3.2` (2 GB)  | ❌ text-only | the vision variant is a different, larger tag |
-| embed models       | ❌      | embeddings only |
-
-Recommended upgrade: `ollama pull qwen3-vl` (Qwen3-VL 8B, ~6.1 GB, also
-available as `qwen3-vl:4b` / `qwen3-vl:2b` for smaller GPUs). It is the
-strongest open-weights family for handwriting/OCR at this size and the one
-you would later fine-tune with the corrections this pipeline collects.
-
-A pragmatic strategy: **develop and measure with `--backend gemini`**
-(fast, strong, no GPU pressure), then switch the same pipeline to the local
-model and close the gap with fine-tuning. The pipeline code is identical
-across backends.
-
-## Robustness on messy real-world pages
-
-Localization defends itself in three ways (all in `pipeline/locate.py`):
-
-* **Multi-form pages** — photocopies often carry the filled volet next to an
-  empty duplicate and a mentions panel, so every label appears 4+ times.
-  Anchor candidates are clustered into x-columns and only the strongest
-  column (most distinct, best-scoring labels) is kept.
-* **Order enforcement** — matched anchors must respect the template's
-  vertical order (longest-increasing-subsequence filter); stray or stolen
-  matches are dropped and re-interpolated.
-* **Reliability gate** — if too few anchors are found, or their positions
-  don't fit the template's nominal layout (median residual > 2.5× label
-  height), the run is marked `reliable: false`: the overlay gets a red
-  banner, the crop pass is skipped, extraction runs on the whole page only,
-  and **every field is routed to review**. The system says "I could not
-  localize" instead of emitting wrong boxes.
-
-Practical floor: printed labels need to be roughly ≥ 20 px tall for the
-anchor pass. Scan at 300 DPI (or crop the filled form out of multi-form
-photocopies). Below that floor the VLM page-pass fallback still extracts —
-modern VLMs read low-resolution text far better than tesseract — you just
-lose the crop pass and its consensus signal, so expect more review work.
-
-### Robustesse sur de nouveaux échantillons
-
-La localisation par gabarit est un ACCÉLÉRATEUR de précision, pas une
-dépendance: la passe page du VLM n'utilise aucun gabarit. Les couches, de la
-plus spécifique à la plus générale:
-
-1. document connu, layout connu → ancres floues + occurrences + filtre
-   d'ordre + interpolation affine absorbent bruit OCR, tampons et dérives;
-2. nouveau millésime d'un layout connu → si le fit n'est pas fiable, la
-   passe crops est coupée, extraction page seule, tout part en revue —
-   jamais de boîtes silencieusement fausses. Calibrer le millésime =
-   `tools/probe_labels.py` + un fichier JSON;
-3. nouveau pays non reconnu → pack générique `zz`: schéma universel,
-   indication de prudence au modèle, revue à 100 %.
-
-Le composant réellement adaptatif est le VLM; le déterminisme ne borne que
-la localisation. Pour une localisation adaptative sans gabarit (layouts
-inédits en masse), un locator « VLM-grounded » (le modèle émet lui-même les
-boîtes) peut être branché comme troisième stratégie sans toucher au reste.
-
-### Multi-page documents
-
-The pipeline processes one page image per run. For multi-page PDFs (e.g. the
-Cape-Verdean translation whose verso carries the consular certification),
-rasterize each page (`pdftoppm -png -r 300 file.pdf page`) and run the pages
-separately; the verso usually only needs the page-level pass.
-
-## The 95 % question
-
-No model reads degraded 1990s cursive at 95 % raw. The target is reached as
-a **system**:
-
-1. preprocessing recovers faint ink (stage 1);
-2. localization means the model reads *the right strip of paper* — a whole
-   class of "right value, wrong line" errors disappears (stage 2);
-3. two independent passes must agree, or the field is flagged (stage 3);
-4. validators exploit the document's redundancy — e.g. the C.N.I. line often
-   embeds the holder's birth date: on the shipped 2002 sample the pipeline
-   flags `mere_cnin` because the CNIN says 17.10.1984 while the declared
-   birth date is 16.10.1984 (stage 4);
-5. everything not proven is routed to a human whose correction costs seconds
-   (stages 5–6);
-6. corrections accumulate in `data/corrections.jsonl`; `py export.py sft`
-   turns them into training samples; a LoRA fine-tune of the local VLM on a
-   few hundred of them measurably lifts accuracy on *your* form family, which
-   shrinks the review queue — the same flywheel commercial services run.
-
-Tune the routing thresholds in `pipeline/confidence.py` (`AUTO_ACCEPT`,
-`LOW`) against your own tolerance: stricter = more review, fewer errors.
-
-## Adding a new layout (e.g. the 1991 full-page acte)
-
-The two "volet" samples share one printed template, covered by
-`config/templates/volet_v1.json`. The 1991 A5 acte is a different layout and
-needs its own template (10-minute job):
-
-```bat
-py run_pipeline.py samples\gabon_p4.png --backend none
-py tools\probe_labels.py runs\gabon_p4\enhanced_gray.png
+```bash
+.venv/Scripts/python run_pipeline.py samples/tn_extrait_1981.jpg --backend gemini
 ```
 
-Copy the printed-label lines it finds into a new
-`config/templates/acte_a5_v1.json` (same shape as `volet_v1.json`), set each
-anchor's `rel_y` from the printed column, choose a `detect_keyword` unique to
-that layout, and list the fields with `right_of` / `band` geometry. The
-locator then auto-selects the template per document.
+Produit `runs/<doc>/report.json` (champs + scores), `field_boxes.png`
+(visualisation des zones détectées) et `original.<ext>` (le scan conservé pour
+être joint à la déclaration).
 
-### Multi-form carbon sheets
+### Lancer l'application web
 
-Some certified copies are carbon sheets carrying SEVERAL copies of the same
-printed form side by side (a filled volet next to a blank duplicate and a
-mentions panel). Since the printed labels are identical on every copy, naive
-anchor matching gets contaminated across panels. The locator handles this:
-label hits are clustered into columns, and when more than one column looks
-like a form, the pipeline keeps the column containing the most ink — the
-filled copy — and clamps all field geometry to it (`multi_form_slab` in
-locate.json). `samples/synthetic_double.png` is the regression test for this.
-If localization still can't establish a trustworthy fit, the run degrades
-gracefully: `reliable=false`, the crop pass is skipped, extraction is
-page-only and every field is routed to review — never silently wrong boxes.
-
-For heavily stamped documents like that one, add `--destamp` — see
-`demo/destamp_before_after.png` for the effect of suppressing saturated
-blue/green stamp ink before reading.
-
-## Repo map
-
-```
-run_pipeline.py            CLI: all stages for one document
-pipeline/preprocess.py     stage 1  image cleanup
-pipeline/locate.py         stage 2  anchors → exact field boxes + crops
-pipeline/extract.py        stage 3  two-pass VLM + consensus
-pipeline/validate.py       stage 4  dates-in-words parser, CNIN check, gazetteer
-pipeline/confidence.py     stage 5  scoring + routing
-pipeline/vlm_client.py     backends: ollama / openai-compat / gemini / mock
-review/app.py + static/    stage 6  human review UI (FastAPI)
-export.py                  golden CSV + fine-tuning JSONL
-tools/probe_labels.py      calibrate templates for new layouts
-config/schema.json         the 25 logical fields
-config/templates/          layout templates (anchors + geometry)
-fixtures/                  mock model outputs for GPU-less testing
-tests/test_validate.py     date parser / gazetteer tests
-samples/                   the three source scans
-runs/                      per-document outputs (pre-generated for the demo)
+```bash
+.venv/Scripts/python -m uvicorn review.app:app --port 8000
 ```
 
-## Privacy note
+- `http://localhost:8000` — dépôt des scans, QR pour photographier au téléphone
+- `http://localhost:8000/review` — écran de correction
 
-These documents carry real personal data. Keep processing local (Ollama /
-vLLM) for production; if you use a cloud backend for development, use test
-documents or documents you are authorized to process, and prune `runs/` and
-`data/` accordingly.
+### Lancer la plateforme complète (OpenCRVS + application)
+
+```bash
+powershell -ExecutionPolicy Bypass -File start-opencrvs.ps1
+```
+
+Démarre les conteneurs, les 14 microservices OpenCRVS et l'application OCR,
+affiche un tableau de bord en direct, répare les services défaillants, puis
+vérifie l'intégration. Se termine par « TOUT EST VERT ».
+
+> Les services tournent **fenêtre masquée** (`tools/run_hidden.vbs`). Sans cela,
+> chaque tâche planifiée ouvrait sa propre console — une vingtaine de terminaux
+> par démarrage, dont la fermeture accidentelle tuait le service hébergé. Si les
+> tâches sont un jour recréées, réappliquer avec
+> `tools/hide_service_windows.ps1`.
+
+---
+
+## Le pipeline d'extraction
+
+```
+scan (image ou PDF)
+   │
+[1] prétraitement    redressement · mise à l'échelle · binarisation
+   │                 le scan d'origine est conservé (pièce jointe OpenCRVS)
+[2] détection pays   lecture de l'en-tête → pack pays, sinon pack générique
+   │
+[3] localisation     gabarit (rapide) ; si couverture < 0,6 → localisation VLM
+   │
+[4] extraction       passe 1 : page entière ─┐
+   │                 passe 2 : recadrages    ├─ consensus entre les deux
+   │                 (lots de 5, 4 workers)  ─┘
+[5] validation       dates en toutes lettres → ISO · énumérations · lieux
+   │                 score par champ → auto-accepté ou à relire
+   ▼
+runs/<doc>/report.json
+```
+
+L'accord entre les deux passes indépendantes sert à la fois de signal de
+confiance et de mesure interne de fiabilité.
+
+**Backends** — `--backend gemini` (par défaut), `ollama` ou `openai`. La bascule
+vers un modèle hébergé localement ne demande aucun changement de code : c'est le
+chemin prévu pour la production, où des données d'état civil ne doivent pas
+transiter par une API tierce.
+
+---
+
+## Packs pays
+
+27 pays + un pack générique, dans `config/countries/<code>/` :
+
+- `schema.json` — champs attendus sur ce type d'acte (nom, libellé, type)
+- `places.json` — lexique de lieux, qui oriente l'OCR vers les bonnes graphies
+
+Algérie, Angola, Bénin, Cameroun, Cap-Vert, Congo-Brazzaville, RD Congo,
+Côte d'Ivoire, Égypte, Gabon, Guinée, Kenya, Liban, Libéria, Madagascar, Mali,
+Maroc, Maurice, Mauritanie, Nigéria, Rwanda, Sénégal, Seychelles, Sierra Leone,
+Afrique du Sud, Togo, Tunisie.
+
+Chaque pack nomme ses champs dans son propre vocabulaire (`enfant_nom` ici,
+`nom` + `prenoms` ailleurs, `pere_nom_complet` autre part) ; une table d'alias
+dans `pipeline/opencrvs_export.py` les ramène tous vers les identifiants
+OpenCRVS.
+
+---
+
+## Intégration OpenCRVS
+
+**Aucune modification du code d'OpenCRVS.** Tout passe par l'API officielle et
+par le dépôt de configuration pays (fork).
+
+### Voie 1 — API Event Notification
+
+Le document traité part vers la file *Notifications* du bureau d'état civil,
+déclaration déjà pré-remplie et scan joint.
+
+```bash
+.venv/Scripts/python tools/send_to_opencrvs.py runs/<doc> [--dry-run]
+```
+
+```
+POST {auth}/token                          client_credentials
+POST {gateway}/events/events               création de l'événement
+POST {gateway}/upload                      scan → MinIO
+POST {gateway}/events/events/notifications déclaration + pièce jointe
+```
+
+### Voie 2 — Pré-remplissage dans le formulaire
+
+Un panneau ajouté à la page « Child's details » permet de déposer le scan
+**sans quitter OpenCRVS** : les champs du formulaire se remplissent seuls, sur
+toutes les pages (enfant, parents, déclarant), et l'officier continue vers la
+page de relecture native.
+
+```
+child.ocr-scan (FILE)  → OpenCRVS stocke le scan dans son propre MinIO
+        ↓ déclenche
+child.ocr-fetch (HTTP) → POST le chemin MinIO au service OCR
+        ↓ réponse
+chaque champ lit sa valeur via `parent` + `value`
+```
+
+Le code du panneau est dans [`fork/ocr.ts`](fork/ocr.ts), déployé vers le fork
+countryconfig par `tools/deploy_fork_ocr.sh`.
+
+Deux contraintes de la plateforme ont façonné cette conception :
+
+- `FieldType.HTTP` ne transmet que du JSON, jamais des octets de fichier — d'où
+  le passage par le stockage d'OpenCRVS et l'envoi d'un **chemin**.
+- Une référence `value` est résolue en découpant le chemin sur les points et en
+  descendant dans le JSON. La réponse expose donc une branche `fields`
+  réellement imbriquée ; la branche `declaration` reste plate pour l'API.
+- Un champ ne se synchronise que si sa propriété **`parent`** déclare la source.
+  `value` seul est inerte.
+
+### Migration vers une autre instance
+
+Créer un client d'intégration « Event notification » sur l'instance cible, puis
+changer quatre variables dans `.env` :
+
+```
+OPENCRVS_AUTH_URL · OPENCRVS_GATEWAY_URL · OPENCRVS_CLIENT_ID · OPENCRVS_CLIENT_SECRET
+```
+
+(plus `OPENCRVS_LOCATION_ID`, le bureau destinataire). Aucun changement de code.
+
+---
+
+## Évaluation
+
+Deux questions distinctes, mesurées séparément.
+
+### Justesse — contre des valeurs de référence
+
+```bash
+.venv/Scripts/python tools/evaluate_quality.py
+```
+
+Mesure ANLS, taux d'erreur caractère et mot, précision / rappel / F1 par champ,
+taux d'hallucination, conformité au schéma et exactitude du découpage
+prénom / nom, contre les références de `eval/ground_truth.json`.
+
+### Rendement — sans référence, sur tout le lot
+
+```bash
+.venv/Scripts/python tools/evaluate_batch.py
+```
+
+Mesure la part de champs auto-acceptés, le nombre de champs OpenCRVS
+pré-remplis et la répartition des scores de confiance.
+
+### Rapport
+
+```bash
+.venv/Scripts/python tools/build_eval_report.py   # → rapport_evaluation.pdf
+```
+
+Le rapport est généré **à partir des sorties des harnais**, sans valeur saisie à
+la main : relancer les mesures et le régénérer suffit à le tenir à jour.
+
+> **Portée des chiffres.** Les références ont été transcrites dans le cadre du
+> projet, non par un annotateur indépendant : une erreur de lecture partagée par
+> le pipeline et par la transcription ne serait pas détectée. L'échantillon est
+> petit. Ces résultats montrent que le système traite correctement ces
+> documents-là — ils ne prouvent pas une absence d'erreurs en général.
+
+---
+
+## Structure du dépôt
+
+```
+pipeline/            le pipeline (prétraitement, localisation, extraction,
+                     validation, confiance, export OpenCRVS)
+review/              application web FastAPI (dépôt, QR, correction, envoi)
+config/countries/    27 packs pays + pack générique
+fork/ocr.ts          panneau de numérisation intégré au formulaire OpenCRVS
+tools/               harnais d'évaluation, déploiement du fork, exploitation
+eval/                valeurs de référence et métriques calculées
+tests/               tests hors-ligne du mapping OpenCRVS
+samples/             corpus d'actes réels
+runs/                sorties par document (report.json, crops, scan d'origine)
+notes-superviseur/   notes de synthèse et métriques par document
+```
+
+Documents de référence : [`HANDOFF.md`](HANDOFF.md) (état complet du projet et
+pièges d'exploitation), [`OPENCRVS_LOCAL.md`](OPENCRVS_LOCAL.md) (plateforme
+locale au quotidien).
+
+---
+
+## Exploitation de la plateforme locale
+
+Une instance OpenCRVS complète (v1.9.14) tourne en local : distro WSL dédiée,
+Docker pour les dépendances (MongoDB, Elasticsearch, PostgreSQL, MinIO, Redis,
+InfluxDB), et une tâche planifiée Windows par microservice.
+
+| Utilisateur | Mot de passe | Rôle |
+|---|---|---|
+| `k.mweene` | `test` | Officier local — voit les notifications OCR |
+| `j.campbell` | `test` | Admin système — menu Configuration → Integrations |
+
+Code 2FA : `000000`. Détails, ports et dépannage dans
+[`OPENCRVS_LOCAL.md`](OPENCRVS_LOCAL.md).
+
+**Piège principal** : un arrêt brutal du PC fait revenir MongoDB en arrière, ce
+qui supprime le client d'intégration et change les identifiants de lieux.
+`start-opencrvs.ps1` détecte les deux au démarrage et resynchronise ce qu'il
+peut. Faire `wsl --shutdown` avant d'éteindre évite le problème.
+
+---
+
+## Limites connues
+
+- **Ordre prénom / nom** — lorsqu'un acte écrit le nom de famille en premier et
+  tout en majuscules (Bénin, Nigéria), le découpage des noms de parents peut
+  être inversé. Le nom est correctement lu ; c'est sa répartition entre les deux
+  champs qui est erronée. Correctifs envisagés : exploiter le patronyme de
+  l'enfant lorsqu'il apparaît chez un parent, et déclarer l'ordre des noms dans
+  le pack pays.
+- **Actes manuscrits** — la reconnaissance d'écriture manuscrite est un problème
+  distinct et nettement plus difficile. Ces documents sont traités par le
+  pipeline mais exclus des métriques, qu'ils fausseraient.
+- **Quotas** — le palier gratuit de l'API Gemini (~250 requêtes/jour/clé, avec
+  rotation automatique) suffit à la démonstration, pas à la production.
+- **Confidentialité** — en production, les données d'état civil ne doivent pas
+  transiter par une API tierce : basculer sur `--backend ollama` avec un modèle
+  hébergé localement.
+- **Envois non idempotents** — renvoyer un document par l'API de notification
+  crée un doublon dans la file. Correctif prévu : identifiant de transaction
+  dérivé du hachage du fichier.
+- **Lieux** — les lieux réels ne peuvent pas être rattachés aux zones
+  administratives internes tant que l'on travaille sur l'instance de
+  démonstration ; une adresse internationale complète est utilisée en attendant.
