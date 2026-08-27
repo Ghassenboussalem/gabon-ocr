@@ -47,6 +47,15 @@ const PHONE_FETCH = 'child.ocr-phone-fetch'
  * field stays fully editable — this only supplies a value when the OCR
  * produced one, and the registrar can overwrite anything it got wrong.
  */
+export const ocrParent = () => [field(UPLOAD_FETCH), field(PHONE_FETCH)]
+
+/**
+ * Marks a field as listening to the OCR fetches.
+ *
+ * `value` alone is inert: the client builds its listener map from `parent`
+ * (getParentsOfListenerFields) and only re-resolves `value` when a declared
+ * parent changes. Every OCR-filled field therefore needs both.
+ */
 export const ocrValue = (fieldId: string) => [
   field(UPLOAD_FETCH).get(`data.declaration.${fieldId}`),
   field(PHONE_FETCH).get(`data.declaration.${fieldId}`)

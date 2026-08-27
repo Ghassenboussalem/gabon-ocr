@@ -1,63 +1,147 @@
 #!/bin/bash
 # Deploy the OCR prefill module into the countryconfig fork checked out in
-# the ubuntu-opencrvs WSL distro, and wire it into the birth child page.
+# the ubuntu-opencrvs WSL distro, and wire every field the OCR can fill.
 #
 #   wsl -d ubuntu-opencrvs -u root -- bash /mnt/c/Users/Ghassen/Documents/gabon-ocr/tools/deploy_fork_ocr.sh
 #
-# Idempotent: re-running only refreshes ocr.ts if child.ts is already wired.
+# Idempotent: re-running refreshes ocr.ts and skips files already wired.
 set -eu
 
 FORK=/opt/opencrvs/opencrvs-countryconfig
 SRC=/mnt/c/Users/Ghassen/Documents/gabon-ocr/fork
-CHILD=$FORK/src/form/v2/birth/forms/pages/child.ts
+PAGES=$FORK/src/form/v2/birth/forms/pages
 
 tr -d '\r' < "$SRC/ocr.ts" > "$FORK/src/form/v2/ocr.ts"
 echo "copied  src/form/v2/ocr.ts"
 
-python3 - "$CHILD" <<'PYEOF'
-import io, sys, re
+python3 - "$FORK" "$PAGES" <<'PYEOF'
+import io, sys
 
-path = sys.argv[1]
-src = io.open(path, encoding="utf-8").read()
+FORK, PAGES = sys.argv[1], sys.argv[2]
 
-if "getOcrPrefillFields" in src:
-    print("SKIP    child.ts (already wired)")
-    raise SystemExit(0)
-
-# 1. import the module
-anchor = "import { applicationConfig } from '@countryconfig/api/application/application-config'"
-assert anchor in src, "import anchor not found"
-src = src.replace(
-    anchor,
-    anchor + "\nimport {\n  getOcrPrefillFields,\n  ocrValue\n} from '@countryconfig/form/v2/ocr'",
-    1,
+IMPORT = (
+    "import {\n"
+    "  getOcrPrefillFields,\n"
+    "  ocrParent,\n"
+    "  ocrValue\n"
+    "} from '@countryconfig/form/v2/ocr'"
 )
 
-# 2. let OCR results flow into the fields it can fill. Each is a plain
-#    `value:` reference, so the field stays editable and simply starts out
-#    populated when a scan produced something for it.
-FILLABLE = {
-    "child.name": "child.name",
-    "child.gender": "child.gender",
-    "child.dob": "child.dob",
-    "child.placeOfBirth": "child.placeOfBirth",
-    "child.birthLocation.other": "child.birthLocation.other",
-}
-for field_id, ocr_id in FILLABLE.items():
-    needle = "      id: '%s',\n" % field_id
+def read(p):
+    return io.open(p, encoding="utf-8").read()
+
+def write(p, s):
+    io.open(p, "w", encoding="utf-8").write(s)
+
+def add_import(src, anchor, what=IMPORT):
+    if what.split("\n")[-1] in src:
+        return src
+    assert anchor in src, "import anchor missing"
+    return src.replace(anchor, anchor + "\n" + what, 1)
+
+def wire_plain(src, field_id, indent="      "):
+    """Plain field: inject parent + value right after its `id:` line.
+
+    Both are required — the client's listener map is built from `parent`,
+    and `value` is only re-resolved when a declared parent changes.
+    """
+    needle = "%sid: '%s',\n" % (indent, field_id)
     if needle not in src:
-        print("WARN    field %s not found, skipped" % field_id)
+        print("   WARN  %s not found" % field_id)
+        return src
+    add = ("%sparent: ocrParent(),\n%svalue: ocrValue('%s'),\n"
+           % (indent, indent, field_id))
+    return src.replace(needle, needle + add, 1)
+
+# ---------------------------------------------------------------- child ----
+p = PAGES + "/child.ts"
+src = read(p)
+if "ocrParent" in src:
+    print("SKIP    child.ts (already wired)")
+else:
+    # a first pass wired `value` only; upgrade it in place
+    src = src.replace(
+        "import {\n  getOcrPrefillFields,\n  ocrValue\n} from '@countryconfig/form/v2/ocr'",
+        IMPORT, 1)
+    src = add_import(
+        src,
+        "import { applicationConfig } from '@countryconfig/api/application/application-config'")
+    for fid in ["child.name", "child.gender", "child.dob",
+                "child.placeOfBirth", "child.birthLocation.other"]:
+        old = "      value: ocrValue('%s'),\n" % fid
+        if old in src:
+            src = src.replace(old, "      parent: ocrParent(),\n" + old, 1)
+        else:
+            src = wire_plain(src, fid)
+    if "getOcrPrefillFields()" not in src:
+        tail = "\n  ]\n})"
+        idx = src.rstrip().rfind(tail)
+        assert idx != -1
+        src = src[:idx] + ",\n    ...getOcrPrefillFields()" + src[idx:]
+    write(p, src)
+    print("PATCHED child.ts")
+
+# ------------------------------------------- mother / father / informant ----
+PLAIN = {
+    "mother.ts": ["mother.nationality", "mother.occupation"],
+    "father.ts": ["father.nationality", "father.occupation"],
+    "informant.ts": ["informant.relation"],
+}
+for fname, fields in PLAIN.items():
+    p = PAGES + "/" + fname
+    src = read(p)
+    if "ocrValue" in src:
+        print("SKIP    %s (already wired)" % fname)
         continue
-    src = src.replace(needle, needle + "      value: ocrValue('%s'),\n" % ocr_id, 1)
+    # anchor on the toolkit import, the one line every page is guaranteed
+    # to have regardless of which helpers it pulls in
+    src = add_import(
+        src,
+        "} from '@opencrvs/toolkit/events'",
+        what="import { ocrParent, ocrValue } from '@countryconfig/form/v2/ocr'")
+    for fid in fields:
+        src = wire_plain(src, fid)
+    write(p, src)
+    print("PATCHED %s" % fname)
 
-# 3. append the panel to the page's field list (last entry before the
-#    closing `]\n})` of defineFormPage)
-tail = "\n  ]\n})"
-assert src.rstrip().endswith("]\n})"), "unexpected end of child.ts"
-idx = src.rstrip().rfind(tail)
-assert idx != -1
-src = src[:idx] + ",\n    ...getOcrPrefillFields()" + src[idx:]
-
-io.open(path, "w", encoding="utf-8").write(src)
-print("PATCHED child.ts")
+# ---------------------------------------------------------------- mosip ----
+# mother.name / mother.dob and their father / informant twins are wrapped in
+# connectToMOSIPIdReader, which rebuilds `parent` and overwrites `value`, so
+# injecting into the wrapped object is futile. Teach the wrapper to carry the
+# OCR references too: MOSIP keeps priority, OCR fills in when MOSIP is silent.
+p = FORK + "/src/form/v2/mosip.ts"
+src = read(p)
+if "ocrValue" in src:
+    print("SKIP    mosip.ts (already wired)")
+else:
+    src = add_import(
+        src,
+        "import { addYears, isAfter } from 'date-fns'",
+        what="import { ocrParent, ocrValue } from '@countryconfig/form/v2/ocr'")
+    old = """      parent: [
+        field(`${page}.id-reader`),
+        field(`${page}.verify-nid-http-fetch`),
+        ...(parent ? [parent] : [])
+      ],
+      ...fieldInput,
+      value: [
+        field(`${page}.verify-nid-http-fetch`).get(valuePath),
+        field(`${page}.id-reader`).get(valuePath)
+      ]"""
+    new = """      parent: [
+        field(`${page}.id-reader`),
+        field(`${page}.verify-nid-http-fetch`),
+        ...ocrParent(),
+        ...(parent ? [parent] : [])
+      ],
+      ...fieldInput,
+      value: [
+        field(`${page}.verify-nid-http-fetch`).get(valuePath),
+        field(`${page}.id-reader`).get(valuePath),
+        ...ocrValue(fieldInput.id)
+      ]"""
+    assert old in src, "connectToMOSIPIdReader shape changed"
+    src = src.replace(old, new, 1)
+    write(p, src)
+    print("PATCHED mosip.ts")
 PYEOF
