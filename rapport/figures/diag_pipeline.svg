@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="550" viewBox="0 0 760 550" font-family="Helvetica, Arial, sans-serif">
+<rect width="760" height="550" fill="white"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2e6da4"/></marker></defs>
+<rect x="60" y="40" width="340" height="62" rx="6" fill="white" stroke="#2a9d8f" stroke-width="1.4"/><text x="230.0" y="65.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3a5c">1. Prétraitement</text><text x="230.0" y="83.0" text-anchor="middle" font-size="11" fill="#5a6672">redressement · échelle · binarisation</text>
+<line x1="230" y1="102" x2="230" y2="126" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="60" y="126" width="340" height="62" rx="6" fill="white" stroke="#2a9d8f" stroke-width="1.4"/><text x="230.0" y="151.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3a5c">2. Détection du pays</text><text x="230.0" y="169.0" text-anchor="middle" font-size="11" fill="#5a6672">en-tête → pack pays ou générique</text>
+<line x1="230" y1="188" x2="230" y2="212" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="60" y="212" width="340" height="62" rx="6" fill="white" stroke="#e9a13b" stroke-width="1.4"/><text x="230.0" y="237.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3a5c">3. Localisation</text><text x="230.0" y="255.0" text-anchor="middle" font-size="11" fill="#5a6672">gabarit, sinon grounding VLM</text>
+<line x1="230" y1="274" x2="230" y2="298" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="60" y="298" width="340" height="62" rx="6" fill="white" stroke="#2e6da4" stroke-width="1.4"/><text x="230.0" y="323.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3a5c">4. Extraction</text><text x="230.0" y="341.0" text-anchor="middle" font-size="11" fill="#5a6672">page entière + recadrages → consensus</text>
+<line x1="230" y1="360" x2="230" y2="384" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="60" y="384" width="340" height="62" rx="6" fill="white" stroke="#2a9d8f" stroke-width="1.4"/><text x="230.0" y="409.0" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3a5c">5. Validation &amp; score</text><text x="230.0" y="427.0" text-anchor="middle" font-size="11" fill="#5a6672">dates ISO · énumérations · confiance</text>
+<rect x="60" y="470" width="340" height="46" rx="6" fill="#eef2f6" stroke="#1a3a5c" stroke-width="1.4"/><text x="230.0" y="498.0" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3a5c">runs/&lt;doc&gt;/report.json</text>
+<text x="420" y="76" text-anchor="start" font-size="12" font-weight="normal" fill="#5a6672">scan (image ou PDF)</text>
+<text x="420" y="334" text-anchor="start" font-size="11" font-weight="bold" fill="#c0504d">le gate d'honnêteté agit ici :</text>
+<text x="420" y="350" text-anchor="start" font-size="11" font-weight="normal" fill="#5a6672">couverture &lt; 0,6 → bascule VLM</text>
+<text x="420" y="420" text-anchor="start" font-size="11" font-weight="normal" fill="#5a6672">confiance &lt; 0,6 → « à vérifier »</text>
+</svg>
