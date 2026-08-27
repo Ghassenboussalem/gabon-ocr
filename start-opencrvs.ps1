@@ -52,10 +52,19 @@ foreach ($t in 'auth', 'user-mgnt', 'workflow', 'search', 'metrics', 'notificati
                'login', 'countryconfig') {
     Start-ScheduledTask -TaskName ('opencrvs-' + $t)
 }
-# l'app OCR (uvicorn) : enregistree au premier lancement
+# l'app OCR (uvicorn) : enregistree au premier lancement.
+# Lancee via tools\run_hidden.vbs : les taches tournent avec un logon
+# Interactive, donc chaque wsl.exe / python.exe ouvrait sa propre console —
+# une vingtaine de terminaux a chaque demarrage. Le lanceur VBS demarre le
+# processus fenetre masquee et l'attend, donc la tache reste "Running" et
+# Stop-ScheduledTask continue de fonctionner. (Masquer via un principal S4U
+# demanderait une elevation ; ceci non.)
+# pythonw.exe ne convient pas ici : uvicorn a besoin de vrais flux stdout et
+# s'arrete immediatement sans eux.
 if (-not (Get-ScheduledTask -TaskName 'gabonocr-webapp')) {
     $s = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit ([TimeSpan]::Zero)
-    $a = New-ScheduledTaskAction -Execute "$GABON\.venv\Scripts\python.exe" -Argument '-m uvicorn review.app:app --host 0.0.0.0 --port 8000' -WorkingDirectory $GABON
+    $webArg = '//nologo "' + $GABON + '\tools\run_hidden.vbs" "' + $GABON + '\.venv\Scripts\python.exe" -m uvicorn review.app:app --host 0.0.0.0 --port 8000'
+    $a = New-ScheduledTaskAction -Execute 'wscript.exe' -Argument $webArg -WorkingDirectory $GABON
     Register-ScheduledTask -TaskName 'gabonocr-webapp' -Action $a -Settings $s -Force | Out-Null
 }
 Start-ScheduledTask -TaskName 'gabonocr-webapp'
