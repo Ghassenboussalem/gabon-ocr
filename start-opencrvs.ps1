@@ -34,11 +34,50 @@ if (-not $?) {
     }
     if (-not $ok) { Write-Host "Docker ne demarre pas - lance Docker Desktop manuellement puis relance ce script." -ForegroundColor Red; exit 1 }
 }
+# `docker info` teste le moteur cote Windows, mais docker compose est lance
+# DEPUIS la distro : l'integration WSL peut n'etre pas encore prete alors que
+# le moteur repond deja. Sans cette attente, des conteneurs sortent en 127
+# (commande introuvable) et les services qui en dependent meurent au demarrage.
+$dockerWsl = $false
+for ($i = 0; $i -lt 24; $i++) {
+    wsl -d ubuntu-opencrvs -u root -- docker info *> $null
+    if ($?) { $dockerWsl = $true; break }
+    Start-Sleep -Seconds 5
+}
+if (-not $dockerWsl) {
+    Write-Host "Docker n'est pas accessible depuis WSL : active l'integration WSL dans Docker Desktop (Settings > Resources > WSL integration), puis relance." -ForegroundColor Red
+    exit 1
+}
 Write-Host "[1/4] Docker Desktop : OK" -ForegroundColor Green
 
 # ---------- 2. Conteneurs de dependances ----------
 wsl -d ubuntu-opencrvs -u root -- bash -c "cd /opt/opencrvs/opencrvs-core && docker compose -p opencrvs -f docker-compose.deps.yml -f docker-compose.dev-deps.yml up -d" *> $null
-Write-Host "[2/4] Conteneurs (mongo, elasticsearch, postgres...) : lances" -ForegroundColor Green
+
+# `up -d` rend la main des que les conteneurs sont LANCES, pas quand ils
+# acceptent des connexions. Demarrer les microservices tout de suite les fait
+# echouer sur ECONNREFUSED ; nodemon affiche alors "waiting for file changes"
+# et ne repart plus jamais tout seul. D'ou les memes six services bloques a
+# chaque demarrage. On attend donc que l'infra reponde vraiment.
+$infra = @{ 'mongo' = 27017; 'postgres' = 5432; 'redis' = 6379;
+            'elasticsearch' = 9200; 'minio' = 3535; 'influxdb' = 8086 }
+Write-Host "[2/4] Conteneurs lances - attente de leur disponibilite..." -ForegroundColor Yellow
+$deadline = (Get-Date).AddMinutes(4)
+$pending = @($infra.Keys)
+while ($pending.Count -gt 0 -and (Get-Date) -lt $deadline) {
+    $still = @()
+    foreach ($name in $pending) {
+        $port = $infra[$name]
+        wsl -d ubuntu-opencrvs -u root -- bash -c "timeout 2 bash -c '</dev/tcp/127.0.0.1/$port' 2>/dev/null" *> $null
+        if (-not $?) { $still += $name }
+    }
+    $pending = $still
+    if ($pending.Count -gt 0) { Start-Sleep -Seconds 3 }
+}
+if ($pending.Count -gt 0) {
+    Write-Host ("[2/4] Infra incomplete (" + ($pending -join ', ') + ") - on continue, les services seront relances si besoin.") -ForegroundColor Yellow
+} else {
+    Write-Host "[2/4] Conteneurs (mongo, elasticsearch, postgres...) : prets" -ForegroundColor Green
+}
 
 # ---------- 3. Taches planifiees ----------
 # chaque service core tourne dans SA tache planifiee (plus de monolithe lerna
@@ -71,7 +110,7 @@ Start-ScheduledTask -TaskName 'gabonocr-webapp'
 Write-Host "[3/4] Services (taches planifiees) : lances" -ForegroundColor Green
 
 # ---------- 4. Attente du vert, avec auto-reparation ----------
-Write-Host "[4/4] Attente des services (3-5 min au premier demarrage)..." -ForegroundColor Yellow
+Write-Host "[4/4] Attente des services (environ 1 min ; plus long au tout premier demarrage)..." -ForegroundColor Yellow
 Write-Host ""
 
 # nom -> url ; chaque service en panne est repare en relancant SA tache dediee
@@ -94,7 +133,7 @@ $checks = @(
 )
 $fixed = @{}
 $deadline = (Get-Date).AddMinutes(12)
-$healAfter = (Get-Date).AddMinutes(4)
+$healAfter = (Get-Date).AddSeconds(45)
 
 while ($true) {
     $line = @()
@@ -106,13 +145,17 @@ while ($true) {
         } else {
             $allUp = $false
             $line += ($c.n + " [" + $code + "]")
-            # auto-reparation : une seule fois par service, apres 4 min
-            if ((Get-Date) -gt $healAfter -and -not $fixed[$c.n]) {
-                $fixed[$c.n] = $true
+            # Auto-reparation. Un service qui echoue a joindre sa dependance
+            # au demarrage laisse nodemon sur "waiting for file changes" : il
+            # ne repart JAMAIS seul, attendre plus longtemps ne sert donc a
+            # rien. On relance vite (45 s) et jusqu'a deux fois, au lieu
+            # d'attendre quatre minutes pour une seule tentative.
+            if ((Get-Date) -gt $healAfter -and $fixed[$c.n] -lt 2) {
+                $fixed[$c.n] = [int]$fixed[$c.n] + 1
                 Stop-ScheduledTask -TaskName $c.task
                 Start-Sleep -Seconds 2
                 Start-ScheduledTask -TaskName $c.task
-                $line[-1] += ' (relance...)'
+                $line[-1] += ' (relance ' + $fixed[$c.n] + ')'
             }
         }
     }
@@ -124,7 +167,10 @@ while ($true) {
         Write-Host "  wsl -d ubuntu-opencrvs -u root -- tail -30 /var/log/opencrvs-services.log"
         exit 1
     }
-    Start-Sleep -Seconds 15
+    Start-Sleep -Seconds 12
+    # une relance a besoin d'une trentaine de secondes pour aboutir : on
+    # repousse la fenetre de reparation pour ne pas relancer par-dessus
+    if ($line -match 'relance') { $healAfter = (Get-Date).AddSeconds(40) }
 }
 
 Write-Host ""
