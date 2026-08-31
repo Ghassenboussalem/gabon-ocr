@@ -380,17 +380,45 @@ def _nest(flat: dict) -> dict:
     return out
 
 
-def _declaration_payload(job_id: str) -> dict:
+def _upload_overlay(job_id: str, bucket: str, prefix: str) -> dict | None:
+    """Put the field-boxes overlay into OpenCRVS's own storage.
+
+    The pipeline draws the zone each value was read from onto a copy of the
+    scan. Attaching it lets the registrar check *where* a value came from,
+    which is how a value lifted from the wrong line gets caught. It is stored
+    beside the scan the form already uploaded, under the same event prefix.
+    """
+    overlay = RUNS / job_id / "field_boxes.png"
+    if not overlay.exists():
+        return None
+    key = f"{prefix}/ocr-field-map-{secrets.token_hex(8)}.png"
+    try:
+        client = _minio_client()
+        client.fput_object(bucket, key, str(overlay), content_type="image/png")
+    except Exception:
+        # une pièce d'illustration ne doit jamais faire échouer l'extraction
+        return None
+    return {"path": f"/{bucket}/{key}",
+            "originalFilename": "reperage-ocr.png",
+            "type": "image/png"}
+
+
+def _declaration_payload(job_id: str, overlay: dict | None = None) -> dict:
     """report.json -> the V2-field-id values the OpenCRVS form consumes."""
     from pipeline.opencrvs_export import build_declaration, enrich_birth_place
 
     report = json.loads((RUNS / job_id / "report.json").read_text(encoding="utf-8"))
     declaration, comments = build_declaration(report)
     enrich_birth_place(declaration, comments, report, run_dir=RUNS / job_id)
+
+    fields = _nest(declaration)
+    if overlay:
+        fields.setdefault("documents", {})["ocrFieldMap"] = overlay
+
     return {
         "job_id": job_id,
         "declaration": declaration,
-        "fields": _nest(declaration),
+        "fields": fields,
         "comment": "\n".join(comments),
         "review_url": f"/review?doc={job_id}",
     }
@@ -447,7 +475,12 @@ async def opencrvs_analyze(payload: MinioPathPayload):
         raise HTTPException(504, "analyse trop longue — réessayer ou ouvrir /review")
     if not (RUNS / job_id / "report.json").exists():
         raise HTTPException(502, "l'OCR a échoué — voir /review pour le détail")
-    return _declaration_payload(job_id)
+
+    # le calque de repérage rejoint le scan dans le même dossier d'événement,
+    # pour que le registraire voie d'où vient chaque valeur
+    prefix = str(Path(key).parent).replace("\\", "/")
+    overlay = await asyncio.to_thread(_upload_overlay, job_id, bucket, prefix)
+    return _declaration_payload(job_id, overlay=overlay)
 
 
 @app.get("/api/opencrvs/qr.svg")

@@ -189,17 +189,33 @@ $csec = (($envLines | Where-Object { $_ -match '^OPENCRVS_CLIENT_SECRET=' }) -re
 $cloc = (($envLines | Where-Object { $_ -match '^OPENCRVS_LOCATION_ID=' }) -replace '.*=', '')
 
 # 5a. l'UUID du bureau d'Ibombo doit etre celui de k.mweene
+# La requete echoue quand Mongo a perdu ses utilisateurs : elle renvoie alors
+# un message d'erreur, pas un identifiant. Sans controle, ce message finissait
+# ecrit dans .env a la place de l'UUID (et l'ecriture en ASCII detruisait les
+# accents du fichier). On n'ecrit donc que si le resultat est bien un UUID, et
+# on preserve l'encodage UTF-8.
 $office = (docker exec opencrvs-mongo1-1 mongo user-mgnt --quiet --eval "print(db.users.findOne({username:'k.mweene'}).primaryOfficeId)" 2>$null | Select-Object -Last 1)
-if ($office -and $cloc -and $office.Trim() -ne $cloc.Trim()) {
-    (Get-Content $envPath) -replace "^OPENCRVS_LOCATION_ID=.*", "OPENCRVS_LOCATION_ID=$($office.Trim())" | Set-Content $envPath -Encoding ascii
-    Write-Host "  ! OPENCRVS_LOCATION_ID mis a jour dans .env (rollback/seed Mongo a change l'UUID du bureau)" -ForegroundColor Yellow
+$office = if ($office) { $office.Trim() } else { '' }
+$isUuid = $office -match '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
+if ($isUuid -and $cloc -and $office -ne $cloc.Trim()) {
+    (Get-Content $envPath -Encoding UTF8) -replace "^OPENCRVS_LOCATION_ID=.*", "OPENCRVS_LOCATION_ID=$office" |
+        Set-Content $envPath -Encoding UTF8
+    Write-Host "  ! OPENCRVS_LOCATION_ID mis a jour dans .env (le seed Mongo a change l'UUID du bureau)" -ForegroundColor Yellow
+} elseif (-not $isUuid) {
+    Write-Host "  ! Bureau introuvable dans Mongo (base reinitialisee ?) - .env laisse intact." -ForegroundColor Yellow
+    Write-Host "    Relancer le seed : Start-ScheduledTask opencrvs-seed"
 }
+
 
 # 5b. le client d'integration doit pouvoir obtenir un token
 $tokenOk = $false
 if ($cid -and $csec) {
     try {
-        $null = Invoke-WebRequest -Uri 'http://localhost:4040/token' -Method POST -ContentType 'application/x-www-form-urlencoded' -Body "client_id=$cid&client_secret=$csec&grant_type=client_credentials" -UseBasicParsing -TimeoutSec 10
+        # les identifiants passent par la query string, pas par le corps :
+        # envoyes en formulaire, l'auth les refuse et le script annoncait a
+        # tort un client d'integration perdu (cf. pipeline/opencrvs_export.py)
+        $tokenUrl = "http://localhost:4040/token?client_id=$cid&client_secret=$csec&grant_type=client_credentials"
+        $null = Invoke-WebRequest -Uri $tokenUrl -Method POST -UseBasicParsing -TimeoutSec 10
         $tokenOk = $true
     } catch {}
 }

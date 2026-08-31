@@ -62,6 +62,39 @@ export const ocrValue = (fieldId: string) => [
 ]
 
 /**
+ * The OCR field map, shown among the supporting documents.
+ *
+ * The pipeline draws the zone it read each value from onto a copy of the
+ * scan. Attaching that overlay lets the registrar check *where* a value came
+ * from, not just what it says — the fastest way to spot a value lifted from
+ * the wrong line. Filled by the same fetch as everything else, so it needs no
+ * upload of its own.
+ */
+export const getOcrDocumentFields = (): FieldConfigInput[] => [
+  {
+    id: 'documents.ocrFieldMap',
+    type: FieldType.FILE,
+    required: false,
+    uncorrectable: true,
+    parent: ocrParent(),
+    value: ocrValue('documents.ocrFieldMap'),
+    label: {
+      defaultMessage: 'Repérage OCR des champs',
+      description: 'Label of the OCR bounding-box overlay document',
+      id: 'event.birth.action.declare.form.section.documents.field.ocrFieldMap.label'
+    },
+    configuration: {
+      style: { width: 'full' },
+      fileName: {
+        defaultMessage: 'Repérage OCR',
+        description: 'File name shown for the OCR overlay',
+        id: 'event.birth.action.declare.form.section.documents.field.ocrFieldMap.fileName'
+      }
+    }
+  }
+]
+
+/**
  * The scan panel. Returned fields are appended to the child page.
  *
  * Kept off the review page (DISPLAY_ON_REVIEW: never) — the scan itself is

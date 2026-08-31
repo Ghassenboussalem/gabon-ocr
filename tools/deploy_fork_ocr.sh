@@ -104,6 +104,26 @@ for fname, fields in PLAIN.items():
     write(p, src)
     print("PATCHED %s" % fname)
 
+# ------------------------------------------------------------ documents ----
+# le reperage OCR (image des zones lues) est joint parmi les pieces
+# justificatives : le registraire voit d ou vient chaque valeur, pas
+# seulement ce qu elle dit
+p = PAGES + "/documents.ts"
+src = read(p)
+if "getOcrDocumentFields" in src:
+    print("SKIP    documents.ts (already wired)")
+else:
+    src = add_import(
+        src,
+        "} from '@opencrvs/toolkit/events'",
+        what="import { getOcrDocumentFields } from '@countryconfig/form/v2/ocr'")
+    tail = "\n  ]\n})"
+    idx = src.rstrip().rfind(tail)
+    assert idx != -1, "unexpected end of documents.ts"
+    src = src[:idx] + ",\n    ...getOcrDocumentFields()" + src[idx:]
+    write(p, src)
+    print("PATCHED documents.ts")
+
 # ---------------------------------------------------------------- mosip ----
 # mother.name / mother.dob and their father / informant twins are wrapped in
 # connectToMOSIPIdReader, which rebuilds `parent` and overwrites `value`, so
