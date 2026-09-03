@@ -18,3 +18,5 @@ samples/
 
 # artefacts de compilation Typst
 rapport/**/*.pdf
+lettre/**/*.pdf
+recommendation_letter.pdf
