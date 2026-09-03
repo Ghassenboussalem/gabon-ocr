@@ -1,7 +1,5 @@
 // Recommendation letter — draft for Mariem Abcha (company supervisor) to
-// review, personalize and sign. Placeholders in [brackets] mark anything
-// that cannot be known here (her exact title, contact details, company
-// letterhead, date): a signed letter must not contain invented specifics.
+// review, personalize and sign.
 
 #let navy = rgb("#1a3a5c")
 #let grey = rgb("#5a6672")
@@ -16,14 +14,14 @@
 #align(center)[
   #text(size: 13pt, weight: "bold", fill: navy)[EY]
   #linebreak()
-  #text(size: 9.5pt, fill: grey)[[Office Address], Tunis, Tunisia · ey.com]
+  #text(size: 9.5pt, fill: grey)[Tunis, Tunisia · ey.com]
 ]
 #v(4pt)
 #line(length: 100%, stroke: 0.8pt + border)
 #v(14pt)
 
 // ------------------------------------------------------------------- date --
-#align(right)[Tunis, [Date]]
+#align(right)[Tunis, September 3, 2026]
 #v(10pt)
 
 #text(weight: "bold")[To Whom It May Concern]
@@ -78,9 +76,7 @@ Sincerely,
   align(left)[
     Mariem Abcha #linebreak()
     Assistant Manager, Technology, Strategy #sym.amp; Transformation #linebreak()
-    EY #linebreak()
-    #v(2pt)
-    #text(fill: grey, size: 9.5pt)[[Phone] · [Professional Email]]
+    EY
   ],
   align(right)[
     #v(38pt)
