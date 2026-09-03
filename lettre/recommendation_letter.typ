@@ -14,16 +14,16 @@
 
 // ------------------------------------------------------------- letterhead --
 #align(center)[
-  #text(size: 13pt, weight: "bold", fill: navy)[[Company Name]]
+  #text(size: 13pt, weight: "bold", fill: navy)[EY]
   #linebreak()
-  #text(size: 9.5pt, fill: grey)[[Company Address, City, Country] · [Company Website]]
+  #text(size: 9.5pt, fill: grey)[[Office Address], Tunis, Tunisia · ey.com]
 ]
 #v(4pt)
 #line(length: 100%, stroke: 0.8pt + border)
 #v(14pt)
 
 // ------------------------------------------------------------------- date --
-#align(right)[[City], [Date]]
+#align(right)[Tunis, [Date]]
 #v(10pt)
 
 #text(weight: "bold")[To Whom It May Concern]
@@ -34,7 +34,7 @@
 
 I am writing to recommend Ghassen Bousselem for a final-year engineering
 internship (Projet de Fin d'Études) abroad. I supervised Ghassen from 22 June
-to 4 September 2026 during his internship at [Company Name], where he worked
+to 4 September 2026 during his internship at EY, where he worked
 on a project applying vision-language models to civil registration document
 processing and its integration with OpenCRVS, an open-source civil
 registration and vital statistics platform used by several governments.
@@ -77,10 +77,10 @@ Sincerely,
   columns: (1fr, 1fr),
   align(left)[
     Mariem Abcha #linebreak()
-    [Job Title] #linebreak()
-    [Company Name] #linebreak()
+    Assistant Manager, Technology, Strategy #sym.amp; Transformation #linebreak()
+    EY #linebreak()
     #v(2pt)
-    #text(fill: grey, size: 9.5pt)[[Phone] · [Email]]
+    #text(fill: grey, size: 9.5pt)[[Phone] · [Professional Email]]
   ],
   align(right)[
     #v(38pt)
