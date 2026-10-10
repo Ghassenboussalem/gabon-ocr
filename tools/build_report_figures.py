@@ -250,7 +250,7 @@ def fig_orgchart() -> str:
         ("Technology, Strategy & Transformation", "practice TST", "white", BLUE),
         ("Technology consulting", "équipe de conseil technologique", "white", BLUE),
         ("Mariem Abcha", "Assistant Manager, encadrante", "white", GREY),
-        ("Ghassen Bousselem", "stagiaire ingénieur", LIGHT, TEAL),
+        ("Mohamed Ghassen Bousalem", "stagiaire ingénieur", LIGHT, TEAL),
     ]
     y = 20
     for i, (title, sub, fill, stroke) in enumerate(chain):

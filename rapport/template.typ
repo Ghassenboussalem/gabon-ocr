@@ -77,7 +77,6 @@
   sous_titre: "",
   etudiant: "",
   encadrant_entreprise: "",
-  encadrant_academique: "",
   organisme: "",
   periode: "",
   annee: "",
@@ -182,12 +181,8 @@
       columns: (1fr, 1fr),
       gutter: 20pt,
       align(left)[
-        #text(weight: "bold")[Encadrant entreprise :] \
+        #text(weight: "bold")[Encadrante entreprise :] \
         #encadrant_entreprise
-      ],
-      align(left)[
-        #text(weight: "bold")[Encadrant académique :] \
-        #encadrant_academique
       ],
     )
     #v(1cm)

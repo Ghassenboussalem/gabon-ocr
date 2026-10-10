@@ -335,7 +335,7 @@ def main() -> None:
         leftMargin=2.2 * cm, rightMargin=2.2 * cm,
         topMargin=2.0 * cm, bottomMargin=2.0 * cm,
         title="Évaluation du pipeline d'extraction",
-        author="Ghassen Bousselem")
+        author="Mohamed Ghassen Bousalem")
     doc.build(story)
     print(f"-> {OUT}")
 

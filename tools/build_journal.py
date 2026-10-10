@@ -32,7 +32,7 @@ NAVY = colors.HexColor("#1a3a5c")
 GREY = colors.HexColor("#5a6672")
 LIGHT = colors.HexColor("#eef2f6")
 
-STUDENT = "Ghassen Bousselem"
+STUDENT = "Mohamed Ghassen Bousalem"
 LEVEL = "4ème année → 5ème année"
 ORGANISATION = "EY — Digital & Emerging Technologies"
 PERIOD = "du 22/06/2026 au 04/09/2026 (11 semaines)"

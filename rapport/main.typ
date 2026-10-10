@@ -3,9 +3,8 @@
 #show: rapport.with(
   titre: "Extraction automatique de données d'actes d'état civil par modèles vision-langage",
   sous_titre: "Conception d'un pipeline OCR multi-pays et intégration au registre civil numérique OpenCRVS",
-  etudiant: "Ghassen Bousselem",
+  etudiant: "Mohamed Ghassen Bousalem",
   encadrant_entreprise: "Mariem Abcha, Assistant Manager — Technology, Strategy & Transformation",
-  encadrant_academique: box(width: 5cm, repeat[.]),
   organisme: "EY Tunisie (AMC Ernst & Young), Tunis",
   periode: "du 22 juin 2026 au 4 septembre 2026",
   annee: "2025 / 2026",
@@ -25,11 +24,6 @@ jours, pour la liberté laissée dans les choix techniques et pour la qualité d
 retours qui ont orienté ce projet aux moments décisifs. Ses orientations sur
 l'intégration au registre civil ont transformé un prototype d'extraction en un
 outil réellement utilisable par un officier d'état civil.
-
-Je remercie également mon encadrant académique à ESPRIT pour son
-accompagnement méthodologique et pour la rigueur exigée dans la démarche
-d'évaluation, laquelle constitue aujourd'hui l'une des contributions les plus
-solides de ce travail.
 
 Mes remerciements vont aussi à l'ensemble de l'équipe #emph[Technology,
 Strategy & Transformation] d'EY Tunisie pour son accueil, sa disponibilité et
