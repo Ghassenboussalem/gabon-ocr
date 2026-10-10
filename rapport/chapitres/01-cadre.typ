@@ -216,12 +216,3 @@ d'évaluation et à l'analyse du mécanisme interne des formulaires
 #smallcaps[OpenCRVS], travail préparatoire sans lequel l'intégration native
 réalisée ensuite n'aurait pas été possible. La dernière semaine a été consacrée
 à l'évaluation approfondie et à la rédaction.
-
-== Conclusion du chapitre
-
-Le projet répond à un besoin identifié — la ressaisie comme goulot
-d'étranglement de la numérisation de l'état civil — au moyen d'une technologie
-choisie pour sa capacité à absorber l'hétérogénéité documentaire sans corpus
-annoté. Le chapitre suivant examine les fondements techniques sur lesquels cette
-technologie repose, ainsi que les moyens dont on dispose pour en mesurer
-sérieusement la qualité.

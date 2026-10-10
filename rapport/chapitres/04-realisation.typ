@@ -270,21 +270,8 @@ que la cause finale a été identifiée.
 
 == Industrialisation de l'environnement
 
-Une part non négligeable du travail a porté sur la fiabilité de l'environnement
-de développement. Faire fonctionner simultanément quatorze microservices, six
-composants d'infrastructure et l'application développée exige un outillage
-propre.
-
-Un script unique démarre l'ensemble, affiche l'état de chaque service, relance
-automatiquement ceux qui ne répondent pas, puis vérifie la cohérence de la
-configuration d'intégration. Les pièges découverts en cours de stage — perte de
-configuration après un arrêt brutal, identifiants régénérés, processus résiduels
-après redémarrage — sont détectés et corrigés automatiquement lorsque c'est
-possible, signalés explicitement sinon.
-
-== Conclusion du chapitre
-
-La réalisation a confirmé la validité de la conception, tout en révélant que la
-difficulté principale ne résidait pas dans l'extraction elle-même — le modèle
-lit correctement des documents difficiles — mais dans les points de jonction
-entre systèmes. Le chapitre suivant mesure la qualité effectivement obtenue.
+Un script unique démarre les quatorze microservices, les six composants
+d'infrastructure et l'application, relance les services défaillants et vérifie
+la cohérence de la configuration d'intégration. Les pièges rencontrés — perte de
+configuration après un arrêt brutal, identifiants régénérés, processus
+résiduels — y sont détectés et corrigés, ou signalés explicitement.

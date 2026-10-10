@@ -257,10 +257,3 @@ valeur lue par la passe page, celle lue par la passe recadrage, l'accord entre
 les deux, la zone d'origine dans l'image, le score final et la bande de
 confiance. Cette richesse répond au besoin BNF5 : une valeur doit pouvoir être
 expliquée, non seulement affichée.
-
-== Conclusion du chapitre
-
-La conception traduit le principe d'honnêteté en décisions concrètes à chaque
-étage, isole ce qui est propre à un pays dans de la configuration, et prévoit
-deux voies d'intégration répondant à deux usages distincts. Le chapitre suivant
-décrit la réalisation effective et les obstacles rencontrés.

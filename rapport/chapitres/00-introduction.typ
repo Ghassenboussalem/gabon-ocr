@@ -59,19 +59,11 @@ n'ont pas le même coût, et le système est construit en conséquence : seuils 
 confiance explicites, signalement des valeurs douteuses, refus de déduire ce que
 le document ne dit pas.
 
-Ce principe a une conséquence directe sur l'évaluation, présentée au
-chapitre 5 : elle ne cherche pas à produire le chiffre le plus flatteur, mais le
-chiffre le plus informatif, et elle expose ses échecs.
 
 #heading(level: 2, numbering: none)[Organisation du rapport]
 
-Le #strong[chapitre 1] situe le projet : organisme d'accueil, contexte de l'état
-civil, problématique, étude de l'existant et méthodologie. Le #strong[chapitre 2]
-dresse l'état de l'art : reconnaissance optique classique, modèles
-vision-langage, extraction d'informations clés, métriques d'évaluation et
-présentation d'#smallcaps[OpenCRVS]. Le #strong[chapitre 3] expose l'analyse et
-la conception, dont la formalisation du principe d'honnêteté. Le #strong[chapitre
-4] détaille la réalisation et les difficultés rencontrées. Le #strong[chapitre 5]
-présente le protocole d'évaluation, les résultats, les erreurs relevées et les
-limites de la démarche. La #strong[conclusion] dresse le bilan et ouvre sur les
-perspectives.
+Le chapitre 1 situe le projet, le chapitre 2 dresse l'état de l'art, le
+chapitre 3 expose l'analyse et la conception, le chapitre 4 détaille la
+réalisation et les difficultés rencontrées, et le chapitre 5 présente
+l'évaluation, ses résultats et ses limites. La conclusion dresse le bilan et
+ouvre sur les perspectives.

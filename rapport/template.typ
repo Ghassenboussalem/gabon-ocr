@@ -86,11 +86,11 @@
   set document(title: titre, author: etudiant)
   set page(
     paper: "a4",
-    margin: (top: 2.1cm, bottom: 2.1cm, left: 2.3cm, right: 2.0cm),
+    margin: (top: 1.8cm, bottom: 1.8cm, left: 2.2cm, right: 1.9cm),
     numbering: none,
   )
-  set text(lang: "fr", font: ("Times New Roman", "Liberation Serif", "DejaVu Serif"), size: 10.5pt)
-  set par(justify: true, leading: 0.6em, spacing: 0.9em, first-line-indent: 1.2em)
+  set text(lang: "fr", font: ("Times New Roman", "Liberation Serif", "DejaVu Serif"), size: 12pt)
+  set par(justify: true, leading: 0.55em, spacing: 0.8em, first-line-indent: 1.2em)
 
   // titres numérotés « 1 », « 1.1 », « 1.1.1 »
   set heading(numbering: "1.1")

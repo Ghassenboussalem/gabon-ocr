@@ -210,10 +210,9 @@ civil, conçue comme un bien public numérique et déployée par plusieurs État
 Elle couvre le cycle complet d'un dossier : déclaration, validation,
 enregistrement, délivrance de certificat.
 
-Son architecture repose sur une constellation de microservices — authentification,
-passerelle applicative, gestion des événements, recherche, documents,
-notifications — s'appuyant sur des composants d'infrastructure classiques :
-base documentaire, moteur de recherche, base relationnelle, stockage d'objets.
+Son architecture repose sur une constellation de microservices (authentification,
+passerelle, événements, recherche, documents, notifications) et sur des
+composants d'infrastructure classiques.
 
 === Le point d'entrée exploité
 
@@ -229,21 +228,7 @@ une seconde voie, plus intégrée, a été développée par la suite.
 
 === La configuration par pays
 
-Un aspect déterminant pour ce travail est qu'#smallcaps[OpenCRVS] sépare son
-cœur applicatif de sa configuration nationale. Les formulaires, les listes de
-lieux et les règles propres à un pays résident dans un dépôt distinct. Cette
-séparation a permis d'ajouter un panneau de numérisation au formulaire de
-déclaration #emph[sans modifier une seule ligne du cœur d'#smallcaps[OpenCRVS]],
-ce qui garantit la compatibilité avec les mises à jour futures.
-
-== Conclusion du chapitre
-
-L'analyse conduit à trois choix structurants. Les modèles vision-langage sont
-retenus pour leur capacité à absorber l'hétérogénéité documentaire sans corpus
-annoté, au prix d'un risque d'hallucination qu'il faudra contenir explicitement.
-Les métriques d'évaluation seront empruntées à la littérature de l'extraction
-documentaire, et non aux métriques de génération de texte. L'intégration
-s'appuiera sur l'interface de notification d'#smallcaps[OpenCRVS] et sur sa
-configuration par pays, sans toucher au cœur applicatif.
-
-Le chapitre suivant traduit ces choix en une conception.
+#smallcaps[OpenCRVS] sépare son cœur applicatif de sa configuration nationale :
+formulaires, lieux et règles d'un pays résident dans un dépôt distinct. Cela a
+permis d'ajouter un panneau de numérisation au formulaire #emph[sans modifier une
+seule ligne du cœur], donc en restant compatible avec les mises à jour futures.

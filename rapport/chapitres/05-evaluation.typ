@@ -277,12 +277,3 @@ programmes exécutables en une commande, et le rapport d'évaluation détaillé 
 généré à partir de leurs sorties, sans aucune valeur saisie manuellement. Une
 modification du système suivie d'une nouvelle exécution suffit à obtenir des
 chiffres à jour.
-
-== Conclusion du chapitre
-
-Le système atteint une justesse élevée sur les documents évalués, ne produit
-aucune valeur inventée, et fournit des sorties directement exploitables. Il
-présente un défaut systématique identifié et documenté sur l'ordre des noms dans
-certaines conventions nationales, et une erreur de lecture de date qui rappelle
-pourquoi la vérification humaine demeure nécessaire. La mesure elle-même
-comporte des limites qui sont énoncées plutôt que masquées.
