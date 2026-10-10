@@ -243,30 +243,23 @@ def fig_honesty_gate() -> str:
 
 
 def fig_orgchart() -> str:
-    """Placement of the intern in the host organisation.
-
-    Names are placeholders on purpose: inventing an organisation chart would
-    put unverifiable claims in a document a supervisor signs.
-    """
+    """Placement of the intern in the host organisation (EY Tunisie)."""
     b = [DEFS]
-    b.append(box(280, 30, 240, 50, "Organisme d'accueil", fill=LIGHT, stroke=NAVY,
-                 sub="[à compléter]", bold=True))
-    b.append(arrow(400, 80, 400, 108))
-    b.append(box(280, 110, 240, 50, "Département / Practice", fill="white",
-                 stroke=BLUE, sub="[à compléter]", bold=True))
-    b.append(f'<line x1="400" y1="160" x2="400" y2="185" stroke="{BLUE}" stroke-width="1.8"/>')
-    b.append(f'<line x1="170" y1="185" x2="630" y2="185" stroke="{BLUE}" stroke-width="1.8"/>')
-    for x, title, sub in [(60, "Équipe projet", "[à compléter]"),
-                          (290, "Encadrant entreprise", "[nom à compléter]"),
-                          (520, "Autres équipes", "[à compléter]")]:
-        b.append(f'<line x1="{x + 110}" y1="185" x2="{x + 110}" y2="210" stroke="{BLUE}" stroke-width="1.8"/>')
-        b.append(box(x, 212, 220, 50, title, fill="white", stroke=GREY, sub=sub, size=12))
-    b.append(arrow(400, 262, 400, 292))
-    b.append(box(280, 294, 240, 52, "Stagiaire ingénieur", fill=LIGHT, stroke=TEAL,
-                 sub="Ghassen Bousselem", bold=True))
-    b.append(label(20, 375, "Les mentions « à compléter » doivent être renseignées avant "
-                            "remise : elles ne peuvent pas être devinées.", 11, RED))
-    return svg(800, 395, "\n".join(b))
+    chain = [
+        ("EY Tunisie", "AMC Ernst & Young, Tunis", LIGHT, NAVY),
+        ("Technology, Strategy & Transformation", "practice TST", "white", BLUE),
+        ("Technology consulting", "équipe de conseil technologique", "white", BLUE),
+        ("Mariem Abcha", "Assistant Manager, encadrante", "white", GREY),
+        ("Ghassen Bousselem", "stagiaire ingénieur", LIGHT, TEAL),
+    ]
+    y = 20
+    for i, (title, sub, fill, stroke) in enumerate(chain):
+        b.append(box(220, y, 360, 52, title, fill=fill, stroke=stroke,
+                     sub=sub, bold=True))
+        if i < len(chain) - 1:
+            b.append(arrow(400, y + 52, 400, y + 76))
+        y += 76
+    return svg(800, y - 10, "\n".join(b))
 
 
 def fig_gantt() -> str:

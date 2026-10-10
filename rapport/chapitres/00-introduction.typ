@@ -65,25 +65,13 @@ chiffre le plus informatif, et elle expose ses échecs.
 
 #heading(level: 2, numbering: none)[Organisation du rapport]
 
-Le présent document suit la progression du travail.
-
-Le #strong[chapitre 1] situe le projet : l'organisme d'accueil, le contexte de
-l'état civil, la problématique, l'étude de l'existant et la méthodologie
-adoptée.
-
-Le #strong[chapitre 2] dresse l'état de l'art : reconnaissance optique
-classique, modèles vision-langage, extraction d'informations clés, métriques
-d'évaluation propres au domaine documentaire, et présentation d'#smallcaps[OpenCRVS].
-
-Le #strong[chapitre 3] expose l'analyse et la conception : besoins, cas
-d'utilisation, architecture générale, conception du pipeline, formalisation du
-principe d'honnêteté et conception de l'intégration.
-
-Le #strong[chapitre 4] détaille la réalisation, étape par étape, ainsi que les
-difficultés techniques rencontrées et la manière dont elles ont été résolues.
-
-Le #strong[chapitre 5] présente le protocole d'évaluation, les métriques
-retenues et leur justification, les résultats obtenus, les erreurs relevées et
-les limites de la démarche.
-
-La #strong[conclusion] dresse le bilan et ouvre sur les perspectives.
+Le #strong[chapitre 1] situe le projet : organisme d'accueil, contexte de l'état
+civil, problématique, étude de l'existant et méthodologie. Le #strong[chapitre 2]
+dresse l'état de l'art : reconnaissance optique classique, modèles
+vision-langage, extraction d'informations clés, métriques d'évaluation et
+présentation d'#smallcaps[OpenCRVS]. Le #strong[chapitre 3] expose l'analyse et
+la conception, dont la formalisation du principe d'honnêteté. Le #strong[chapitre
+4] détaille la réalisation et les difficultés rencontrées. Le #strong[chapitre 5]
+présente le protocole d'évaluation, les résultats, les erreurs relevées et les
+limites de la démarche. La #strong[conclusion] dresse le bilan et ouvre sur les
+perspectives.

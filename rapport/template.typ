@@ -52,13 +52,18 @@
   radius: 2pt,
 )[#text(size: 9pt, fill: red)[à compléter : #quoi]]
 
+// Titre de rubrique liminaire sans saut de page (plusieurs rubriques par page).
+#let rubrique(t) = block(above: 14pt, below: 8pt)[
+  #text(size: 16pt, weight: "bold", fill: navy)[#t]
+]
+
 // ------------------------------------------------------------------ tableau --
 
 #let tableau(colonnes, entetes, lignes, largeurs: none) = {
   table(
     columns: if largeurs == none { colonnes } else { largeurs },
     stroke: 0.5pt + border,
-    inset: 6pt,
+    inset: 4.5pt,
     fill: (_, y) => if y == 0 { navy } else if calc.odd(y) { white } else { light },
     ..entetes.map(e => text(fill: white, weight: "bold", size: 9pt)[#e]),
     ..lignes.flatten().map(c => text(size: 9pt)[#c]),
@@ -81,18 +86,18 @@
   set document(title: titre, author: etudiant)
   set page(
     paper: "a4",
-    margin: (top: 2.4cm, bottom: 2.4cm, left: 2.6cm, right: 2.2cm),
+    margin: (top: 2.1cm, bottom: 2.1cm, left: 2.3cm, right: 2.0cm),
     numbering: none,
   )
-  set text(lang: "fr", font: ("Times New Roman", "Liberation Serif", "DejaVu Serif"), size: 11pt)
-  set par(justify: true, leading: 0.72em, first-line-indent: 1.2em)
+  set text(lang: "fr", font: ("Times New Roman", "Liberation Serif", "DejaVu Serif"), size: 10.5pt)
+  set par(justify: true, leading: 0.6em, spacing: 0.9em, first-line-indent: 1.2em)
 
   // titres numérotés « 1 », « 1.1 », « 1.1.1 »
   set heading(numbering: "1.1")
   show heading.where(level: 1): it => {
     pagebreak(weak: true)
     block(width: 100%)[
-      #v(1.2cm)
+      #v(0.4cm)
       #text(size: 11pt, fill: blue, weight: "bold")[
         #if it.numbering != none [Chapitre #counter(heading).display("1")]
       ]
@@ -100,17 +105,17 @@
       #text(size: 20pt, fill: navy, weight: "bold")[#it.body]
       #v(4pt)
       #line(length: 100%, stroke: 1.2pt + blue)
-      #v(10pt)
+      #v(6pt)
     ]
   }
   // le numéro n'est affiché que si le titre est effectivement numéroté :
   // les sections des annexes et de l'introduction ne le sont pas
-  show heading.where(level: 2): it => block(above: 16pt, below: 8pt)[
+  show heading.where(level: 2): it => block(above: 12pt, below: 6pt)[
     #text(size: 13.5pt, fill: navy, weight: "bold")[
       #if it.numbering != none [#counter(heading).display() ]#it.body
     ]
   ]
-  show heading.where(level: 3): it => block(above: 12pt, below: 6pt)[
+  show heading.where(level: 3): it => block(above: 9pt, below: 5pt)[
     #text(size: 11.5pt, fill: blue, weight: "bold")[
       #if it.numbering != none [#counter(heading).display() ]#it.body
     ]
@@ -141,6 +146,7 @@
   // ------------------------------------------------------- page de garde --
   page(numbering: none)[
     #set align(center)
+    #set text(hyphenate: false)
     #v(0.6cm)
     #text(size: 13pt, weight: "bold")[République Tunisienne]
     #v(2pt)

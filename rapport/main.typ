@@ -4,9 +4,9 @@
   titre: "Extraction automatique de données d'actes d'état civil par modèles vision-langage",
   sous_titre: "Conception d'un pipeline OCR multi-pays et intégration au registre civil numérique OpenCRVS",
   etudiant: "Ghassen Bousselem",
-  encadrant_entreprise: "à compléter",
-  encadrant_academique: "à compléter",
-  organisme: "à compléter",
+  encadrant_entreprise: "Mariem Abcha, Assistant Manager — Technology, Strategy & Transformation",
+  encadrant_academique: box(width: 5cm, repeat[.]),
+  organisme: "EY Tunisie (AMC Ernst & Young), Tunis",
   periode: "du 22 juin 2026 au 4 septembre 2026",
   annee: "2025 / 2026",
 )
@@ -18,37 +18,26 @@
 Au terme de ce stage, je tiens à exprimer ma gratitude à celles et ceux qui ont
 rendu ce travail possible.
 
-Je remercie en premier lieu #a_completer[nom de l'encadrant entreprise], mon
-encadrant au sein de #a_completer[nom de l'organisme], pour la confiance
-accordée dès les premiers jours, pour la liberté laissée dans les choix
-techniques et pour la qualité des retours qui ont orienté ce projet aux moments
-décisifs. Les orientations données sur l'intégration au registre civil ont
-transformé un prototype d'extraction en un outil réellement utilisable par un
-officier d'état civil.
+Je remercie en premier lieu Mariem Abcha, Assistant Manager au sein de la
+practice #emph[Technology, Strategy & Transformation] d'EY Tunisie, qui m'a
+encadré tout au long du stage, pour la confiance accordée dès les premiers
+jours, pour la liberté laissée dans les choix techniques et pour la qualité des
+retours qui ont orienté ce projet aux moments décisifs. Ses orientations sur
+l'intégration au registre civil ont transformé un prototype d'extraction en un
+outil réellement utilisable par un officier d'état civil.
 
-Je remercie également #a_completer[nom de l'encadrant académique], mon encadrant
-académique à ESPRIT, pour son accompagnement méthodologique et pour la rigueur
-exigée dans la démarche d'évaluation, laquelle constitue aujourd'hui l'une des
-contributions les plus solides de ce travail.
+Je remercie également mon encadrant académique à ESPRIT pour son
+accompagnement méthodologique et pour la rigueur exigée dans la démarche
+d'évaluation, laquelle constitue aujourd'hui l'une des contributions les plus
+solides de ce travail.
 
-Mes remerciements vont aussi à l'ensemble de l'équipe de
-#a_completer[nom de l'équipe] pour son accueil, sa disponibilité et les échanges
-techniques qui ont nourri ma réflexion tout au long de ces onze semaines.
+Mes remerciements vont aussi à l'ensemble de l'équipe #emph[Technology,
+Strategy & Transformation] d'EY Tunisie pour son accueil, sa disponibilité et
+les échanges techniques qui ont nourri ma réflexion tout au long de ces onze
+semaines.
 
 Enfin, je remercie le corps professoral et l'administration d'ESPRIT pour la
 formation dispensée, ainsi que ma famille pour son soutien constant.
-
-#v(1fr)
-
-#align(center)[
-  #reserve("Avant remise")[
-    Les mentions signalées en rouge dans ce document doivent être renseignées :
-    elles concernent des informations propres à l'organisme d'accueil et aux
-    personnes qui ont encadré ce stage, qui ne peuvent être ni supposées ni
-    reconstituées. Elles apparaissent sur la page de garde, dans les
-    remerciements, dans la présentation de l'organisme et sur l'organigramme.
-  ]
-]
 
 // =================================================================== RÉSUMÉ ==
 
@@ -85,8 +74,7 @@ conventions nationales — qui sont documentés plutôt que passés sous silence
 modèles vision-langage, reconnaissance optique de caractères, état civil,
 identité légale, #smallcaps[OpenCRVS], évaluation, #smallcaps[anls].
 
-#v(12pt)
-#heading(level: 1, numbering: none, outlined: false)[Abstract]
+#rubrique[Abstract]
 
 In many African countries, a large share of civil-status records exists only on
 paper. Digitising them into an electronic civil registry runs into a practical
@@ -120,12 +108,13 @@ models, optical character recognition, civil registration, legal identity,
 // ========================================================= TABLE DES MATIÈRES ==
 
 #heading(level: 1, numbering: none, outlined: false)[Table des matières]
-#outline(title: none, depth: 3, indent: auto)
+#outline(title: none, depth: 2, indent: auto)
 
+#pagebreak()
 #heading(level: 1, numbering: none, outlined: false)[Liste des figures]
 #outline(title: none, target: figure.where(kind: image))
 
-#heading(level: 1, numbering: none, outlined: false)[Liste des tableaux]
+#rubrique[Liste des tableaux]
 #outline(title: none, target: figure.where(kind: table))
 
 // ================================================================ ACRONYMES ==

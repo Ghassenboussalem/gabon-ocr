@@ -70,7 +70,7 @@ gabarit ne convient pas.
 La @fig-boxes montre la visualisation produite pour contrôle.
 
 #figure(
-  image("../figures/capture_field_boxes.png", width: 68%),
+  image("../figures/capture_field_boxes.png", width: 58%),
   caption: [Visualisation des zones détectées, produite pour chaque document et
     servant au contrôle qualité de la localisation],
 ) <fig-boxes>

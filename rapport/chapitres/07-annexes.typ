@@ -128,22 +128,3 @@ Afrique du Sud, Algérie, Angola, Bénin, Cameroun, Cap-Vert, Congo-Brazzaville,
 Côte d'Ivoire, Égypte, Gabon, Guinée, Kenya, Liban, Libéria, Madagascar, Mali,
 Maroc, Maurice, Mauritanie, Nigéria, République démocratique du Congo, Rwanda,
 Sénégal, Seychelles, Sierra Leone, Togo, Tunisie.
-
-#heading(level: 2, numbering: none)[Annexe D — Éléments à compléter avant remise]
-
-Les informations suivantes relèvent de l'organisme d'accueil et des personnes
-ayant encadré ce stage. Elles n'ont volontairement pas été renseignées, un
-rapport signé ne pouvant contenir d'affirmations invérifiables à leur sujet.
-
-#tableau(
-  2,
-  ([Emplacement], [Information attendue]),
-  (
-    ([Page de garde], [Nom de l'organisme, encadrant entreprise, encadrant académique]),
-    ([Remerciements], [Noms de l'encadrant entreprise, de l'encadrant académique et de l'équipe]),
-    ([Chapitre 1, présentation de l'organisme], [Activité, effectifs, implantation, positionnement]),
-    ([Chapitre 1, organigramme], [Département, nom de l'encadrant, équipes voisines]),
-    ([Figure de l'organigramme], [Régénérer après mise à jour des libellés du script de figures]),
-  ),
-  largeurs: (auto, 1fr),
-)

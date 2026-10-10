@@ -125,12 +125,12 @@ il est analysé plus loin.
 La @fig-anls détaille la justesse champ par champ.
 
 #figure(
-  image("../figures/chart_anls_par_champ.png", width: 92%),
+  image("../figures/chart_anls_par_champ.png", width: 80%),
   caption: [Similarité ANLS par champ évalué],
 ) <fig-anls>
 
 #figure(
-  image("../figures/chart_exact_par_document.png", width: 92%),
+  image("../figures/chart_exact_par_document.png", width: 80%),
   caption: [Proportion de champs strictement exacts par document],
 ) <fig-doc>
 
@@ -229,7 +229,7 @@ sans référence, sur un lot plus large.
 La @fig-confiance présente la répartition des scores de confiance sur ce lot.
 
 #figure(
-  image("../figures/chart_confiance.png", width: 58%),
+  image("../figures/chart_confiance.png", width: 50%),
   caption: [Répartition des champs par bande de confiance],
 ) <fig-confiance>
 

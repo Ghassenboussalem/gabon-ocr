@@ -11,23 +11,27 @@ conduit.
 
 === Présentation
 
-#a_completer[présentation de l'organisme : activité, taille, implantation, positionnement]
-
-#encadre("À renseigner")[
-  Cette section doit décrire l'organisme d'accueil : son domaine d'activité, ses
-  effectifs, son implantation géographique et son positionnement sur le marché.
-  Ces éléments n'ont pas été inventés ici : un rapport signé par un encadrant ne
-  peut pas contenir d'affirmations invérifiables sur la structure qui l'accueille.
-]
+Le stage a été effectué au sein d'#strong[EY Tunisie] (AMC Ernst & Young),
+société membre de l'organisation internationale #emph[Ernst & Young], dont le
+siège tunisien est situé à l'EY Tower, avenue Fadhel Ben Achour, au Centre
+Urbain Nord à Tunis. EY est l'un des grands cabinets internationaux de services
+professionnels : audit, conseil, fiscalité et accompagnement des organisations
+dans leur transformation. La structure tunisienne, constituée en société à
+responsabilité limitée et inscrite au tableau de l'Ordre des experts comptables
+de Tunisie, intervient auprès d'entreprises et d'institutions publiques sous la
+signature « #emph[Building a better working world] ».
 
 === Positionnement du stage dans l'organisation
 
-Le stage s'est déroulé au sein de #a_completer[département ou practice],
-équipe intervenant sur les projets d'infrastructure publique numérique. La
-@fig-organigramme situe le stagiaire dans la structure.
+Le stage s'est déroulé au sein de la practice #strong[Technology, Strategy &
+Transformation] (TST), dans l'équipe de conseil technologique, sous la
+responsabilité de Mariem Abcha, Assistant Manager. Cette équipe intervient
+notamment sur des projets d'infrastructure publique numérique, dont relève le
+registre civil étudié ici. La @fig-organigramme situe le stagiaire dans la
+structure.
 
 #figure(
-  image("../figures/diag_organigramme.svg", width: 78%),
+  image("../figures/diag_organigramme.svg", width: 50%),
   caption: [Positionnement du stagiaire dans l'organisation d'accueil],
 ) <fig-organigramme>
 
@@ -70,7 +74,7 @@ La @fig-acte présente un acte représentatif du corpus, tel qu'il se présente
 réellement à la chaîne de traitement.
 
 #figure(
-  image("../figures/acte_exemple.jpg", width: 62%),
+  image("../figures/acte_exemple.jpg", width: 46%),
   caption: [Extrait de naissance tunisien du corpus : document bilingue, mise en
     page en colonnes, tampons superposés au texte],
 ) <fig-acte>
@@ -202,7 +206,7 @@ La @fig-planning présente le déroulement réel du stage, reconstitué à parti
 l'historique du dépôt.
 
 #figure(
-  image("../figures/diag_planning.svg", width: 96%),
+  image("../figures/diag_planning.svg", width: 90%),
   caption: [Déroulement effectif du stage sur onze semaines],
 ) <fig-planning>
 

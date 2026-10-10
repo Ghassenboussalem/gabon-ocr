@@ -71,7 +71,7 @@ L'#strong[administrateur] configure l'accès du système au registre. La
 @fig-usecase présente les cas d'utilisation.
 
 #figure(
-  image("../figures/diag_usecase.svg", width: 76%),
+  image("../figures/diag_usecase.svg", width: 66%),
   caption: [Diagramme des cas d'utilisation],
 ) <fig-usecase>
 
@@ -119,7 +119,7 @@ Ce principe se décline en cinq décisions de conception :
 La @fig-honnetete résume l'arbitrage appliqué à chaque champ.
 
 #figure(
-  image("../figures/diag_honnetete.svg", width: 92%),
+  image("../figures/diag_honnetete.svg", width: 82%),
   caption: [Traitement d'un champ selon sa validité de format et sa confiance],
 ) <fig-honnetete>
 
@@ -129,7 +129,7 @@ Le système se compose de trois briques, volontairement découplées, dont la
 @fig-architecture montre l'articulation avec la plateforme cible.
 
 #figure(
-  image("../figures/diag_architecture.svg", width: 96%),
+  image("../figures/diag_architecture.svg", width: 88%),
   caption: [Architecture générale et frontière avec OpenCRVS],
 ) <fig-architecture>
 
@@ -153,7 +153,7 @@ deux autres en soient affectées.
 La @fig-pipeline présente les cinq étapes de la chaîne et leurs sorties.
 
 #figure(
-  image("../figures/diag_pipeline.svg", width: 80%),
+  image("../figures/diag_pipeline.svg", width: 56%),
   caption: [Étapes du pipeline d'extraction],
 ) <fig-pipeline>
 
@@ -208,7 +208,7 @@ La @fig-sequence détaille l'enchaînement des échanges de la voie intégrée, 
 qui a demandé le plus d'analyse.
 
 #figure(
-  image("../figures/diag_sequence.svg", width: 100%),
+  image("../figures/diag_sequence.svg", width: 90%),
   caption: [Diagramme de séquence du pré-remplissage dans le formulaire],
 ) <fig-sequence>
 
