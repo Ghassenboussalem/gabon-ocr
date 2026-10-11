@@ -270,8 +270,6 @@ que la cause finale a été identifiée.
 
 == Industrialisation de l'environnement
 
-Un script unique démarre les quatorze microservices, les six composants
-d'infrastructure et l'application, relance les services défaillants et vérifie
-la cohérence de la configuration d'intégration. Les pièges rencontrés — perte de
-configuration après un arrêt brutal, identifiants régénérés, processus
-résiduels — y sont détectés et corrigés, ou signalés explicitement.
+Un script unique démarre les quatorze microservices, l'infrastructure et
+l'application, relance les services défaillants et vérifie la configuration
+d'intégration ; les pièges rencontrés y sont corrigés ou signalés.

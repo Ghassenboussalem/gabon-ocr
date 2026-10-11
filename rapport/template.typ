@@ -64,9 +64,10 @@
     columns: if largeurs == none { colonnes } else { largeurs },
     stroke: 0.5pt + border,
     inset: 4.5pt,
+    align: left + top,
     fill: (_, y) => if y == 0 { navy } else if calc.odd(y) { white } else { light },
-    ..entetes.map(e => text(fill: white, weight: "bold", size: 9pt)[#e]),
-    ..lignes.flatten().map(c => text(size: 9pt)[#c]),
+    ..entetes.map(e => text(fill: white, weight: "bold", size: 9pt, hyphenate: false)[#set par(justify: false, first-line-indent: 0pt); #e]),
+    ..lignes.flatten().map(c => text(size: 9pt, hyphenate: false)[#set par(justify: false, first-line-indent: 0pt); #c]),
   )
 }
 

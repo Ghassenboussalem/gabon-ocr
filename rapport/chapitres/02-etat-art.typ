@@ -217,14 +217,10 @@ composants d'infrastructure classiques.
 === Le point d'entrée exploité
 
 #smallcaps[OpenCRVS] expose une interface de #emph[notification d'événement],
-conçue pour qu'un système tiers de confiance — typiquement un établissement de
-santé annonçant une naissance — dépose une déclaration incomplète que
-l'officier complétera ensuite.
-
-Cette interface correspond exactement au besoin du projet : une chaîne
-d'extraction n'a pas vocation à enregistrer un acte, mais à préparer le travail
-de l'officier. Elle a donc été retenue comme voie d'intégration principale, et
-une seconde voie, plus intégrée, a été développée par la suite.
+conçue pour qu'un système tiers de confiance dépose une déclaration incomplète
+que l'officier complétera. Elle correspond exactement au besoin : la chaîne
+d'extraction prépare le travail de l'officier sans enregistrer l'acte. Elle a
+été retenue comme voie principale, une seconde voie plus intégrée suivant.
 
 === La configuration par pays
 

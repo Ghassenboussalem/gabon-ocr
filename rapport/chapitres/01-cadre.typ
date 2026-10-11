@@ -149,7 +149,7 @@ document. Le @tab-existant les compare au regard des contraintes du projet.
        [Coût et lenteur : le problème que l'on cherche à résoudre],
        [Non — mais conservée en vérification]),
     ),
-    largeurs: (auto, 1fr, 1fr, 1.4fr, auto),
+    largeurs: (1.1fr, 1.3fr, 1.2fr, 1.7fr, 1.1fr),
   ),
   caption: [Comparaison des approches envisageables pour l'extraction],
   kind: table,
