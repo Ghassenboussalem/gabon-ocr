@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1770" height="578" viewBox="0 0 1770 578" font-family="Helvetica, Arial, sans-serif">
+<rect width="1770" height="578" fill="white"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2e6da4"/></marker></defs>
+<text x="40" y="38" text-anchor="start" font-size="24" font-weight="bold" fill="#1a3a5c">Pipeline de traitement et modèle utilisé pour chaque tâche</text>
+<text x="40" y="64" text-anchor="start" font-size="14" font-weight="normal" fill="#5a6672">Scan (image ou PDF)  →  déclaration OpenCRVS pré-remplie</text>
+<rect x="40" y="96" width="270" height="58" rx="8" fill="#5a6672"/>
+<circle cx="70" cy="125" r="17" fill="white"/>
+<text x="70" y="131" text-anchor="middle" font-size="18" font-weight="bold" fill="#5a6672">1</text>
+<text x="98" y="132" font-size="18" font-weight="bold" fill="white">Prétraitement</text>
+<rect x="40" y="162" width="270" height="118" rx="8" fill="#eef2f6" stroke="#c8d2dc" stroke-width="1.2"/>
+<text x="56" y="196" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">redressement, éclairage,</text>
+<text x="56" y="222" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">binarisation, suppression</text>
+<text x="56" y="248" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">des tampons</text>
+<rect x="40" y="296" width="270" height="98" rx="10" fill="white" stroke="#5a6672" stroke-width="3"/>
+<text x="175.0" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#5a6672">MODÈLE</text>
+<text x="175.0" y="354" text-anchor="middle" font-size="20" font-weight="bold" fill="#5a6672">OpenCV</text>
+<text x="175.0" y="378" text-anchor="middle" font-size="13" font-weight="normal" fill="#5a6672">vision classique</text>
+<text x="175.0" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="#5a6672">sans modèle d'IA</text>
+<line x1="311" y1="125" x2="323" y2="125" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="324" y="96" width="270" height="58" rx="8" fill="#5a6672"/>
+<circle cx="354" cy="125" r="17" fill="white"/>
+<text x="354" y="131" text-anchor="middle" font-size="18" font-weight="bold" fill="#5a6672">2</text>
+<text x="382" y="132" font-size="18" font-weight="bold" fill="white">Détection du pays</text>
+<rect x="324" y="162" width="270" height="118" rx="8" fill="#eef2f6" stroke="#c8d2dc" stroke-width="1.2"/>
+<text x="340" y="196" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">mots-clés de l'en-tête</text>
+<text x="340" y="222" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">lus par OCR, puis</text>
+<text x="340" y="248" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">choix du pack pays</text>
+<rect x="324" y="296" width="270" height="98" rx="10" fill="white" stroke="#5a6672" stroke-width="3"/>
+<text x="459.0" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#5a6672">MODÈLE</text>
+<text x="459.0" y="354" text-anchor="middle" font-size="20" font-weight="bold" fill="#5a6672">Règles</text>
+<text x="459.0" y="378" text-anchor="middle" font-size="13" font-weight="normal" fill="#5a6672">correspondance de mots-clés</text>
+<text x="459.0" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="#5a6672">sans modèle d'IA</text>
+<line x1="595" y1="125" x2="607" y2="125" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="608" y="96" width="270" height="58" rx="8" fill="#e9a13b"/>
+<circle cx="638" cy="125" r="17" fill="white"/>
+<text x="638" y="131" text-anchor="middle" font-size="18" font-weight="bold" fill="#e9a13b">3</text>
+<text x="666" y="132" font-size="18" font-weight="bold" fill="white">Localisation</text>
+<rect x="608" y="162" width="270" height="118" rx="8" fill="#eef2f6" stroke="#c8d2dc" stroke-width="1.2"/>
+<text x="624" y="196" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">ancres du gabarit sur le</text>
+<text x="624" y="222" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">texte OCR ; si couverture</text>
+<text x="624" y="248" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">&lt; 0,6, repérage par VLM</text>
+<rect x="608" y="296" width="270" height="98" rx="10" fill="white" stroke="#e9a13b" stroke-width="3"/>
+<text x="743.0" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#e9a13b">MODÈLE</text>
+<text x="743.0" y="354" text-anchor="middle" font-size="20" font-weight="bold" fill="#e9a13b">Tesseract</text>
+<text x="743.0" y="378" text-anchor="middle" font-size="13" font-weight="normal" fill="#5a6672">repli : Gemini 2.5 Flash</text>
+<text x="743.0" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="#e9a13b">OCR + VLM de repli</text>
+<line x1="879" y1="125" x2="891" y2="125" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="892" y="96" width="270" height="58" rx="8" fill="#2e6da4"/>
+<circle cx="922" cy="125" r="17" fill="white"/>
+<text x="922" y="131" text-anchor="middle" font-size="18" font-weight="bold" fill="#2e6da4">4</text>
+<text x="950" y="132" font-size="18" font-weight="bold" fill="white">Extraction</text>
+<rect x="892" y="162" width="270" height="118" rx="8" fill="#eef2f6" stroke="#c8d2dc" stroke-width="1.2"/>
+<text x="908" y="196" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">lecture de la page entière,</text>
+<text x="908" y="222" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">puis de chaque recadrage ;</text>
+<text x="908" y="248" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">consensus des deux passes</text>
+<rect x="892" y="296" width="270" height="98" rx="10" fill="white" stroke="#2e6da4" stroke-width="3"/>
+<text x="1027.0" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e6da4">MODÈLE</text>
+<text x="1027.0" y="354" text-anchor="middle" font-size="20" font-weight="bold" fill="#2e6da4">Gemini 2.5 Flash</text>
+<text x="1027.0" y="378" text-anchor="middle" font-size="13" font-weight="normal" fill="#5a6672">local : Qwen3-VL 8B</text>
+<text x="1027.0" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="#2e6da4">modèle vision-langage</text>
+<line x1="1163" y1="125" x2="1175" y2="125" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="1176" y="96" width="270" height="58" rx="8" fill="#5a6672"/>
+<circle cx="1206" cy="125" r="17" fill="white"/>
+<text x="1206" y="131" text-anchor="middle" font-size="18" font-weight="bold" fill="#5a6672">5</text>
+<text x="1234" y="132" font-size="18" font-weight="bold" fill="white">Validation</text>
+<rect x="1176" y="162" width="270" height="118" rx="8" fill="#eef2f6" stroke="#c8d2dc" stroke-width="1.2"/>
+<text x="1192" y="196" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">dates en toutes lettres,</text>
+<text x="1192" y="222" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">énumérations, lieux,</text>
+<text x="1192" y="248" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">score de confiance</text>
+<rect x="1176" y="296" width="270" height="98" rx="10" fill="white" stroke="#5a6672" stroke-width="3"/>
+<text x="1311.0" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#5a6672">MODÈLE</text>
+<text x="1311.0" y="354" text-anchor="middle" font-size="20" font-weight="bold" fill="#5a6672">Règles + RapidFuzz</text>
+<text x="1311.0" y="378" text-anchor="middle" font-size="13" font-weight="normal" fill="#5a6672">comparaison approchée</text>
+<text x="1311.0" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="#5a6672">sans modèle d'IA</text>
+<line x1="1447" y1="125" x2="1459" y2="125" stroke="#2e6da4" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="1460" y="96" width="270" height="58" rx="8" fill="#2e6da4"/>
+<circle cx="1490" cy="125" r="17" fill="white"/>
+<text x="1490" y="131" text-anchor="middle" font-size="18" font-weight="bold" fill="#2e6da4">6</text>
+<text x="1518" y="132" font-size="18" font-weight="bold" fill="white">Export OpenCRVS</text>
+<rect x="1460" y="162" width="270" height="118" rx="8" fill="#eef2f6" stroke="#c8d2dc" stroke-width="1.2"/>
+<text x="1476" y="196" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">alias de champs, nom,</text>
+<text x="1476" y="222" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">nationalité ; lieu de naissance</text>
+<text x="1476" y="248" text-anchor="start" font-size="15" font-weight="normal" fill="#2b333b">résolu si confiance ≥ 0,7</text>
+<rect x="1460" y="296" width="270" height="98" rx="10" fill="white" stroke="#2e6da4" stroke-width="3"/>
+<text x="1595.0" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e6da4">MODÈLE</text>
+<text x="1595.0" y="354" text-anchor="middle" font-size="20" font-weight="bold" fill="#2e6da4">Gemini 2.5 Flash</text>
+<text x="1595.0" y="378" text-anchor="middle" font-size="13" font-weight="normal" fill="#5a6672">lieu de naissance seulement</text>
+<text x="1595.0" y="422" text-anchor="middle" font-size="13" font-weight="bold" fill="#2e6da4">VLM + règles</text>
+<rect x="40" y="468" width="22" height="22" rx="5" fill="#5a6672"/>
+<text x="72" y="485" text-anchor="start" font-size="14" font-weight="normal" fill="#2b333b">Traitement classique ou règles : déterministe, sans modèle d'IA</text>
+<rect x="574.2" y="468" width="22" height="22" rx="5" fill="#e9a13b"/>
+<text x="606.2" y="485" text-anchor="start" font-size="14" font-weight="normal" fill="#2b333b">OCR : Tesseract (reconnaissance de caractères)</text>
+<rect x="982.6000000000001" y="468" width="22" height="22" rx="5" fill="#2e6da4"/>
+<text x="1014.6000000000001" y="485" text-anchor="start" font-size="14" font-weight="normal" fill="#2b333b">Modèle vision-langage : Gemini 2.5 Flash par défaut</text>
+<rect x="40" y="508" width="1690" height="46" rx="8" fill="#eef2f6" stroke="#c8d2dc" stroke-width="1.2"/>
+<text x="58" y="537" text-anchor="start" font-size="14" font-weight="normal" fill="#1a3a5c">Le moteur est interchangeable (make_client) : Gemini, Ollama ou serveur compatible OpenAI, par exemple Qwen3-VL 8B hébergé localement, sans changer le code.</text>
+</svg>

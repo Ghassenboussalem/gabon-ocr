@@ -39,9 +39,9 @@ FONT = "Calibri"
 agg = json.load(open(ROOT / "eval" / "quality_metrics.json", encoding="utf-8"))["aggregate"]
 
 PARTS = [("I", "Contexte"), ("II", "Conception"), ("III", "Réalisation"), ("IV", "Évaluation")]
-TOTAL = 14
+TOTAL = 15
 # seconds per slide, in order: drives the running time written in the speaker notes
-DUR = [30, 25, 35, 35, 35, 55, 45, 55, 35, 40, 45, 50, 30, 25]
+DUR = [30, 25, 35, 35, 35, 50, 40, 40, 55, 35, 40, 45, 50, 30, 25]
 
 
 def fr(x: float, d: int = 3) -> str:
@@ -223,7 +223,7 @@ text(s, Inches(0.65), Inches(0.35), Inches(8), Inches(0.4), "SOMMAIRE", size=13,
 text(s, Inches(0.6), Inches(0.65), Inches(12), Inches(0.8), "Plan de la présentation", size=32, bold=True)
 box(s, Inches(0.65), Inches(1.45), Inches(12.0), Emu(22000), fill=BLUE, shape=MSO_SHAPE.RECTANGLE)
 plan = [("I", "Contexte et problématique", ["Le papier, obstacle à l'identité légale", "Question posée et objectifs"], "2 min", BLUE),
-        ("II", "Conception de la solution", ["Un pipeline en cinq étapes", "Architecture technique", "Le principe d'honnêteté"], "2 min", TEAL),
+        ("II", "Conception de la solution", ["Pipeline, architecture, modèles", "Le principe d'honnêteté"], "2 min", TEAL),
         ("III", "Réalisation et intégration", ["Intégration à OpenCRVS", "Ce que voit l'officier", "Difficultés rencontrées"], "3 min", AMBER),
         ("IV", "Évaluation et bilan", ["Protocole et métriques", "Résultats et défauts relevés", "Limites, perspectives, conclusion"], "3 min", RED)]
 for i, (num, title, items, dur, col) in enumerate(plan):
@@ -392,6 +392,20 @@ for i, (h_, l1, l2, col) in enumerate(bands):
     box(s, x, Inches(5.35), Inches(3.9), Inches(0.09), fill=col, shape=MSO_SHAPE.RECTANGLE)
     text(s, x + Inches(0.12), Inches(5.5), Inches(3.7), Inches(0.4), h_, size=15, bold=True, color=col)
     tt = text(s, x + Inches(0.12), Inches(5.9), Inches(3.7), Inches(0.9), [l1, l2], size=11.5, color=INK)
+
+# ===================================================== 5c. modèles par tâche
+s = frame("Pipeline et modèle utilisé pour chaque tâche", 7, 1,
+          "[0:00] Voici, pour chaque tâche, le modèle réellement employé. Le prétraitement relève de la vision "
+          "classique, avec OpenCV, et la détection du pays d'une simple correspondance de mots-clés : aucun "
+          "modèle d'intelligence artificielle. La localisation repose sur Tesseract, avec un repli sur le "
+          "modèle vision-langage. L'extraction, cœur du système, utilise Gemini 2.5 Flash ; Qwen3-VL 8B "
+          "hébergé localement est l'alternative prévue pour la production. La validation est entièrement "
+          "déterministe. Enfin, le modèle intervient une dernière fois pour résoudre le lieu de naissance. "
+          "Le modèle génératif n'est donc sollicité que dans trois étapes.")
+picture(s, "pipeline_modeles.png", Inches(0.45), Inches(1.6), Inches(12.45), Inches(4.2))
+ban = box(s, Inches(0.65), Inches(6.0), Inches(12.0), Inches(0.9), fill=NAVY)
+label(ban, "Le modèle génératif n'intervient que dans trois étapes (repérage de repli, extraction, lieu de "
+           "naissance) : tout le reste est déterministe et reproductible.", size=16, color=WHITE, bold=True)
 
 # ================================================================= 6. honnêteté
 s = frame("Principe directeur : ne jamais affirmer une valeur fausse", 6, 1,
