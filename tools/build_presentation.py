@@ -39,7 +39,9 @@ FONT = "Calibri"
 agg = json.load(open(ROOT / "eval" / "quality_metrics.json", encoding="utf-8"))["aggregate"]
 
 PARTS = [("I", "Contexte"), ("II", "Conception"), ("III", "Réalisation"), ("IV", "Évaluation")]
-TOTAL = 13
+TOTAL = 14
+# seconds per slide, in order: drives the running time written in the speaker notes
+DUR = [30, 25, 35, 35, 35, 55, 45, 55, 35, 40, 45, 50, 30, 25]
 
 
 def fr(x: float, d: int = 3) -> str:
@@ -154,6 +156,15 @@ def document(slide, x, y, w, h, tint=BLUE):
 # ---------------------------------------------------------------- slide frame --
 
 
+def set_notes(slide, notes):
+    """Speaker notes, prefixed with the time window this slide gets."""
+    k = len(prs.slides) - 1
+    t0, t1 = sum(DUR[:k]), sum(DUR[:k + 1])
+    body = notes.split("] ", 1)[1] if notes.startswith("[") else notes
+    mm = lambda t: f"{t // 60}:{t % 60:02d}"
+    slide.notes_slide.notes_text_frame.text = f"[{mm(t0)} – {mm(t1)}] {body}"
+
+
 def frame(title, n, part, notes):
     """Standard slide: section chip, title, rule, running footer and tracker."""
     s = prs.slides.add_slide(BLANK)
@@ -170,9 +181,9 @@ def frame(title, n, part, notes):
         label(seg, roman, size=9, color=WHITE if k == part else GREY, bold=True)
     text(s, Inches(0.6), Inches(7.05), Inches(4), Inches(0.35),
          "Mohamed Ghassen Bousalem · EY Tunisie · ESPRIT", size=10, color=GREY)
-    text(s, Inches(11.6), Inches(7.05), Inches(1.1), Inches(0.35), f"{n} / {TOTAL}", size=10,
+    text(s, Inches(11.6), Inches(7.05), Inches(1.1), Inches(0.35), f"{len(prs.slides)} / {TOTAL}", size=10,
          color=GREY, align=PP_ALIGN.RIGHT)
-    s.notes_slide.notes_text_frame.text = notes
+    set_notes(s, notes)
     return s
 
 
@@ -201,10 +212,10 @@ for i, (k, v) in enumerate([("nom", "…"), ("naissance", "…"), ("parents", "�
     label(f, f"{k}  ✓", size=13, color=WHITE)
 text(s, Inches(9.2), Inches(6.6), Inches(3.8), Inches(0.5), "acte scanné  →  déclaration pré-remplie",
      size=12, color=RGBColor(0xC8, 0xD8, 0xE8), align=PP_ALIGN.CENTER)
-s.notes_slide.notes_text_frame.text = (
+set_notes(s, (
     "[0:00 – 0:30] Bonjour et merci de me recevoir. Je présente mon stage de onze semaines chez EY "
     "Tunisie, au sein de la practice Technology, Strategy & Transformation : comment faire lire un acte "
-    "de naissance scanné par un modèle vision-langage, puis pré-remplir une déclaration dans OpenCRVS.")
+    "de naissance scanné par un modèle vision-langage, puis pré-remplir une déclaration dans OpenCRVS."))
 
 # ======================================================================== 2. plan
 s = prs.slides.add_slide(BLANK)
@@ -212,7 +223,7 @@ text(s, Inches(0.65), Inches(0.35), Inches(8), Inches(0.4), "SOMMAIRE", size=13,
 text(s, Inches(0.6), Inches(0.65), Inches(12), Inches(0.8), "Plan de la présentation", size=32, bold=True)
 box(s, Inches(0.65), Inches(1.45), Inches(12.0), Emu(22000), fill=BLUE, shape=MSO_SHAPE.RECTANGLE)
 plan = [("I", "Contexte et problématique", ["Le papier, obstacle à l'identité légale", "Question posée et objectifs"], "2 min", BLUE),
-        ("II", "Conception de la solution", ["Un pipeline en cinq étapes", "Le principe d'honnêteté"], "2 min", TEAL),
+        ("II", "Conception de la solution", ["Un pipeline en cinq étapes", "Architecture technique", "Le principe d'honnêteté"], "2 min", TEAL),
         ("III", "Réalisation et intégration", ["Intégration à OpenCRVS", "Ce que voit l'officier", "Difficultés rencontrées"], "3 min", AMBER),
         ("IV", "Évaluation et bilan", ["Protocole et métriques", "Résultats et défauts relevés", "Limites, perspectives, conclusion"], "3 min", RED)]
 for i, (num, title, items, dur, col) in enumerate(plan):
@@ -224,9 +235,9 @@ for i, (num, title, items, dur, col) in enumerate(plan):
          anchor=MSO_ANCHOR.MIDDLE)
     text(s, x + Inches(0.2), Inches(3.35), Inches(2.5), Inches(0.9), title, size=19, bold=True, color=col)
     bullets(s, x + Inches(0.15), Inches(4.3), Inches(2.6), Inches(2.3), items, size=14, gap=7, marker=col)
-s.notes_slide.notes_text_frame.text = (
+set_notes(s, (
     "[0:30 – 1:00] L'exposé suit quatre parties : le contexte et la problématique ; la conception de la "
-    "solution ; sa réalisation et son intégration à OpenCRVS ; enfin l'évaluation et le bilan.")
+    "solution ; sa réalisation et son intégration à OpenCRVS ; enfin l'évaluation et le bilan."))
 
 # ===================================================================== 3. contexte
 s = frame("Le papier, obstacle à l'identité légale", 3, 0,
@@ -330,6 +341,57 @@ for k, (v, l) in enumerate([("27", "pays couverts"), ("40–90 s", "par acte")])
     text(s, x, Inches(5.55), Inches(1.75), Inches(0.7), v, size=26, bold=True, color=BLUE, align=PP_ALIGN.CENTER)
     text(s, x, Inches(6.25), Inches(1.75), Inches(0.5), l, size=12, color=GREY, align=PP_ALIGN.CENTER)
 arrow(s, Inches(6.55), Inches(5.95), Inches(0.28), Inches(0.35), color=TEAL)
+
+# ============================================================ 5b. architecture technique
+s = frame("Architecture technique du pipeline", 6, 1,
+          "[0:00] Voici le détail technique, module par module. Le prétraitement, sous OpenCV, redresse "
+          "l'image, corrige l'éclairage, supprime les tampons colorés et met à l'échelle ; les PDF sont "
+          "convertis en image. La détection du pays sélectionne le pack de configuration. La localisation "
+          "s'appuie d'abord sur Tesseract et un gabarit d'ancres ; si moins de 60 % des champs sont "
+          "localisés, le repérage est confié au modèle vision-langage, recoupé avec l'OCR. L'extraction "
+          "interroge le modèle en deux passes, avec un client interchangeable : Gemini, Ollama ou une API "
+          "compatible OpenAI. La validation normalise les dates, les énumérations et les lieux, puis calcule "
+          "la confiance. L'export vers OpenCRVS et le service FastAPI complètent la chaîne.")
+stages = [
+    ("1", "Prétraitement", "preprocess.py · pdfio.py", TEAL,
+     ["OpenCV : orientation, redressement (≤ 6°)", "éclairage, CLAHE, binarisation adaptative",
+      "suppression des tampons (saturation)", "mise à l'échelle ≥ 1 600 px ; PDF → PNG 220 dpi"]),
+    ("2", "Pays", "countries.py", TEAL,
+     ["en-tête lu par OCR", "résolution du pack pays :", "schema.json (champs attendus)", "places.json (lexique de lieux)"]),
+    ("3", "Localisation", "locate.py · vlm_locate.py", AMBER,
+     ["Tesseract (fra) : ancres du gabarit", "interpolation des ancres manquantes", "couverture < 0,6 → repérage par VLM",
+      "recoupement avec le texte OCR"]),
+    ("4", "Extraction", "extract.py · vlm_client.py", BLUE,
+     ["passe 1 : page entière", "passe 2 : recadrages (lots de 5, 4 threads)", "sortie JSON stricte, consensus",
+      "rotation des clés API sur erreur 429"]),
+    ("5", "Validation", "validate.py · confidence.py", TEAL,
+     ["dates en toutes lettres → ISO 8601", "énumérations, lieux (RapidFuzz)", "score et bande par champ",
+      "report.json, field_boxes.png"]),
+]
+for i, (num, title, mod, col, items) in enumerate(stages):
+    x = Inches(0.65 + i * 2.42)
+    box(s, x, Inches(1.65), Inches(2.3), Inches(3.45), fill=LIGHT)
+    hd = box(s, x, Inches(1.65), Inches(2.3), Inches(0.62), fill=col, shape=MSO_SHAPE.RECTANGLE)
+    label(hd, f"{num}  ·  {title}", size=16, color=WHITE, bold=True)
+    mt = text(s, x, Inches(2.3), Inches(2.3), Inches(0.4), mod, size=10.5, color=col, bold=True,
+              align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    for r in mt.text_frame.paragraphs[0].runs:
+        r.font.name = "Consolas"
+    bullets(s, x + Inches(0.08), Inches(2.75), Inches(2.18), Inches(2.3), items, size=11.5, gap=5, marker=col)
+    if i < 4:
+        arrow(s, x + Inches(2.3), Inches(3.55), Inches(0.12), Inches(0.35), color=GREY)
+bands = [("Moteur de modèle interchangeable", "make_client() : Gemini · Ollama · OpenAI-compatible",
+          "bascule vers un modèle local sans changer le code", BLUE),
+         ("Export vers OpenCRVS", "opencrvs_export.py : table d'alias des champs",
+          "split_name · map_nationality · enrich_birth_place", TEAL),
+         ("Service web", "review/app.py (FastAPI) : /api/opencrvs/analyze",
+          "lecture du scan dans MinIO, image de repérage en retour", AMBER)]
+for i, (h_, l1, l2, col) in enumerate(bands):
+    x = Inches(0.65 + i * 4.06)
+    box(s, x, Inches(5.35), Inches(3.9), Inches(1.5), fill=WHITE, line=col)
+    box(s, x, Inches(5.35), Inches(3.9), Inches(0.09), fill=col, shape=MSO_SHAPE.RECTANGLE)
+    text(s, x + Inches(0.12), Inches(5.5), Inches(3.7), Inches(0.4), h_, size=15, bold=True, color=col)
+    tt = text(s, x + Inches(0.12), Inches(5.9), Inches(3.7), Inches(0.9), [l1, l2], size=11.5, color=INK)
 
 # ================================================================= 6. honnêteté
 s = frame("Principe directeur : ne jamais affirmer une valeur fausse", 6, 1,
